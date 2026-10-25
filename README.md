@@ -25,7 +25,7 @@ release checks, and [security reporting](SECURITY.md) for vulnerability reports.
 
 ### Model-invoked
 
-- [babysit-pr](docs/engineering/babysit-pr.md) — carry an existing PR through review
+- [babysit-pr](docs/engineering/babysit-pr.md) — carry an existing GitHub PR or GitLab MR through review
   feedback, CI repairs, and verified completion with resumable monitoring.
 - [codebase-design](docs/engineering/codebase-design.md) — design cohesive modules,
   evidence-gated abstractions, intentional dependency direction, and explicit
@@ -54,7 +54,7 @@ release checks, and [security reporting](SECURITY.md) for vulnerability reports.
   Claude Code or Codex agents with task-appropriate models and verified integration.
 - [planning-and-task-breakdown](docs/engineering/planning-and-task-breakdown.md) — turn clear
   requirements into verifiable slices, dependencies, and a ready frontier.
-- [pr-description](docs/engineering/pr-description.md) — write outcome-led PR titles
+- [pr-description](docs/engineering/pr-description.md) — write outcome-led PR or MR titles
   and bodies from the final diff, with a visual summary, before/after evidence, and
   a merge-danger section.
 - [property-based-testing](docs/engineering/property-based-testing.md) — find strong

@@ -1,7 +1,8 @@
 # PR description
 
-`pr-description` writes pull request titles and bodies from the final diff. It is
-model-invoked and can also be requested directly.
+`pr-description` writes pull request titles and bodies from the final diff, on
+GitHub or as a GitLab merge request. It is model-invoked and can also be
+requested directly.
 
 Try: “Write the PR description for this branch,” “Rewrite PR 88's title and body
 to match what it does now,” or “Draft the PR text before I publish.” A text-only
@@ -36,7 +37,8 @@ skill rewrites the title and body from the new final diff instead of narrating
 the revisions.
 
 When creating or updating a PR is authorized, it passes the body through a UTF-8
-file and re-reads the saved metadata. Branches, commits, and pushes belong to
+file (`gh pr create --body-file` on GitHub, a `glab api` description field on
+GitLab) and re-reads the saved metadata. Branches, commits, and pushes belong to
 [git-workflow](git-workflow.md); CI repair, review follow-up, and merging belong
 to [babysit-pr](babysit-pr.md).
 

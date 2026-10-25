@@ -1,6 +1,6 @@
 ---
 name: babysit-pr
-description: Carry an existing pull request through CI failures, review feedback, and merge. Use when asked to babysit a PR, keep it moving until completion, or resume an interrupted PR watch; a one-time status check or standalone review belongs elsewhere.
+description: Carry an existing GitHub pull request or GitLab merge request through CI failures, review feedback, and merge. Use when asked to babysit a PR or MR, keep it moving until completion, or resume an interrupted PR watch; a one-time status check or standalone review belongs elsewhere.
 ---
 
 # Babysit a PR
@@ -15,7 +15,7 @@ Select the endpoint from the request: **merged** for ordinary babysitting, **rea
 
 Record the run budget: the user's deadline, wave or time limit, otherwise 5 repair waves and 8 hours of active watch time. Like retry totals, budgets carry across rearms and resumes; only the user raises them.
 
-Read [WATCH.md](references/WATCH.md) before the first observation to start the GitHub helper, establish a private run record and arrange waits. The helper supports GitHub, including an explicitly resolved Enterprise host. For another forge, use its native tools only if they expose equivalent state and pagination; otherwise report the capability gap.
+Read [WATCH.md](references/WATCH.md) before the first observation to start the watch helper, establish a private run record and arrange waits. The helper supports GitHub and GitLab, including explicitly resolved Enterprise and self-managed hosts. For a GitLab MR, also read [GITLAB.md](references/GITLAB.md); it maps every GitHub surface named in this skill to its GitLab equivalent. For another forge, use its native tools only if they expose equivalent state and pagination; otherwise report the capability gap.
 
 **Complete when:** the exact target, checkout owner, endpoint, action scope, run budget and live observation mechanism are recorded.
 

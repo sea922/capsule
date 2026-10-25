@@ -1,6 +1,6 @@
 # Babysit PR
 
-`babysit-pr` carries an existing pull request through review feedback, CI failures and completion. It is model-invoked for requests to babysit or resume a PR, and can also be invoked explicitly.
+`babysit-pr` carries an existing GitHub pull request or GitLab merge request through review feedback, CI failures and completion. It is model-invoked for requests to babysit or resume a PR or MR, and can also be invoked explicitly.
 
 The default endpoint is confirmed merge. That endpoint does not grant permission to merge: the skill retains the user's existing action scope and performs the final merge when authorized. Ask to stop at merge-ready when you want that earlier endpoint. It continues independent repairs while another item needs a decision and reports a precise handback when no autonomous work remains.
 
@@ -17,7 +17,7 @@ Replies, thread resolution and other externally visible actions follow the estab
 
 Without a deadline from you, a run is capped at 5 repair waves and 8 hours of active watch time. Restarts and resumes do not reset the count, and you can raise either limit. Reaching the cap saves the run as paused, with what remains and a resume command.
 
-It also stops changing a stream that is not converging: a check or finding an earlier wave fixed that comes back on a later head. That stream is handed to you with its history while independent repairs continue. Feedback about product or design choices, architecture, conflicts with your stated intent, security, auth, billing, data or migrations, and questions that only need an answer are parked for you the same way. Five consecutive failed GitHub reads pause the run with an infrastructure handback.
+It also stops changing a stream that is not converging: a check or finding an earlier wave fixed that comes back on a later head. That stream is handed to you with its history while independent repairs continue. Feedback about product or design choices, architecture, conflicts with your stated intent, security, auth, billing, data or migrations, and questions that only need an answer are parked for you the same way. Five consecutive failed forge reads pause the run with an infrastructure handback.
 
 The final report starts with a one-line status, then gives budget use (retries, waves, active time), mergeability, and findings it dismissed with reasons.
 
@@ -27,9 +27,9 @@ The agent observes the PR, evaluates feedback, diagnoses failures, verifies a ba
 
 When several reviewers, bots or people, have commented, the agent sorts the feedback before repairing anything. It drops status banners and summaries, merges findings that several bots raised about the same defect, and takes human comments first. Each finding then gets one outcome: fix, dismiss with a reason, or escalate to you. The agent records what it handled, so a later round neither repeats a reply nor re-argues a decision already made. It fixes at most five bot findings per round.
 
-A bundled Python helper reads GitHub through authenticated `gh`, including paginated feedback and thread metadata. It leaves unsubmitted pending reviews out, detects changes and returns periodic snapshots while quiet. The helper never edits, posts, reruns CI or merges. The agent verifies required gates separately before declaring readiness.
+A bundled Python helper reads GitHub through authenticated `gh`, or GitLab through authenticated `glab`, including paginated feedback and thread metadata. It leaves unsubmitted pending reviews and GitLab draft notes out, detects changes and returns periodic snapshots while quiet. The helper never edits, posts, reruns CI or merges. The agent verifies required gates separately before declaring readiness.
 
-Requirements are Python 3.10+ and GitHub CLI with access to the target PR. An Enterprise hostname is supported explicitly. Other forges require equivalent native observation tools; they have no bundled adapter. State lives in a private directory outside tracked source, with observations separate from decisions and pending writes.
+Requirements are Python 3.10+ and GitHub CLI or GitLab CLI with access to the target PR or MR. GitHub Enterprise and self-managed GitLab hosts are supported explicitly. A GitLab reference maps each GitHub surface the skill relies on (threads, approvals, pipelines, merge trains, replies) to its GitLab equivalent. Other forges require equivalent native observation tools; they have no bundled adapter. State lives in a private directory outside tracked source, with observations separate from decisions and pending writes.
 
 Monitoring is session-bound unless a supported durable scheduler is explicitly established. The skill saves a resume record when interrupted and does not claim that a stopped watcher is still active. The first version owns one PR; it does not manage stacks or scan every authored PR. Single-writer ownership is coordinated by the agent, not enforced by a distributed lock.
 

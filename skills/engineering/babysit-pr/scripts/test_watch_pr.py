@@ -10,6 +10,10 @@ import watch_pr as watcher
 
 PR = {"state": "OPEN", "headRefOid": "h1", "baseRefOid": "b1",
       "headRefName": "feature", "baseRefName": "main"}
+MR = {"iid": 7, "state": "opened", "sha": "h1", "diff_refs": {"base_sha": "b1"},
+      "source_branch": "feature", "target_branch": "master", "updated_at": "volatile",
+      "head_pipeline": {"id": 50, "project_id": 9, "sha": "h1", "status": "running",
+                        "duration": 12}}
 
 
 class WatchTests(unittest.TestCase):
@@ -85,6 +89,58 @@ class WatchTests(unittest.TestCase):
                 result = watcher.watch("github.com", "o/r", 1, path, 1, 1)
             sleep.assert_called_once_with(1)
             self.assertEqual(result["reason"], "unchanged")
+
+
+class GitLabWatchTests(unittest.TestCase):
+    def reply(self, discussions, mr_after=MR):
+        responses = {
+            "projects/group%2Fsub%2Frepo/merge_requests/7": iter([MR, mr_after]),
+            "projects/group%2Fsub%2Frepo/merge_requests/7/discussions?per_page=100":
+                iter([discussions]),
+            "projects/group%2Fsub%2Frepo/merge_requests/7/approvals":
+                iter([{"approved": False, "approvals_left": 1, "user_can_approve": True}]),
+            "projects/9/pipelines/50/jobs?per_page=100":
+                iter([[{"id": 1, "name": "test", "status": "running", "duration": 3.2}]]),
+        }
+        return lambda host, endpoint, paginate=False: next(responses[endpoint])
+
+    def test_feedback_threads_jobs_and_approvals_are_collected_without_system_notes(self):
+        discussions = [
+            {"id": "d1", "notes": [{"id": 1, "system": True, "body": "added 1 commit"}]},
+            {"id": "d2", "notes": [{"id": 2, "system": False, "resolvable": True,
+                                    "resolved": False, "body": "null check"}]},
+        ]
+        with patch.object(watcher, "glab", side_effect=self.reply(discussions)):
+            result = watcher.snapshot("gitlab.com", "group/sub/repo", 7, "gitlab")
+        self.assertEqual([thread["id"] for thread in result["discussions"]], ["d2"])
+        self.assertEqual(result["jobs"], [{"id": 1, "name": "test", "stage": None,
+                                           "status": "running", "allow_failure": None,
+                                           "failure_reason": None, "web_url": None}])
+        self.assertNotIn("user_can_approve", result["approvals"])
+        self.assertNotIn("updated_at", result["pr"])
+        self.assertEqual(result["pr"]["head_pipeline"],
+                         {"id": 50, "project_id": 9, "sha": "h1", "status": "running"})
+
+    def test_head_or_pipeline_race_rejected(self):
+        for later in (dict(MR, sha="h2"), dict(MR, head_pipeline=dict(MR["head_pipeline"], id=51))):
+            with patch.object(watcher, "glab", side_effect=self.reply([], later)):
+                with self.assertRaisesRegex(RuntimeError, "moved"):
+                    watcher.snapshot("gitlab.com", "group/sub/repo", 7, "gitlab")
+
+    def test_forge_is_github_only_for_github_hosts(self):
+        for host, forge in (("github.com", "github"), ("acme.ghe.com", "github"),
+                            ("github.acme.io", "github"), ("gitlab.com", "gitlab"),
+                            ("git.ringkas.homes", "gitlab")):
+            self.assertEqual(watcher.detect_forge(host), forge, host)
+
+    def test_merged_mr_is_terminal(self):
+        merged = dict(MR, state="merged")
+        with tempfile.TemporaryDirectory() as directory, \
+                patch.object(watcher, "glab", return_value=merged) as request:
+            result = watcher.watch("gitlab.com", "group/sub/repo", 7,
+                                   Path(directory) / "state.json", 1, 1, forge="gitlab")
+        self.assertEqual(result["reason"], "terminal")
+        request.assert_called_once()
 
 
 if __name__ == "__main__":

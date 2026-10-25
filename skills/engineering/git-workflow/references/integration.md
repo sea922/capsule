@@ -11,7 +11,7 @@ merge eligibility, or deciding whether integrated branches can be retired.
 | Force-with-lease rejection | Treat it as new remote information. Inspect the competing commits; do not merely refresh the expected value and retry. |
 | Rebase conflict labels say ours/theirs | During rebase the sides can differ from the developer's intuitive branch labels. Read actual content and both intents before choosing a resolution. |
 | Parent PR squash-merged while child remains open | Transplant child-only commits using the recorded old parent boundary; retargeting alone may leave parent commits in the child diff. |
-| Branch checks passed but PR is in a merge queue | Queue admission is not merge completion. Respect integration checks and confirm the final merged state. |
+| Branch checks passed but PR is in a merge queue (GitLab: merge train) | Queue admission is not merge completion. Respect integration checks and confirm the final merged state. |
 | Text conflict resolved without errors | Inspect semantic behavior and tests; syntactic resolution can still remove either side's intended change. |
 
 For a justified published rewrite, capture the remote branch tip after inspecting
@@ -27,4 +27,5 @@ is hidden by a successful command.
 
 Primary references: [push](https://git-scm.com/docs/git-push),
 [rebase](https://git-scm.com/docs/git-rebase),
-[merge queues](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue).
+[merge queues](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue),
+[merge trains](https://docs.gitlab.com/ci/pipelines/merge_trains/).
