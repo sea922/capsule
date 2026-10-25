@@ -1,0 +1,54 @@
+{
+  "skill_name": "compound-learnings",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The nightly import finally passes. The cause was that the vendor CSV switches to semicolon delimiters for EU accounts, which their docs never mention; sniffing the delimiter failed on single-column files, so we branch on the account region header instead. Tests are green. Write this up so nobody burns two days on it again. The repo has no lessons folder yet.",
+      "expected_output": "One new lesson under docs/lessons/ that records the non-recoverable vendor behaviour, the failed approach, and a retirement condition.",
+      "files": [],
+      "expectations": [
+        "The store location is stated as docs/lessons/ because no existing convention was found.",
+        "Exactly one lesson file is written, named after the searchable problem rather than a date.",
+        "The lesson records the undocumented semicolon behaviour and that delimiter sniffing failed on single-column files.",
+        "The lesson carries a retirement condition naming an observable change and where to check it.",
+        "No product code, instruction file, or commit is changed or created."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We just renamed getUser to fetchUser everywhere and fixed a typo in the 404 error message. The commit message says exactly that. Document what we learned in docs/solutions/.",
+      "expected_output": "No lesson written, with the rejection explained against the durable bar.",
+      "files": [],
+      "expectations": [
+        "No file is created or edited under docs/solutions/.",
+        "The response names the code or commit message as the artifact that already carries the change.",
+        "The explicit request to document is acknowledged without lowering the bar."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Clean up docs/solutions/. It has: retry-backoff.md, which cites src/net/retry.ts (now moved to src/http/retry-policy.ts, same behaviour); cache-stampede.md and cache-stampede-fix.md, which describe the same lock-based fix; auth-token-refresh.md, which cites src/auth/token.ts (deleted when sessions moved to src/session/, though the app still refreshes tokens); and null-date-parsing.md, whose whole explanation is already in the comment above parseDate and the test named 'treats empty string as missing date'. README.md links to cache-stampede-fix.md in a see-also list.",
+      "expected_output": "A per-lesson refresh report with one outcome each, applied edits inside docs/solutions/ and README.md link cleanup, and no product-code changes.",
+      "files": [],
+      "expectations": [
+        "The existing docs/solutions/ convention is used as the store.",
+        "retry-backoff.md is classified Update and its path is corrected to src/http/retry-policy.ts.",
+        "The two cache-stampede lessons are consolidated into one, and the README see-also link to the removed file is cleaned up.",
+        "auth-token-refresh.md is classified Replace or marked stale rather than deleted, because token refresh is still an active problem.",
+        "null-date-parsing.md is deleted with the parseDate comment and the test name quoted as recovering evidence.",
+        "No file outside docs/solutions/ and README.md is edited, and nothing is committed."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Audit docs/lessons/ for drift. Don't delete anything that's still accurate. One lesson, flaky-e2e-ports.md, is still correct but a test comment in e2e/setup.ts now says the same thing.",
+      "expected_output": "An accuracy refresh that leaves the accurate-but-recoverable lesson in place and lists its deletion as a recommendation.",
+      "files": [],
+      "expectations": [
+        "flaky-e2e-ports.md remains on disk.",
+        "The report recommends deleting or trimming it and quotes the e2e/setup.ts comment as evidence.",
+        "Every in-scope lesson receives exactly one outcome in the report."
+      ]
+    }
+  ]
+}

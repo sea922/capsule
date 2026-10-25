@@ -1,0 +1,6 @@
+interface:
+  display_name: "ADLC Intent"
+  short_description: "Capture the human's intent before agents build"
+
+policy:
+  allow_implicit_invocation: false

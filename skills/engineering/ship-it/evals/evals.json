@@ -1,0 +1,26 @@
+{
+  "skill_name": "ship-it",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Ship the finished login fix; get the PR merge-ready, I will merge. Local tests passed at revision A; review then fixed recovery code producing B, untested. Unrelated staged billing edits exist. Existing PR 42 is still head A, green with approval.",
+      "expected_output": "Preserve billing staging, verify B, publish only the login change to the existing PR, and establish readiness on B without merging.",
+      "files": [],
+      "expectations": ["Preserves unrelated staged changes", "Runs affected checks after the repair", "Reuses PR 42", "Requires remote readiness evidence for B", "Does not merge"]
+    },
+    {
+      "id": 2,
+      "prompt": "Ship this fix and merge when ready; you may commit and push, but do not message reviewers. All required checks and approvals match B, merge queue accepts B but PR remains open. Tools can keep observing.",
+      "expected_output": "Continue observing through confirmed merge, repairing within scope when needed and respecting the messaging restriction.",
+      "files": [],
+      "expectations": ["Does not call queue admission completed delivery", "Continues observing until merged or concretely blocked", "Does not message reviewers"]
+    },
+    {
+      "id": 3,
+      "prompt": "Ship it. The finished scoped fix passes checks; no PR exists. There is no other endpoint or deployment context. Describe what ship it means and when you stop.",
+      "expected_output": "State the default merge-ready PR endpoint, review if needed, publish, and follow remote gates to readiness. Do not collapse ready-for-review into merge-ready or infer deployment authority.",
+      "files": [],
+      "expectations": ["Selects merge-ready PR explicitly", "Requires applicable remote readiness gates before stopping successfully", "Does not select merge or deployment by default"]
+    }
+  ]
+}

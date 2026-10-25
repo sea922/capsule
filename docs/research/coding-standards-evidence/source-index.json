@@ -1,0 +1,130 @@
+[
+  {
+    "repo": "mattpocock/skills",
+    "sha": "3cca18b368ae95cdbdebbff572ccafa662551015",
+    "read": [
+      "README.md",
+      "skills/engineering/code-review/SKILL.md"
+    ],
+    "candidates": [
+      "skills/engineering/code-review/SKILL.md"
+    ]
+  },
+  {
+    "repo": "obra/superpowers",
+    "sha": "b36e0829c6d0140e93cfef2ca599b1b07d4a7797",
+    "read": [
+      "README.md",
+      "skills/receiving-code-review/SKILL.md",
+      "skills/requesting-code-review/SKILL.md"
+    ],
+    "candidates": [
+      "skills/receiving-code-review/SKILL.md",
+      "skills/requesting-code-review/SKILL.md"
+    ]
+  },
+  {
+    "repo": "addyosmani/agent-skills",
+    "sha": "be4e44a9fbc5e8df0beaefadbb28bd22ee61cc39",
+    "read": [
+      "README.md",
+      "skills/code-review-and-quality/SKILL.md",
+      "skills/frontend-ui-engineering/SKILL.md"
+    ],
+    "candidates": [
+      "skills/code-review-and-quality/SKILL.md",
+      "skills/frontend-ui-engineering/SKILL.md"
+    ]
+  },
+  {
+    "repo": "cursor/plugins",
+    "sha": "5bf2b1544db739998121a306340631963c2ff3de",
+    "read": [
+      "README.md",
+      "pstack/skills/typescript-best-practices/SKILL.md"
+    ],
+    "candidates": [
+      "pstack/skills/typescript-best-practices/SKILL.md"
+    ]
+  },
+  {
+    "repo": "DietrichGebert/ponytail",
+    "sha": "356918eba965ee1eac64bd3a7f0dd02108350de5",
+    "read": [
+      "README.md"
+    ],
+    "candidates": []
+  },
+  {
+    "repo": "mvanhorn/last30days-skill",
+    "sha": "ac0ed3b7f610ec64cc898349d1e4507cd6220942",
+    "read": [
+      "README.md"
+    ],
+    "candidates": []
+  },
+  {
+    "repo": "anthropics/skills",
+    "sha": "34040c9c568585f6929bedeaad110ad08f079624",
+    "read": [
+      "README.md",
+      "skills/frontend-design/SKILL.md",
+      "skills/skill-creator/SKILL.md"
+    ],
+    "candidates": [
+      "skills/frontend-design/SKILL.md",
+      "skills/skill-creator/SKILL.md"
+    ]
+  },
+  {
+    "repo": "trailofbits/skills",
+    "sha": "321ccfe628eca0d314b0ee4eaffcdd8a05639aaf",
+    "read": [
+      "README.md",
+      "plugins/differential-review/skills/differential-review/SKILL.md",
+      "plugins/property-based-testing/skills/property-based-testing/SKILL.md"
+    ],
+    "candidates": [
+      "plugins/differential-review/skills/differential-review/SKILL.md",
+      "plugins/property-based-testing/skills/property-based-testing/SKILL.md"
+    ]
+  },
+  {
+    "repo": "EveryInc/compound-engineering-plugin",
+    "sha": "44d65ad64a0ac8e542eabee31ce031a7aeb41b28",
+    "read": [
+      "README.md",
+      "skills/ce-code-review/SKILL.md",
+      "skills/ce-compound-refresh/SKILL.md",
+      "skills/ce-compound/SKILL.md"
+    ],
+    "candidates": [
+      "skills/ce-code-review/SKILL.md",
+      "skills/ce-compound-refresh/SKILL.md",
+      "skills/ce-compound/SKILL.md"
+    ]
+  },
+  {
+    "repo": "garrytan/gstack",
+    "sha": "71f6048e8ada25180e61438abc1d98cb151fe9a7",
+    "read": [
+      "README.md"
+    ],
+    "candidates": []
+  },
+  {
+    "repo": "affaan-m/ECC",
+    "sha": "8321021c54d670126ce3b2969d5deb880b4b0c2a",
+    "read": [
+      "README.md",
+      "skills/coding-standards/SKILL.md",
+      "skills/backend-patterns/SKILL.md",
+      "skills/frontend-patterns/SKILL.md"
+    ],
+    "candidates": [
+      "skills/coding-standards/SKILL.md",
+      "skills/backend-patterns/SKILL.md",
+      "skills/frontend-patterns/SKILL.md"
+    ]
+  }
+]

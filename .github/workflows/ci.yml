@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run check
+      - name: Check shell syntax
+        shell: bash
+        run: bash -n scripts/list-skills.sh scripts/link-skills.sh
+
+  audit:
+    name: Dependency audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm audit --audit-level=high
+
+  required:
+    name: Repository checks
+    if: always()
+    needs: [validate, audit]
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Require all jobs to succeed
+        env:
+          VALIDATION: ${{ needs.validate.result }}
+          AUDIT: ${{ needs.audit.result }}
+        run: test "$VALIDATION" = success && test "$AUDIT" = success

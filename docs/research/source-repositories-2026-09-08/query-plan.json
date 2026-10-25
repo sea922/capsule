@@ -1,0 +1,28 @@
+{
+  "intent": "concept",
+  "freshness_mode": "strict_recent",
+  "cluster_mode": "theme",
+  "subqueries": [
+    {
+      "label": "primary",
+      "search_query": "agent skills repositories",
+      "ranking_query": "Which agent skill source repositories add useful engineering, evaluation, security or design practices beyond mattpocock skills, obra superpowers, addyosmani agent-skills, cursor plugins, ponytail and last30days?",
+      "sources": ["reddit", "x", "youtube", "tiktok", "instagram", "hackernews", "polymarket", "github"],
+      "weight": 1.0
+    },
+    {
+      "label": "specialists",
+      "search_query": "Claude skills security evals design",
+      "ranking_query": "Which specialist skill repositories have concrete useful security review, evaluation or design workflows and evidence of practical use?",
+      "sources": ["reddit", "x", "hackernews", "github"],
+      "weight": 0.8
+    },
+    {
+      "label": "experience",
+      "search_query": "agent skills stack",
+      "ranking_query": "What repositories do developers actually use selectively and what overlap or friction do they report?",
+      "sources": ["reddit", "x", "youtube", "hackernews"],
+      "weight": 0.8
+    }
+  ]
+}

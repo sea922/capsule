@@ -1,0 +1,77 @@
+{
+  "skill_name": "pr-description",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Rewrite a PR title/body only. Base is upstream/release/2, head is feature/retries. Original title: Add retries. Final diff adds bounded retries AND prevents duplicate charges with idempotency keys. Retry tests pass; duplicate-charge integration test was not run. Repository requires Conventional Commit titles. Produce the text and describe any state changes you would make.",
+      "expected_output": "Title and opening cover both final outcomes; body distinguishes retry test success from unrun integration checks. No commit, push, or PR metadata write for text-only scope. Uses the actual upstream release base. Body carries no agent attribution footer such as 'Generated with Claude Code'.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Write the PR description for my branch fix/session-expiry against main. The diff moves token expiry checks into one helper used by four callers; unit tests pass. The project has no PR template.",
+      "expected_output": "Inspects the merge-base diff against main, writes an outcome-led title and short body stating intended behavior preservation and the actual test evidence, and ends with a Merge danger section naming a two-way door and blast radius. Makes no commits or pushes and adds no agent attribution.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Write the PR description for my branch. It adds a Run skill button to the session toolbar in the React app and a result card in the timeline; I have before and after screenshots from the dev server. Component tests pass. No PR template exists.",
+      "expected_output": "Summary states the outcome in a sentence and adds one small component-tree diff sketch showing the new button and card, not several overlapping visuals. Evidence leads with the before/after screenshots, treating them as captures of the real app on base and head with matching framing (or asking/noting if that is unknown), and cites the passing component tests. Ends with a Merge danger section naming a two-way door and a blast radius covering the session page's layout and users. No agent attribution.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Create a PR for this branch.",
+      "expected_output": "Triggers pr-description (not only harness defaults). Reads the repository PR template and title rules, writes the title from the final merge-base diff rather than the branch name or latest commit, fills the template, ends with a Merge danger section, and leaves out agent attribution footers. Verifies the saved PR metadata and returns the URL.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Open a pull request with what we just did and push it up.",
+      "expected_output": "Triggers pr-description and pushes the branch through git-workflow; writes the PR title and body from the final diff and verification evidence per the project template, ends with a Merge danger section, omits agent attribution, and confirms the published PR. Does not start a babysit loop unless asked.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Commit my staged fix and push the branch.",
+      "expected_output": "Recognizes a commit/push request for git-workflow rather than PR text; does not draft a PR description.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "Write the PR title and body only for my branch docs/retry-guide against main. It rewrites two paragraphs of the retry guide in docs/ and fixes a broken link. No code changed. I ran the markdown link checker and it passed. No PR template.",
+      "expected_output": "Short body: one or two sentences on what the guide now says, at most one evidence line naming the link check, no invented before/after, no pasted command output or CI log, and a brief two-way Merge danger. No commit, push, or PR write; no agent attribution.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "PR 214 (feature/rate-limit into main) was described as 'Add per-user rate limiting'. After review I pushed three commits: one renames a variable, one fixes a typo in a comment, and one switches the limiter from per-user to per-API-key and adds a migration for the new key column. Update the PR to match.",
+      "expected_output": "Treats the per-API-key and migration commit as a material change and rewrites the title and body from the final merge-base diff (per-API-key limiting plus the migration), not from the original title or latest commit. Describes the PR as it now stands without narrating the review rounds or the rename/typo commits. Merge danger becomes one-way with the migration's recovery limit. Updates via a body file and re-reads the saved metadata.",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "Write the PR description for branch fix/webhook-retries against main. The repository has .github/pull_request_template.md with sections '## What', '## Why', '## How tested', and a '## Checklist' of three checkboxes. Webhook retry tests failed before and pass after.",
+      "expected_output": "Keeps every template section and the checklist in order, places the summary, evidence, and review content in the matching sections, and appends a Merge danger section with door and blast radius after the template's sections rather than replacing the template.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "Draft the PR text for branch chore/cleanup-orphans. It adds a nightly job that deletes attachment rows with no parent message. Unit tests for the orphan query pass. I'm not sure whether attachments are backed up anywhere.",
+      "expected_output": "Merge danger calls the change a one-way door because it deletes data, names the uncertainty about backups as the recovery limit, and gives a blast radius covering users whose attachments could be wrongly deleted. Does not call it two-way or low risk.",
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "Write the PR description for branch fix/invoice-totals. It was reported in support ticket 4821 by jane.doe@acme-corp.com at Acme Corp, whose invoice total was off by one cent. I have before/after screenshots of her real invoice page and the failing-then-passing rounding test. The plan we followed had five steps and we addressed two rounds of review feedback. It fully fixes issue #77.",
+      "expected_output": "Body names no customer, organization, email, or ticket contents; uses the rounding test as before/after evidence and either omits the customer screenshots or states they must be redacted before upload. Describes the rounding behavior rather than the plan steps or review rounds. Uses a closing keyword for #77 only because the request says the issue is fully fixed.",
+      "files": []
+    },
+    {
+      "id": 12,
+      "prompt": "Write the PR description for branch feat/paginate-projects. GET /projects now returns { items, nextCursor } instead of a bare array. The CLI is updated; third-party clients are not. API contract tests pass. It is the first part of issue #312, which also asks for sorting.",
+      "expected_output": "Summary shows the response shape before/after as a small diff or paired blocks and names the clients that must change. Merge danger is one-way (published API) with a blast radius covering the CLI and third-party clients. Links #312 without a closing keyword and names sorting as remaining work.",
+      "files": []
+    }
+  ]
+}

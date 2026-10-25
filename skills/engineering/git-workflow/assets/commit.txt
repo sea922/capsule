@@ -1,0 +1,7 @@
+<Describe the concrete change in an imperative sentence>
+
+# Replace the subject above. Add a body only when it supplies useful context:
+# why this change is needed, an important tradeoff, or a compatibility consequence.
+# Follow repository rules for subject length, issue links, signing, and trailers.
+# Review the staged diff or selected path contents before committing.
+# Commit the filled file with --cleanup=strip so these comment lines are removed.

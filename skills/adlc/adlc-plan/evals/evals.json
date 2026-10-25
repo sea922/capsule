@@ -1,0 +1,8 @@
+{
+  "skill_name": "adlc-plan",
+  "evals": [
+    {"id": 1, "prompt": "Use symbolic hashes as verified facts. Spec S1 is unchanged and approved, but its source points to I1; intent has changed and is now approved at I2. Please plan the build from S1.", "expected_output": "Verify the entire upstream chain and return /adlc-spec for reconciliation before planning. A matching spec approval alone is insufficient.", "files": []},
+    {"id": 2, "prompt": "Plan P2 and its upstream chain are current and approved. Progress still binds P1: S1 is verified with receipts, S2 ready. P2 retains S1 and its ACs unchanged and changes S2's behavior. Reconcile progress only. No commit or external action was requested.", "expected_output": "Leave P2 unchanged, preserve history and S1 receipts after checking relevance, invalidate/reassess affected S2 evidence, bind P2, carry conditions, and return /adlc-flow. Do not reset everything or just replace the hash.", "files": []},
+    {"id": 3, "prompt": "Draft a plan for an approved data migration spec. Discovery S1 must establish whether rollback can restore deleted data; implementation S2 depends on that answer. The user authorized planning only and wants an eventual PR, not deployment. Explain assignment, frontier, evidence and handoff requirements.", "expected_output": "S1 may be ready to answer the rollback question while S2 is blocked. Name recovery owner and stop condition, separate implementer/verifier, AC and combined checks, PR endpoint and authority limits. Current status belongs in progress, not approved plan headings. Do not implement or delegate merely from a role assignment.", "files": []}
+  ]
+}

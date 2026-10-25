@@ -1,0 +1,3 @@
+interface:
+  display_name: "Git Worktrees"
+  short_description: "Select, prepare, and retire isolated checkouts"

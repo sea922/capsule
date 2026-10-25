@@ -1,0 +1,28 @@
+{
+  "intent": "concept",
+  "freshness_mode": "balanced_recent",
+  "cluster_mode": "none",
+  "subqueries": [
+    {
+      "label": "primary",
+      "search_query": "systematic debugging skill Claude Code",
+      "ranking_query": "What have developers said recently about using systematic debugging skills with Claude Code and other coding agents?",
+      "sources": ["reddit", "hackernews"],
+      "weight": 1.0
+    },
+    {
+      "label": "diagnosing",
+      "search_query": "diagnosing-bugs skill coding agent",
+      "ranking_query": "What do users report about the diagnosing-bugs skill, including benefits and unwanted activation?",
+      "sources": ["reddit", "hackernews"],
+      "weight": 0.8
+    },
+    {
+      "label": "root-cause",
+      "search_query": "agent debugging skill root cause reproduction",
+      "ranking_query": "Which root-cause and reproduction practices do recent debugging skill discussions support?",
+      "sources": ["reddit", "hackernews"],
+      "weight": 0.7
+    }
+  ]
+}

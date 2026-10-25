@@ -1,0 +1,3 @@
+interface:
+  display_name: "Property-Based Testing"
+  short_description: "Find and prove properties over whole input domains"

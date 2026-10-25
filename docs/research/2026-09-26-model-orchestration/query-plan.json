@@ -1,0 +1,10 @@
+{
+  "intent": "how_to",
+  "freshness_mode": "strict_recent",
+  "cluster_mode": "workflow",
+  "subqueries": [
+    {"label":"primary","search_query":"Claude Code subagents model routing","ranking_query":"What firsthand evidence explains routing Claude Code tasks among models, including orchestration reliability and cost?","sources":["reddit","x","youtube","tiktok","instagram","hackernews","polymarket"],"weight":1.0},
+    {"label":"codex","search_query":"Codex Astra Luna orchestrator","ranking_query":"How do Codex users divide planning, implementation, testing and review among models?","sources":["reddit","x","hackernews","youtube"],"weight":0.8},
+    {"label":"bridge","search_query":"Claude Code Codex orchestration","ranking_query":"What evidence supports using Claude Code to delegate coding and review to Codex?","sources":["reddit","x","hackernews","youtube"],"weight":0.8}
+  ]
+}

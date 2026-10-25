@@ -1,0 +1,46 @@
+{
+  "skill_name": "implement",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Implement issue #42 in this repository: add an idempotency key to outbound invoice creation and cover retries. My working tree already has unrelated staged changes and an untracked design note. Do not commit or push.",
+      "expected_output": "A bounded implementation that preserves the dirty tree, resolves the issue and repository rules, uses test-driven slices for retry behavior, inspects the complete task diff, and reports fresh verification without staging, committing, or pushing.",
+      "files": [],
+      "expectations": [
+        "The response treats the issue as valid implementation input and reads its acceptance criteria plus applicable repository instructions before editing.",
+        "The initial branch, HEAD, staged, unstaged, and untracked state are recorded, and unrelated staged changes and the design note are not reset, stashed, overwritten, or claimed as task work.",
+        "The idempotency and retry behavior is implemented in small coherent slices using the tdd workflow where an executable harness is practical.",
+        "Nearby callers, contracts, and tests are inspected before the ownership of the idempotency key is chosen.",
+        "The final task diff is reconciled and fresh scope-appropriate verification is run after the last relevant edit.",
+        "No commit, push, remote issue update, or unrelated cleanup is performed.",
+        "The handoff separates outcome, changed scope, verification evidence, decisions, and residual risks."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Fix the intermittent duplicate notification bug. I think it is a race in the queue worker, so just add a lock and ship the fix.",
+      "expected_output": "An implementation flow that does not accept the proposed cause on assertion alone, first establishes the cause through diagnosing-bugs, then applies an authorized behavior change through TDD and verifies the duplicate-notification outcome.",
+      "files": [],
+      "expectations": [
+        "The request authorizes a fix but the suspected race is treated as a hypothesis rather than a confirmed cause.",
+        "The diagnosing-bugs workflow runs before production code is changed and produces reproduction or other discriminating evidence.",
+        "A lock is not added unless evidence shows it addresses the responsible boundary and does not create a different failure mode.",
+        "Once a cause is confirmed, a regression test demonstrates the duplicate behavior before the minimum fix is applied.",
+        "Completion is based on fresh verification of exactly-once notification behavior, not merely on a passing broad suite or the disappearance of one observed symptom.",
+        "Shipping, committing, or pushing is not inferred from the colloquial word 'ship' without the required separate authority and repository workflow."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Read this migration proposal and tell me how you would implement it. Compare two approaches, but do not change anything yet.",
+      "expected_output": "A read-only implementation analysis that does not invoke the mutating workflow, edit files, or claim execution authority.",
+      "files": [],
+      "expectations": [
+        "The response honors the explicit no-change boundary and does not edit the repository.",
+        "The implement skill is recognized as a non-trigger because the user requested comparison and planning only.",
+        "No commit, branch, worktree, delegation, or remote write is created.",
+        "Any recommendation distinguishes evidence from assumptions and names the decision needed before implementation."
+      ]
+    }
+  ]
+}

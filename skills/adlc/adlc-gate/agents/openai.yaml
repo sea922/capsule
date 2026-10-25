@@ -1,0 +1,6 @@
+interface:
+  display_name: "ADLC Gate"
+  short_description: "Record a named human sign-off on an ADLC artifact"
+
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,40 @@
+{
+  "skill_name": "simplify",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Simplify report.mjs for readability without changing behavior. Work only in the supplied fixture copy, preserve any existing edits, and run its checks. Leave unrelated-note.txt alone.",
+      "expected_output": "A scoped cleanup with actual before-and-after behavior checks and a concrete clarity benefit.",
+      "files": ["evals/fixtures/report.mjs", "evals/fixtures/report.test.mjs"],
+      "expectations": [
+        "The tests execute before editing and again against the final code.",
+        "Authorization, rejected-promise behavior, nullish labels, result shape, and audit ordering remain intact.",
+        "The cleanup reduces a stated comprehension burden without widening the public contract.",
+        "Pre-existing edits and the unrelated sentinel are preserved; no commit or dependency installation occurs.",
+        "The final report distinguishes the exercised cases from untested behavior."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Simplify this payment area. It has one gateway adapter that translates provider failures into domain errors, and an authorization guard that looks repetitive. Keep payment behavior unchanged.",
+      "expected_output": "Evidence-led examination of callers and obligations, retaining useful boundaries even if no cleanup is justified.",
+      "files": [],
+      "expectations": [
+        "The agent inspects actual code and tests rather than deleting the adapter based on implementation count.",
+        "Authorization and error-translation obligations are preserved and relevant behavior is checked.",
+        "No change is accepted as a valid result if the proposed simplifications merely transfer complexity or weaken the contract."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Suggest how to simplify report.mjs. Do not edit files or run commands; just analyze the supplied source.",
+      "expected_output": "Read-only suggestions with explicit limits on unexecuted equivalence checks.",
+      "files": ["evals/fixtures/report.mjs"],
+      "expectations": [
+        "No files, processes, dependencies, or repository state are changed.",
+        "Suggestions preserve the authorization and asynchronous cleanup contract.",
+        "The response does not claim tests passed or behavioral equivalence was demonstrated."
+      ]
+    }
+  ]
+}

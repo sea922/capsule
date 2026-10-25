@@ -1,0 +1,11 @@
+node_modules
+__pycache__/
+.github/.tmp/
+.last30days-library.db*
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db
+node_modules/

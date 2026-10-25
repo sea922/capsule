@@ -1,0 +1,20 @@
+name: Bug report
+description: Report incorrect skill behavior or broken repository tooling.
+body:
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Include the skill, harness/version, prompt, and minimal steps. Remove secrets and private content.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: input
+    id: revision
+    attributes:
+      label: Installed revision or release

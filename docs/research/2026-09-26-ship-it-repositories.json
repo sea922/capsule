@@ -1,0 +1,218 @@
+[
+  {
+    "repo": "mattpocock/skills",
+    "sha": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7",
+    "paths": [
+      "skills/engineering/code-review/SKILL.md"
+    ]
+  },
+  {
+    "repo": "obra/superpowers",
+    "sha": "8ca22dba9a94f28898bbce59f2537ff4d87c747d",
+    "paths": [
+      "skills/dispatching-parallel-agents/SKILL.md",
+      "skills/finishing-a-development-branch/SKILL.md",
+      "skills/receiving-code-review/SKILL.md",
+      "skills/requesting-code-review/SKILL.md",
+      "skills/verification-before-completion/SKILL.md"
+    ]
+  },
+  {
+    "repo": "addyosmani/agent-skills",
+    "sha": "2686b620fc1fed2e8f60c704839c766b8594c6b6",
+    "paths": [
+      "skills/code-review-and-quality/SKILL.md",
+      "skills/git-workflow-and-versioning/SKILL.md",
+      "skills/shipping-and-launch/SKILL.md"
+    ]
+  },
+  {
+    "repo": "cursor/plugins",
+    "sha": "ecc249f1e306fc64ddf83c7bed16cacf7c2239db",
+    "paths": [
+      "create-plugin/skills/review-plugin-submission/SKILL.md",
+      "cursor-team-kit/skills/make-pr-easy-to-review/SKILL.md",
+      "cursor-team-kit/skills/pr-review-canvas/SKILL.md",
+      "cursor-team-kit/skills/review-and-ship/SKILL.md",
+      "cursor-team-kit/skills/thermo-nuclear-code-quality-review/SKILL.md",
+      "cursor-team-kit/skills/verify-this/SKILL.md",
+      "cursor-team-kit/skills/weekly-review/SKILL.md",
+      "pr-review-canvas/README.md",
+      "pr-review-canvas/skills/pr-review-canvas/SKILL.md",
+      "pstack/skills/create-verification-skill/SKILL.md",
+      "pstack/skills/create-verification-skill/references/feature-map-example/README.md",
+      "pstack/skills/maintain-verification-skill/SKILL.md",
+      "pstack/skills/principle-sequence-verifiable-units/SKILL.md",
+      "thermos/skills/thermo-nuclear-code-quality-review/SKILL.md",
+      "thermos/skills/thermo-nuclear-review/SKILL.md"
+    ]
+  },
+  {
+    "repo": "DietrichGebert/ponytail",
+    "sha": "e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156",
+    "paths": [
+      ".openclaw/skills/ponytail-review/SKILL.md",
+      "skills/ponytail-review/SKILL.md"
+    ]
+  },
+  {
+    "repo": "mvanhorn/last30days-skill",
+    "sha": "084662b501fb0dba95bd55eff0c258d35e0dc499",
+    "paths": []
+  },
+  {
+    "repo": "anthropics/skills",
+    "sha": "33375500bcea98d610eb30ce10ac4e59b89c390d",
+    "paths": [
+      "skills/skill-creator/SKILL.md"
+    ]
+  },
+  {
+    "repo": "trailofbits/skills",
+    "sha": "0cc1c73a5e96749ab32d7ea5e14892fafa6972ae",
+    "paths": [
+      "plugins/c-review/README.md",
+      "plugins/c-review/skills/c-review/SKILL.md",
+      "plugins/code-improver/tests/fixtures/pr-review-toolkit/skills/review-pr/SKILL.md",
+      "plugins/code-improver/tests/fixtures/review-panel/skills/panel-review/SKILL.md",
+      "plugins/differential-review/README.md",
+      "plugins/differential-review/skills/differential-review/SKILL.md",
+      "plugins/review-walkthrough/README.md",
+      "plugins/review-walkthrough/evals/README.md",
+      "plugins/review-walkthrough/skills/review-walkthrough/SKILL.md",
+      "plugins/rust-review/README.md",
+      "plugins/rust-review/skills/rust-review/SKILL.md",
+      "plugins/trailmark/skills/mermaid-to-proverif/SKILL.md",
+      "plugins/trailmark/skills/trailmark-review-gate/SKILL.md"
+    ]
+  },
+  {
+    "repo": "EveryInc/compound-engineering-plugin",
+    "sha": "a763b392c3c05faa1a383c0d228b7e95200ecc90",
+    "paths": [
+      ".agents/skills/ce-skill-work/references/review-skill.md",
+      "skills/ce-code-review/SKILL.md",
+      "skills/ce-compound-refresh/SKILL.md",
+      "skills/ce-compound/SKILL.md",
+      "skills/ce-doc-review/SKILL.md",
+      "tests/skill-eval-cell/fixtures/code-review-live/README.md",
+      "tests/skill-eval-cell/fixtures/doc-review-caller/README.md",
+      "tests/skill-eval-cell/fixtures/doc-review-routine-fix/README.md",
+      "tests/skill-eval-cell/fixtures/doc-review-settled-origin/README.md",
+      "tests/skill-eval-cell/fixtures/doc-review-staked-position/README.md",
+      "tests/skill-eval-cell/fixtures/doc-review-strategic-weight/README.md",
+      "tests/skill-eval-cell/fixtures/review-calibration/README.md",
+      "tests/skill-eval-cell/fixtures/review-depth-auth-full/README.md",
+      "tests/skill-eval-cell/fixtures/review-depth-focused/README.md",
+      "tests/skill-eval-cell/fixtures/review-depth-loud-lite/README.md",
+      "tests/skill-eval-cell/fixtures/review-depth-prose-only/README.md",
+      "tests/skill-eval-cell/fixtures/review-depth-unlisted-language/README.md",
+      "tests/skill-eval-cell/fixtures/review-live-full/README.md",
+      "tests/skill-eval-cell/fixtures/review-live/README.md",
+      "tests/skill-eval-cell/fixtures/review-peer-failed/README.md",
+      "tests/skill-eval-cell/fixtures/review-peer-folded/README.md"
+    ]
+  },
+  {
+    "repo": "garrytan/gstack",
+    "sha": "2a113ae7e623f590095bcaaa0cc581c9a10a6632",
+    "paths": [
+      "design-review/SKILL.md",
+      "devex-review/SKILL.md",
+      "document-release/SKILL.md",
+      "ios-design-review/SKILL.md",
+      "openclaw/skills/gstack-openclaw-ceo-review/SKILL.md",
+      "plan-ceo-review/SKILL.md",
+      "plan-design-review/SKILL.md",
+      "plan-devex-review/SKILL.md",
+      "plan-eng-review/SKILL.md",
+      "review/SKILL.md",
+      "ship/SKILL.md",
+      "test/fixtures/auq-pre-cut-plan-ceo-review-SKILL.md",
+      "test/fixtures/golden/claude-ship-SKILL.md",
+      "test/fixtures/golden/codex-ship-SKILL.md",
+      "test/fixtures/golden/factory-ship-SKILL.md"
+    ]
+  },
+  {
+    "repo": "affaan-m/ECC",
+    "sha": "e482e579415fde18357cafce70f177ae19fd7f03",
+    "paths": [
+      ".agents/skills/security-review/SKILL.md",
+      ".agents/skills/verification-loop/SKILL.md",
+      ".kiro/skills/security-review/SKILL.md",
+      ".kiro/skills/verification-loop/SKILL.md",
+      "docs/es/skills/laravel-verification/SKILL.md",
+      "docs/es/skills/quarkus-verification/SKILL.md",
+      "docs/es/skills/security-review/SKILL.md",
+      "docs/es/skills/springboot-verification/SKILL.md",
+      "docs/es/skills/verification-loop/SKILL.md",
+      "docs/ja-JP/skills/carrier-relationship-management/SKILL.md",
+      "docs/ja-JP/skills/django-verification/SKILL.md",
+      "docs/ja-JP/skills/flutter-dart-code-review/SKILL.md",
+      "docs/ja-JP/skills/git-workflow/SKILL.md",
+      "docs/ja-JP/skills/laravel-verification/SKILL.md",
+      "docs/ja-JP/skills/quarkus-verification/SKILL.md",
+      "docs/ja-JP/skills/scientific-thinking-literature-review/SKILL.md",
+      "docs/ja-JP/skills/security-review/SKILL.md",
+      "docs/ja-JP/skills/springboot-verification/SKILL.md",
+      "docs/ja-JP/skills/verification-loop/SKILL.md",
+      "docs/ko-KR/skills/security-review/SKILL.md",
+      "docs/ko-KR/skills/verification-loop/SKILL.md",
+      "docs/tr/skills/laravel-verification/SKILL.md",
+      "docs/tr/skills/quarkus-verification/SKILL.md",
+      "docs/tr/skills/security-review/SKILL.md",
+      "docs/tr/skills/springboot-verification/SKILL.md",
+      "docs/tr/skills/verification-loop/SKILL.md",
+      "docs/zh-CN/skills/carrier-relationship-management/SKILL.md",
+      "docs/zh-CN/skills/django-verification/SKILL.md",
+      "docs/zh-CN/skills/flutter-dart-code-review/SKILL.md",
+      "docs/zh-CN/skills/git-workflow/SKILL.md",
+      "docs/zh-CN/skills/laravel-verification/SKILL.md",
+      "docs/zh-CN/skills/security-review/SKILL.md",
+      "docs/zh-CN/skills/springboot-verification/SKILL.md",
+      "docs/zh-CN/skills/verification-loop/SKILL.md",
+      "docs/zh-TW/skills/security-review/SKILL.md",
+      "docs/zh-TW/skills/verification-loop/SKILL.md",
+      "skills/carrier-relationship-management/SKILL.md",
+      "skills/django-verification/SKILL.md",
+      "skills/flutter-dart-code-review/SKILL.md",
+      "skills/git-workflow/SKILL.md",
+      "skills/laravel-verification/SKILL.md",
+      "skills/prediction-market-risk-review/SKILL.md",
+      "skills/quarkus-verification/SKILL.md",
+      "skills/scientific-thinking-literature-review/SKILL.md",
+      "skills/security-review/SKILL.md",
+      "skills/springboot-verification/SKILL.md",
+      "skills/verification-loop/SKILL.md"
+    ]
+  },
+  {
+    "repo": "wshobson/agents",
+    "sha": "9b15b34b0bfc13a815cbfc2366e14ea549e09422",
+    "paths": [
+      "plugins/agent-teams/skills/multi-reviewer-patterns/SKILL.md",
+      "plugins/block-no-verify/skills/block-no-verify-hook/SKILL.md",
+      "plugins/developer-essentials/skills/code-review-excellence/SKILL.md",
+      "plugins/review-agent-governance/README.md",
+      "plugins/review-agent-governance/skills/review-agent-setup/SKILL.md",
+      "plugins/review-agent-governance/test/README.md",
+      "plugins/ship-mate/skills/scan/SKILL.md"
+    ]
+  },
+  {
+    "repo": "nahid-sparktales/agent-dispatcher",
+    "sha": "c9f7f2d26206235af1c6bfccb8dc009c3c5245ce",
+    "paths": [
+      "skills/agent-dispatcher/SKILL.md",
+      "skills/backend/api-contract-verification/SKILL.md",
+      "skills/database/database-migration-verification/SKILL.md",
+      "skills/design/accessibility-verification/SKILL.md",
+      "skills/devops/release-verification/SKILL.md",
+      "skills/frontend/visual-verification/SKILL.md",
+      "skills/knowledge/documentation-verification/SKILL.md",
+      "skills/quality/browser-verification/SKILL.md",
+      "skills/security/secure-code-review/SKILL.md"
+    ]
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "intent": "concept",
+  "freshness_mode": "balanced_recent",
+  "cluster_mode": "none",
+  "subqueries": [
+    {
+      "label": "primary",
+      "search_query": "AI coding agent debugging skills",
+      "ranking_query": "Which debugging skills and workflows are AI coding agents using, and what problems do users report with them?",
+      "sources": ["reddit", "hackernews", "polymarket"],
+      "weight": 1.0
+    },
+    {
+      "label": "systematic",
+      "search_query": "systematic debugging agent skill root cause reproduction",
+      "ranking_query": "How do systematic debugging skills guide reproduction, root cause analysis, and verification for coding agents?",
+      "sources": ["reddit", "hackernews"],
+      "weight": 0.8
+    },
+    {
+      "label": "activation",
+      "search_query": "debugging skill over trigger coding agent",
+      "ranking_query": "When do debugging skills activate too often or impose too much process on simple coding questions?",
+      "sources": ["reddit", "hackernews"],
+      "weight": 0.7
+    }
+  ]
+}
