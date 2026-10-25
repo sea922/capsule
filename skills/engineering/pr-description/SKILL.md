@@ -1,16 +1,18 @@
 ---
 name: pr-description
-description: Pull request creation and PR titles and descriptions written from the final diff, with before/after evidence and a merge-danger section. Use whenever creating, opening, raising, or updating a pull request or PR (including `gh pr create` or a PR tool call), writing or rewriting a PR title or description, or drafting PR text before publishing. Load it before writing any PR title or body, even when the harness has its own PR instructions. Commits and pushes belong to git-workflow; CI repair, review follow-up, and merging to babysit-pr; end-to-end "ship it" delivery to ship-it.
+description: Pull request and GitLab merge request creation, and PR/MR titles and descriptions written from the final diff, with before/after evidence and a merge-danger section. Use whenever creating, opening, raising, or updating a pull request, PR, merge request, or MR (including `gh pr create`, `glab mr create`, or a PR/MR tool call), writing or rewriting a PR or MR title or description, or drafting PR text before publishing. Load it before writing any PR title or body, even when the harness has its own PR instructions. Commits and pushes belong to git-workflow; CI repair, review follow-up, and merging to babysit-pr; end-to-end "ship it" delivery to ship-it.
 ---
 
 # PR description
 
 Write the title and body a reviewer needs to assess the final change. For a
 text-only request, finish with the text; a Git mutation is not a prerequisite.
+Everything here applies equally to a GitLab merge request (MR).
 
 ## 1. Establish the final scope
 
-Read the project's title rules, PR template, and contribution requirements. For
+Read the project's title rules, PR template (GitLab: `.gitlab/merge_request_templates/`),
+and contribution requirements. For
 an existing PR, read its actual base repository, base branch, head revision, and
 current description; match the base repository to the correct remote, including
 forks. For a new PR, resolve the intended target branch explicitly. Remote-only
@@ -137,9 +139,19 @@ gh pr create --base "BASE_BRANCH" --head "HEAD_BRANCH" --title "REVIEWED_TITLE" 
 gh pr edit NUMBER --repo OWNER/REPO --title "REVIEWED_TITLE" --body-file "PATH_TO_REVIEWED_BODY.md"
 ```
 
-Set base/head explicitly when publishing; choose draft/ready from the task's
-readiness and repository policy. Re-read the saved metadata after the write,
-return the confirmed PR URL, and attach it through the host when supported.
+On GitLab, `glab mr` takes the body as an argument, so pass it through a
+structured API field read from the file instead:
+
+```sh
+glab api --hostname HOST -X POST "projects/PROJECT_PATH_ENCODED/merge_requests" -f source_branch="HEAD_BRANCH" -f target_branch="BASE_BRANCH" -f title="REVIEWED_TITLE" -F description=@PATH_TO_REVIEWED_BODY.md
+glab api --hostname HOST -X PUT "projects/PROJECT_PATH_ENCODED/merge_requests/IID" -f title="REVIEWED_TITLE" -F description=@PATH_TO_REVIEWED_BODY.md
+```
+
+For a fork MR, create it from the source project and add
+`-F target_project_id=TARGET_ID`. Set base/head explicitly when publishing; choose draft/ready from the task's
+readiness and repository policy (through the API, a GitLab draft is a `Draft:`
+title prefix). Re-read the saved metadata after the write,
+return the confirmed PR or MR URL, and attach it through the host when supported.
 
 **Complete when:** the requested text is returned, or the saved PR metadata has
 been re-read and matches the reviewed title and body.

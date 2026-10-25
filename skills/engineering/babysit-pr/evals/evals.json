@@ -126,6 +126,13 @@
       "expected_output": "Handles the human request first, fixes at most five bot clusters in one push, and holds the rest for the next round without dismissing them.",
       "files": [],
       "expectations": ["The human's rename is decided in this round and is not counted against the bot limit.", "The push carries no more than five bot Fix clusters, chosen by severity, then agreement, then file.", "Bot findings over the limit stay open with no outcome and no reply, rather than being dismissed.", "P3 findings are fixed only when they are one-line changes in files the wave already edits."]
+    },
+    {
+      "id": 19,
+      "prompt": "Babysit https://gitlab.example.com/platform/payments/api/-/merge_requests/45 until it is merge-ready. You may fix, commit, push, reply and resolve bot threads.",
+      "expected_output": "Runs the watcher against the self-managed GitLab host with the nested project path and MR IID, uses the GitLab surface map, and judges readiness from GitLab's own merge verdict.",
+      "files": [],
+      "expectations": ["The watcher is started with --forge gitlab, --host gitlab.example.com, --repo platform/payments/api and MR IID 45.", "Replies and resolutions go through glab to the discussion notes and discussion endpoints, with bodies in files.", "Ready is claimed only when detailed_merge_status is mergeable for the current sha, approvals_left is 0, blocking discussions are resolved and the MR is not a draft.", "System notes and unsubmitted draft notes are not treated as feedback."]
     }
   ]
 }

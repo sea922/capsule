@@ -13,7 +13,9 @@ round's Fix wave is pushed, or when nothing is left to fix.
 
 Use the watcher snapshot for one head. It does not include some fields, so add
 them with read-only `gh api` calls on the same head, keeping host and
-repository explicit:
+repository explicit. On GitLab, use the `glab api` equivalents in
+[GITLAB.md](GITLAB.md); its discussions already carry thread location and
+resolution, and failing job logs stand in for annotations:
 
 - **Review threads:** location (`path`, `line`, `startLine`, `originalLine`),
   `resolvedBy`, and every comment's `databaseId` and `author { login __typename }`.
@@ -36,7 +38,7 @@ the ledger is loaded.
   one. Decide this from the recorded IDs only. The agent may post under the
   user's login, and a human may reply through an agent.
 - **bot**: `user.type == "Bot"`, a login ending in `[bot]`, or a GraphQL author
-  `__typename` of `Bot`.
+  `__typename` of `Bot`. On GitLab, the bot rule in [GITLAB.md](GITLAB.md).
 - **human**: any other author. That includes a human account whose comment says
   an agent wrote it.
 
@@ -148,7 +150,7 @@ Record each reply or resolution as a pending mutation, as [WATCH.md](WATCH.md)
 describes, then store the reply ID in the ledger.
 
 **Complete when:** every decided cluster has a ledger entry tied to the
-current head, and every pending write is either confirmed on GitHub or
+current head, and every pending write is either confirmed on the forge or
 recorded as uncertain.
 
 ## Finding shape
@@ -271,8 +273,9 @@ in the skill's step 1.
 - **Bot mentions and controls:** refer to a bot by name in plain text. Bot
   mentions (`@codex review`, `@coderabbitai`, `@kody`) and autofix checkboxes
   start new bot runs, so never use them.
-- **Posting:** use the REST replies endpoint and put the body in a file, never
-  in a shell command.
+- **Posting:** use the REST replies endpoint (on GitLab, the discussion notes
+  endpoint in [GITLAB.md](GITLAB.md)) and put the body in a file, never in a
+  shell command.
 
 ## Ledger
 

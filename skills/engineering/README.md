@@ -6,7 +6,7 @@ See the [workflow map](../../docs/workflow.md) for entry points and handoffs.
 
 ## Model-invoked
 
-- [babysit-pr](../../docs/engineering/babysit-pr.md) - own the PR repair and watch loop through an explicit, verified endpoint.
+- [babysit-pr](../../docs/engineering/babysit-pr.md) - own the PR or GitLab MR repair and watch loop through an explicit, verified endpoint.
 - [codebase-design](../../docs/engineering/codebase-design.md) - design cohesive modules, evidence-gated abstractions, intentional dependency direction, and explicit inter-module contracts.
 - [code-review](../../docs/engineering/code-review.md) - review changes at quick, standard, or deep depth with a bounded default and evidence-backed findings.
 - [compound-learnings](../../docs/engineering/compound-learnings.md) - capture durable engineering lessons past a counterfactual bar and refresh the store against current code.
@@ -17,7 +17,7 @@ See the [workflow map](../../docs/workflow.md) for entry points and handoffs.
 - [git-worktrees](../../docs/engineering/git-worktrees.md) - select, prepare, retire, and recover isolated checkouts.
 - [orchestrate](../../docs/engineering/orchestrate.md) - select native agents and models, coordinate bounded assignments, and verify integrated results.
 - [planning-and-task-breakdown](../../docs/engineering/planning-and-task-breakdown.md) - plan verifiable slices, dependencies, and the ready frontier.
-- [pr-description](../../docs/engineering/pr-description.md) - write PR titles and bodies from the final diff with a visual summary, before/after evidence, and a merge-danger section.
+- [pr-description](../../docs/engineering/pr-description.md) - write PR or MR titles and bodies from the final diff with a visual summary, before/after evidence, and a merge-danger section.
 - [property-based-testing](../../docs/engineering/property-based-testing.md) - find strong properties and generators, avoid vacuous tests, and triage shrunk counterexamples.
 - [prototype](../../docs/engineering/prototype.md) - answer one empirical design question through a reproducible experiment.
 - [research](../../docs/engineering/research.md) - investigate primary sources and preserve cited findings with explicit limitations.
