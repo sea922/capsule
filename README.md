@@ -79,6 +79,12 @@ release checks, and [security reporting](SECURITY.md) for vulnerability reports.
 - [writing-for-humans](docs/authoring/writing-for-humans.md) — write and revise clear,
   specific, genre-aware prose while preserving meaning and the author's voice.
 
+## Install
+
+```text
+/plugin marketplace add sea922/capsule
+/plugin install capsule@capsule
+```
 
 ## Repository structure
 
