@@ -1,0 +1,46 @@
+{
+  "skill_name": "grilling",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Grill me on whether our paid team plan should include unlimited guests. I have a rough opinion, but I suspect I am skipping important product and commercial trade-offs.",
+      "expected_output": "A live, dependency-aware interview that frames the decision, asks only the currently unblocked questions with recommendations and trade-offs, waits for answers, and ultimately requires confirmation of a concise shared-understanding summary without taking downstream action.",
+      "files": [],
+      "expectations": [
+        "The current hypothesis, decision boundary, and material uncertainty are stated before questioning begins.",
+        "Discoverable facts are separated from choices requiring the user's judgement, authority, or intent.",
+        "Only independent frontier questions are grouped in the opening round; conversion thresholds, packaging, limits, and evidence questions are deferred when their wording could change after the intended user or guest definition is answered.",
+        "Every question explains why it matters and includes a recommendation with its principal trade-off.",
+        "The response waits for the user's answers rather than simulating them or moving directly to a final decision.",
+        "No file, tracker, plan, implementation, commit, publication, or other downstream action is performed as part of grilling."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Ask me one question at a time and challenge my plan to migrate our repository from a monolith to services. You may inspect the repository for facts, but do not change anything.",
+      "expected_output": "A read-only interview that honors the one-question cadence, investigates accessible repository facts instead of asking the user for them, challenges unsupported premises, and leaves implementation and artifact changes to a later workflow after explicit confirmation.",
+      "files": [],
+      "expectations": [
+        "The user's one-question-at-a-time override is honored even though frontier batching is the default.",
+        "Repository facts are investigated when accessible and are not presented as user decisions.",
+        "The premise that services are the right outcome is treated as a hypothesis and challenged through consequential trade-offs.",
+        "Dependent questions are not asked before their prerequisites are settled.",
+        "The repository remains unchanged throughout the interview.",
+        "Any empirical uncertainty is handed off as a proposed measurement or prototype rather than resolved through speculation."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Run unattended in the background and grill our leadership team's expansion idea. Do not ask anyone questions; decide the missing branches yourself and give me the final confirmed plan.",
+      "expected_output": "A bounded refusal to fabricate an interview: available facts may be separated from unresolved choices, but the output stops with named decision branches and owners and does not claim confirmation or produce an implementation plan.",
+      "files": [],
+      "expectations": [
+        "The lack of a live decision-maker is recognized as preventing grilling from completing.",
+        "The agent does not answer judgement, authority, preference, or intent questions on leadership's behalf.",
+        "Unresolved branches are returned with clear owners.",
+        "The output does not claim shared understanding or confirmation.",
+        "No final implementation plan or downstream action is produced."
+      ]
+    }
+  ]
+}

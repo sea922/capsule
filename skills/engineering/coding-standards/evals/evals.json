@@ -1,0 +1,43 @@
+{
+  "skill_name": "coding-standards",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Node server running 4 replicas uses process-local Map rate limiter. POST /transfer gets {from,to,amount} from req.body, checks user logged in, calls debit(from,amount), then credit(to,amount), retries the entire handler on any error three times. Review this new endpoint for coding standards; be concise. Provide findings and a proposed correction; do not edit or claim checks ran.",
+      "expected_output": "Scoped backend findings about authorization, input validation, consistency, retries, and deployment topology.",
+      "files": [],
+      "expectations": [
+        "Identifies resource authorization separately from login and validates amount and account inputs.",
+        "Identifies debit/credit consistency and duplicate side effects on retry.",
+        "Identifies the per-replica limit and proposes an appropriate common authority.",
+        "With guidance, reads BACKEND.md and leaves FRONTEND.md unloaded.",
+        "Does not edit or claim executed checks."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "React search on every query change runs fetch('/search?q='+query).then(r=>r.json()).then(setResults), loading boolean set true then false on completion. UI uses <div onClick={submit}>Search</div>. Existing query library and design-system Button are installed. React Compiler enabled. Review this component; should I add useMemo/useCallback everywhere? Provide findings and a proposed correction; do not edit or claim checks ran.",
+      "expected_output": "Frontend findings about stale results, operation state, accessible controls, library reuse, and justified memoization.",
+      "files": [],
+      "expectations": [
+        "Identifies stale-response ordering and inaccurate loading/error state.",
+        "Reuses the installed data library and semantic design-system control.",
+        "Rejects blanket manual memoization and accounts for compiler support.",
+        "With guidance, reads FRONTEND.md and leaves BACKEND.md unloaded.",
+        "Does not edit or claim executed checks."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Python CLI, project documented snake_case and formatter config; apply coding standards to this new helper, no architecture changes. Helper is 55 lines of cohesive CSV transformation, no shared state, no demonstrated performance issue. Say what you would inspect/change and whether frontend/backend guidance is relevant. No tools or edits are needed to the project; do not claim checks ran.",
+      "expected_output": "Project-first shared standards without arbitrary function splitting or web-specific rules.",
+      "files": [],
+      "expectations": [
+        "Uses documented naming and formatter configuration.",
+        "Does not require splitting based on 55 lines or add speculative optimization.",
+        "With guidance, uses the shared baseline and neither domain reference.",
+        "Clearly distinguishes proposed inspection from performed checks."
+      ]
+    }
+  ]
+}

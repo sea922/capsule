@@ -1,0 +1,40 @@
+{
+  "skill_name": "planning-and-task-breakdown",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Plan a tenant export feature. Users may request exports only for their own tenant; workers retry deliveries; the UI shows status and a download link. Save a local implementation plan. Do not implement or create remote tickets.",
+      "expected_output": "A plan whose slices preserve tenant isolation and retry behavior, with dependency IDs, a ready frontier, and a combined acceptance check.",
+      "files": [],
+      "expectations": [
+        "The plan includes observable vertical slices and a verification path for tenant isolation and retries.",
+        "Every dependency resolves and the ready frontier contains only unblocked slices.",
+        "Cross-slice contracts appear as slice interfaces, and a review focus names the failure modes no slice check covers yet.",
+        "The agent saves the requested plan without requesting redundant permission.",
+        "No production code, remote tracker, branch, or commit is changed."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Plan and implement renaming the Help menu label to Support. The label already has a snapshot test.",
+      "expected_output": "A direct bounded change through implement, without forcing a separate planning artifact.",
+      "files": [],
+      "expectations": [
+        "The agent bypasses technical decomposition because the requested scope is already clear and small.",
+        "It preserves the existing user authorization and completes the change rather than stopping for plan approval.",
+        "It runs proportionate validation and does not infer commit or publication authority."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Plan this migration, but keep it in chat: move attachment metadata to a new table while old clients stay supported. docs/plans/active.md already contains unchecked work from a different project. Retention policy has not been decided.",
+      "expected_output": "An inline migration plan preserving the existing plan, with compatibility slices and a named retention decision gate.",
+      "files": [],
+      "expectations": [
+        "The existing plan and source files remain unchanged.",
+        "Undecided retention behavior is not invented; dependent work is blocked while independent planning proceeds.",
+        "Migration and compatibility have concrete checks and recovery considerations."
+      ]
+    }
+  ]
+}

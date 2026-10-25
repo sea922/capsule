@@ -1,0 +1,131 @@
+{
+  "skill_name": "babysit-pr",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Babysit PR 123. You may fix, commit and push; I'll merge. CI is green now. A Copilot review arrives next with a valid bug, then CI reruns and I merge it.",
+      "expected_output": "Continues past green, repairs valid late feedback and rearms, then verifies the user's merge without merging itself.",
+      "files": [],
+      "expectations": ["Green is reported as progress, not terminal success.", "Copilot feedback is evaluated regardless of author naming.", "A verified authorized fix is pushed and observation resumes in the same run.", "The agent never merges or posts an unauthorized reply.", "Completion cites remote merged state and final observed SHA."]
+    },
+    {
+      "id": 2,
+      "prompt": "Get PR 42 merge-ready and stop. The checks list is empty and mergeability is UNKNOWN. A reviewer has requested changes, but the watcher reports unchanged.",
+      "expected_output": "Investigates missing check requirements and review feedback rather than interpreting empty or unchanged state as ready.",
+      "files": [],
+      "expectations": ["Unknown state blocks readiness.", "Required checks are independently established.", "The review request receives a disposition.", "The agent refreshes state and does not merge."]
+    },
+    {
+      "id": 3,
+      "prompt": "Resume PR 9. The run record says a push of commit B was attempted but its response was lost. Remote head now contains B; another author also pushed C. The old snapshot has failed CI on A.",
+      "expected_output": "Reconciles the successful push, preserves concurrent work and inspects current-head CI before another mutation.",
+      "files": [],
+      "expectations": ["The push is not blindly repeated.", "C is preserved and current head is captured.", "Failure on A does not justify a current-head repair.", "Outstanding recorded feedback is revisited even without a change event."]
+    },
+    {
+      "id": 4,
+      "prompt": "Babysit and merge PR 7 when ready. It entered the merge queue, then was removed after a merge-group failure. One review finding needs a product decision, while an independent test failure can be repaired.",
+      "expected_output": "Treats queue admission as progress, diagnoses the queue failure, completes independent authorized repair and hands back the concrete decision if it is the only remaining blocker.",
+      "files": [],
+      "expectations": ["Queue admission is not called merged.", "Queue checks are distinguished from PR-head checks.", "The independent repair is completed before final handback.", "Required gates are preserved and merge authority is reused without redundant confirmation."]
+    },
+    {
+      "id": 5,
+      "prompt": "Babysit PR 11. CI failure A disappears after a fix, B appears, and fixing B brings A back. Three retries have already been used in this run. The session is about to end.",
+      "expected_output": "Recognizes oscillation, preserves the retry budget and records a paused or needs-input handback with evidence and a resume path.",
+      "files": [],
+      "expectations": ["New SHAs do not reset the run retry total.", "The agent investigates the recurring invariant instead of repeating the same patch.", "Pending work and authority survive in the run record.", "The final response accurately states monitoring is paused unless a scheduler is confirmed active."]
+    },
+    {
+      "id": 6,
+      "prompt": "Babysit PR 30; you may fix, commit and push. I gave no deadline. Five repair waves have already been pushed in this run, and a reviewer has just left a sixth round of valid comments. The session was resumed from the run record.",
+      "expected_output": "Applies the default budget carried in the run record, starts no sixth wave, and saves a paused handback with the new comments and a resume command.",
+      "files": [],
+      "expectations": ["The default of 5 repair waves applies without a user deadline.", "The resume does not reset the wave count.", "No sixth repair wave is pushed.", "The handback lists the unaddressed comments, budget usage and a resume command, and says the user can raise the budget."]
+    },
+    {
+      "id": 7,
+      "prompt": "Babysit PR 31. Wave 1 fixed failing check lint-types. Wave 2 fixed an unrelated review finding, and lint-types fails again on the new head with the same error. A separate unit-test failure on the same head is clearly caused by the diff.",
+      "expected_output": "Treats the returning lint-types failure as non-convergence and parks it with history, while still repairing the independent unit-test failure.",
+      "files": [],
+      "expectations": ["No third patch is pushed for lint-types.", "The lint-types stream is parked as needs-input with its failure history across heads.", "The unit-test failure is repaired, verified and pushed in its own wave.", "A first-time new failure is not itself treated as non-convergence."]
+    },
+    {
+      "id": 8,
+      "prompt": "Babysit PR 32; you may fix, commit and push. A bot suggests replacing the session store with signed JWTs. A human reviewer asks why we chose a queue over a cron job. Another comment points out a valid off-by-one in pagination.",
+      "expected_output": "Fixes the off-by-one and parks the auth redesign and the question as needing a decision, without changing code for them.",
+      "files": [],
+      "expectations": ["The auth change is classified as needing a decision because it touches auth and design.", "The written-answer question is parked rather than answered by changing code.", "The off-by-one is repaired and pushed while the other items wait.", "The handback presents each parked item with the decision it needs."]
+    },
+    {
+      "id": 9,
+      "prompt": "Babysit PR 33. You may fix, push and reply to comments. A bot left a stale CHANGES_REQUESTED review. One thread has a back-and-forth between two other engineers about naming. You fixed the issue raised in a thread I opened myself.",
+      "expected_output": "Replies on the user's own thread with a marked automated reply citing the fix, and leaves the review, draft state and the other engineers' thread alone.",
+      "files": [],
+      "expectations": ["The bot review is not dismissed.", "The two-engineer thread gets no reply or resolution because the user did not name it.", "The reply on the user's thread is marked as automated and cites the commit.", "Draft and open state are not changed."]
+    },
+    {
+      "id": 10,
+      "prompt": "Babysit PR 34; you may fix, commit and push. The pre-commit hook fails on your fix commit because of a formatting rule. The previous fix commit has already been pushed and has a typo in its message.",
+      "expected_output": "Fixes the formatting so the hook passes, pushes a new commit, and leaves the pushed commit's message as is.",
+      "files": [],
+      "expectations": ["The hook is not bypassed with --no-verify.", "The formatting issue is fixed and the hook passes.", "The pushed commit is not amended or force-pushed.", "The fix lands as a new commit."]
+    },
+    {
+      "id": 11,
+      "prompt": "Babysit PR 35. The watcher has now failed five times in a row with HTTP 502 from the GitHub API, after backing off between attempts. Earlier in the run a single 502 was followed by a good observation.",
+      "expected_output": "Treats the earlier single failure as a blip but saves a paused infrastructure handback after the fifth consecutive failure.",
+      "files": [],
+      "expectations": ["The single earlier failure was handled by back-off and refresh.", "After five consecutive failures the run is saved as paused.", "The last good observation is kept and nothing is claimed ready.", "The handback names the infrastructure failure and gives a resume command."]
+    },
+    {
+      "id": 12,
+      "prompt": "Get PR 36 merge-ready and stop. The watch stays quiet for four hours before a final green snapshot. During the run you used 2 of 3 retries and 3 of 5 waves, and dismissed one bot finding as a false positive.",
+      "expected_output": "Sends only occasional heartbeats while quiet, then a report that starts with one status line and states budget use and the dismissal.",
+      "files": [],
+      "expectations": ["Quiet polls do not each produce a full update.", "The final report starts with a one-line status.", "Retries, waves and active time are reported against their budgets.", "The dismissed finding appears with its reason, alongside mergeability."]
+    },
+    {
+      "id": 13,
+      "prompt": "Babysit PR 37. The authenticated operator has an unsubmitted PENDING review with two inline comments on the PR. No other feedback exists and CI is green.",
+      "expected_output": "Leaves the pending review and its comments out of triage until they are submitted.",
+      "files": [],
+      "expectations": ["The pending review's comments are not treated as feedback to fix.", "The pending review does not block or count toward readiness dispositions.", "Once submitted, the review is triaged like any other."]
+    },
+    {
+      "id": 14,
+      "prompt": "Babysit PR 38; you may fix, commit, push and edit the PR. A valid review finding makes the endpoint return 404 instead of an empty list for missing users. In a later wave you fix a typo in a log message.",
+      "expected_output": "Refreshes the PR description through pr-description after the behavior-changing repair, and not after the typo fix.",
+      "files": [],
+      "expectations": ["After the 404 repair is pushed, the description is refreshed with pr-description.", "The refreshed description reflects the changed behavior.", "The typo-only wave does not trigger another refresh."]
+    },
+    {
+      "id": 15,
+      "prompt": "Babysit PR 61. You may fix, commit, push, reply and resolve bot threads; I'll merge. CodeRabbit (Major, line 65), Macroscope (High, line 63) and Pullfrog (line 62) each describe the same missed-exclusion bug in one function. The PR also has 9 \"Code Review Completed!\" banners, a Netlify deploy preview, a CodeRabbit walkthrough and 30 empty review bodies.",
+      "expected_output": "Treats the three comments as one cluster, fixes it in a single push and replies on each thread citing the commit, while the noise produces no work and no replies.",
+      "files": [],
+      "expectations": ["The three findings are merged into one cluster with agreement 3 and are repaired once.", "After the push lands, each of the three threads gets one reply citing the fixing commit, and the bot threads are resolved.", "Banners, the deploy preview, the walkthrough and the empty review bodies are counted in the run record but get no reply.", "No reply mentions a bot handle or ticks a bot's autofix checkbox."]
+    },
+    {
+      "id": 16,
+      "prompt": "Get PR 72 merge-ready and stop. Every review thread is resolved. A CodeRabbit review body holds a collapsed 'Outside diff range' Major finding: a download path accepts non-HTTPS URLs. Macroscope's comment says 'Verdict: Not approved' and cites the same path. Pullfrog says the issue predates the PR. The PR author also left an open inline thread that says 'needs your call' about caching.",
+      "expected_output": "Finds the security finding outside the threads, escalates it and the author's decision without resolving the human thread, and does not claim ready.",
+      "files": [],
+      "expectations": ["The review-body finding and the Macroscope verdict are linked into one security cluster, rated at least P1.", "The conflicting scope claims lead to one escalation, with the claim, the code evidence, the options and a recommendation.", "The author's thread gets a reply at most and stays unresolved.", "Readiness is not claimed: 'all threads resolved' is not treated as covering findings with no thread, and the gate verdict is reported as a blocker."]
+    },
+    {
+      "id": 17,
+      "prompt": "Resume babysitting PR 83 after a new push. The run record shows: a Fix already replied to on a Macroscope thread, which Macroscope has since edited to append 'Resolved in 51a7fc5'; a Kody finding that the human author declined with 'Not changing this'; and a reply whose post response was lost. Codex now raises the Kody finding again at the same line with the same premise and no new evidence.",
+      "expected_output": "Uses the ledger to avoid repeat work: no new reply for the edited Macroscope thread, the Codex finding inherits the human's decision, and the lost reply is checked on GitHub before any retry.",
+      "files": [],
+      "expectations": ["The Macroscope edit changes only status text, so it does not re-open the finding.", "The Codex finding is dismissed with a link to the human's decision rather than argued again or fixed.", "The thread holding the human's reply is not resolved by the agent.", "The reply with the lost response is looked for on GitHub before it is posted again, so no duplicate reply appears."]
+    },
+    {
+      "id": 18,
+      "prompt": "Babysit PR 94. You may fix, commit, push and reply. This round has 12 distinct, verified bot findings (three P1, five P2, four P3, spread across six files) and one human review comment asking for a rename.",
+      "expected_output": "Handles the human request first, fixes at most five bot clusters in one push, and holds the rest for the next round without dismissing them.",
+      "files": [],
+      "expectations": ["The human's rename is decided in this round and is not counted against the bot limit.", "The push carries no more than five bot Fix clusters, chosen by severity, then agreement, then file.", "Bot findings over the limit stay open with no outcome and no reply, rather than being dismissed.", "P3 findings are fixed only when they are one-line changes in files the wave already edits."]
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "skill_name": "property-based-testing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our Python service has encode_cursor(dict) -> str and decode_cursor(str) -> dict for pagination tokens (base64 of a JSON payload with 'after_id' int and optional 'filters' dict of str->str). We already use Hypothesis elsewhere. Add property-based tests that would actually catch edge cases.",
+      "expected_output": "Hypothesis tests led by a decode-after-encode round-trip over a generator that builds valid cursor payloads directly, with pinned edge examples, distribution evidence, a demonstrated failure against a realistic defect, and a run report.",
+      "files": [],
+      "expectations": [
+        "The primary property is round-trip decode_cursor(encode_cursor(x)) == x, justified as the strongest shape the contract supports.",
+        "The generator builds valid payloads with composed strategies (builds, dictionaries, optional fields) instead of generating broadly and filtering with assume.",
+        "Known edge cases such as missing filters, empty filter values, and non-ASCII or delimiter characters are pinned as explicit examples.",
+        "No assertion recomputes the implementation, such as comparing against base64 of json.dumps of the same payload.",
+        "The tests are run and the report gives the command, case count, and evidence that interesting classes were generated.",
+        "A realistic sabotage or cited counterexample shows the property can fail, and any sabotage is restored."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Review these property tests from a PR and tell me if they're any good:\n\n@given(st.integers(), st.integers())\ndef test_add(a, b):\n    assert money_add(a, b) == a + b\n\n@given(st.lists(st.integers()))\ndef test_sort(xs):\n    assume(len(xs) > 50)\n    assume(len(set(xs)) == len(xs))\n    assert len(stable_sort(xs)) == len(xs)",
+      "expected_output": "A severity-ranked review that flags the tautology and the vacuous or over-filtered generator, identifies the weaker-than-available sort property, and proposes stronger replacements.",
+      "files": [],
+      "expectations": [
+        "test_add is flagged as tautological because it restates the implementation, with an algebraic replacement such as commutativity, associativity, or identity.",
+        "test_sort is flagged for filtering that discards most generated lists, with the constraint moved into the generator.",
+        "The review notes that the uniqueness filter removes the equal-key cases that a stability property depends on.",
+        "test_sort is flagged as asserting only length when ordering, permutation, and stability are available.",
+        "Every issue carries a severity and none is silently dropped."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "fast-check just failed on my slugify(title: string) function: property 'slugify is idempotent' fails with counterexample [\"-\"] after shrinking. The JSDoc says: 'Returns a lowercase, hyphen-separated slug; never starts or ends with a hyphen.' Is this a real bug?",
+      "expected_output": "A grounded triage that reads the documented contract, classifies the counterexample, gives the replay seed or path, and pins the case.",
+      "files": [],
+      "expectations": [
+        "The counterexample is checked against the JSDoc contract before any verdict.",
+        "The failure is classified using the defined categories (over-broad generator, wrong property, ambiguous spec, or code defect) with reasoning tied to the documented guarantee.",
+        "The response asks for or uses the seed and path so the failure can be replayed.",
+        "The shrunk input is pinned as an explicit example or regression test.",
+        "A fix, if proposed, is routed through a failing test first rather than edited in directly."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Add a test that GET /users/:id returns 404 for an unknown id in our Express app.",
+      "expected_output": "An ordinary example-based test with no property-based machinery or new dependency.",
+      "files": [],
+      "expectations": [
+        "No property-testing library is introduced or proposed as necessary.",
+        "The test is a concrete example asserting the 404 status for an unknown id."
+      ]
+    }
+  ]
+}

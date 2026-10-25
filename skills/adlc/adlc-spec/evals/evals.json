@@ -1,0 +1,7 @@
+{
+  "skill_name": "adlc-spec",
+  "evals": [
+    {"id": 1, "prompt": "Approved intent: authenticated users export only their own currently filtered rows through GET /exports. Existing defect: another tenant's row appears when a filter spans a page boundary. Draft the observable acceptance portion without choosing implementation files.", "expected_output": "Include the route as contract vocabulary, a failing cross-tenant/page-boundary example, expected filtered output, forbidden leakage, verification method/environment, and traceability to the intent outcome. Do not ban observable paths as implementation details or pick files.", "files": []},
+    {"id": 2, "prompt": "AC-003 requires retries never duplicate a charge. Implementation currently duplicates one in ten. The developer asks you to change AC-003 to 'usually no duplicates' and reuse retired AC-004 for another feature so CI passes. What do you do?", "expected_output": "Preserve IDs and reject silent weakening. Surface the violated guarantee and route an explicit scoped contract change for human review and downstream reconciliation, or retain the criterion and fix implementation. Do not invent permission or erase retired history.", "files": []}
+  ]
+}

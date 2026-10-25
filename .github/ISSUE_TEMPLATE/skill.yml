@@ -1,0 +1,17 @@
+name: Skill proposal
+description: Propose a skill or a change to an existing one.
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Intended behavior
+      description: What should the agent do differently, and when?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and overlap
+      description: Give an example failure, relevant sources, and how existing skills fall short.
+    validations:
+      required: true

@@ -1,0 +1,7 @@
+{
+  "intent": "how_to", "freshness_mode": "strict_recent", "cluster_mode": "workflow",
+  "subqueries": [
+    {"label":"primary","search_query":"PR babysit agent","ranking_query":"How do developers babysit pull requests through CI failures, review feedback and merge with coding agents?","sources":["reddit","x","youtube","tiktok","instagram","hackernews","polymarket","github"],"weight":1.0},
+    {"label":"completion","search_query":"pull request review fix loop","ranking_query":"What practical failure modes and completion criteria occur when agents fix CI and review comments until merge?","sources":["reddit","x","hackernews","github"],"weight":0.8}
+  ]
+}

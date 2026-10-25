@@ -1,0 +1,28 @@
+{
+  "intent": "how_to",
+  "freshness_mode": "strict_recent",
+  "cluster_mode": "workflow",
+  "subqueries": [
+    {
+      "label": "primary",
+      "search_query": "agentic development lifecycle software",
+      "ranking_query": "What practices improve the reliability of software developed by coding agents across intent, specification, planning, review and delivery?",
+      "sources": ["reddit", "hackernews", "polymarket", "github"],
+      "weight": 1.0
+    },
+    {
+      "label": "specification",
+      "search_query": "spec driven development coding agents",
+      "ranking_query": "What failures and successful practices are reported for specifications and acceptance tests in agentic software development?",
+      "sources": ["reddit", "hackernews", "github"],
+      "weight": 0.8
+    },
+    {
+      "label": "verification",
+      "search_query": "coding agents verification approval evidence",
+      "ranking_query": "How do software teams keep approvals and verification evidence current across coding agent handoffs?",
+      "sources": ["reddit", "hackernews", "github"],
+      "weight": 0.8
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+interface:
+  display_name: "ADLC Spec"
+  short_description: "Turn approved intent into testable acceptance criteria"
+
+policy:
+  allow_implicit_invocation: false

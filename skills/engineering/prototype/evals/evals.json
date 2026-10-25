@@ -1,0 +1,40 @@
+{
+  "skill_name": "prototype",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Prototype a small queue state model: after cancelling export A and starting export B, a late completion from A must not replace B's status or result. Use synthetic events and leave production files unchanged.",
+      "expected_output": "A runnable local experiment with a discriminating event order and reproducible observations.",
+      "files": [],
+      "expectations": [
+        "The stale A completion is exercised after B starts, along with an ordinary completion case.",
+        "The experiment is actually run and its observed output is recorded.",
+        "The artifact and exact run command remain available.",
+        "The result distinguishes the demonstrated event model from untested persistence or distributed concurrency."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Compare two interaction sketches for retrying a failed export. Show the failed, retrying, and successful states. I have not decided which visual style I prefer.",
+      "expected_output": "Small rendered sketches with the requested states, observations, and the visual preference left to the user.",
+      "files": [],
+      "expectations": [
+        "The relevant states are rendered and inspected when a renderer is available.",
+        "A missing renderer is disclosed and does not become a claim of visual validation.",
+        "Observable interaction findings are distinguished from the user's unresolved style preference.",
+        "The prototype does not grow into a production integration."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Read this proposed state machine and tell me whether it seems feasible. Do not create files or run any experiments.",
+      "expected_output": "Read-only analysis honoring the explicit experiment exclusion.",
+      "files": [],
+      "expectations": [
+        "No prototype artifact, dependency, branch, or process is created.",
+        "The answer distinguishes reasoning from observation.",
+        "Any suggested experiment is described as future work rather than performed."
+      ]
+    }
+  ]
+}

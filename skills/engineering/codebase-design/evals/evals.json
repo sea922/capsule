@@ -1,0 +1,109 @@
+{
+  "skill_name": "codebase-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review our TypeScript checkout flow before we refactor it. The route handler imports repositories, Stripe, inventory, email, and analytics directly. Several callers repeat validation and rollback ordering. Propose a deeper module without implementing it, show source dependency direction separately from runtime flow, and explain how we stop future imports from bypassing the public surface.",
+      "expected_output": "A read-only, evidence-first design that assigns the checkout invariant and workflow to a cohesive module, compares at least two materially different interfaces, maps every consequential edge, and recommends proportionate import or architecture enforcement.",
+      "files": [],
+      "expectations": [
+        "The response remains read-only and distinguishes observed evidence from assumptions.",
+        "Every proposed module states its responsibility, invariant or hidden knowledge, owner, and clients.",
+        "Static source dependencies are shown separately from runtime control and data flow.",
+        "At least two materially different designs are compared using one scorecard and one is recommended.",
+        "The proposal includes a concrete public-entry-point or dependency-rule enforcement mechanism, migration order, test evidence, and rollback condition."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We are splitting invoice generation from a modular monolith. The invoicing team wants HTTP because it is familiar; the platform team wants a queue so billing can survive spikes. Invoices must not be duplicated, callers need a final status within ten minutes, and tax rules are owned by invoicing. Decide how the modules should communicate and document the contract, failure model, retries, ordering, consistency, and observability.",
+      "expected_output": "An edge-first communication decision that separates command intent from transport, evaluates local, synchronous, and queued alternatives, preserves invoicing ownership, and defines bounded completion, idempotency, capacity, recovery, and telemetry semantics.",
+      "files": [],
+      "expectations": [
+        "The response distinguishes command intent, transport, topology, source dependency, and runtime flow.",
+        "The recommendation states the contract owner and authoritative state owner.",
+        "The failure contract includes deadline, timeout or expiry, unknown outcome, retry owner and budget, idempotency identity, duplicate scope, and final-status protocol.",
+        "Queue capacity, backlog, poison-message handling, ordering scope, and consistency are explicit if asynchronous transport is recommended.",
+        "The response defines outcome telemetry, latency or message age, backlog, retries, and trace or correlation context."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our Java codebase has an interface for every class, six layers for a simple policy change, mocked repositories everywhere, and package cycles between orders and fulfilment. The team says this follows SOLID. Audit the design, identify what to merge or remove, and give us a safe migration and test strategy without turning it into microservices.",
+      "expected_output": "A contextual SOLID audit that prioritizes invariants, cohesion, information hiding, and dependency direction over interface count, breaks the package cycle deliberately, preserves useful seams, and migrates with characterization and conformance evidence.",
+      "files": [],
+      "expectations": [
+        "SOLID principles are applied as diagnostics with evidence and costs rather than rules requiring more interfaces.",
+        "The audit identifies the order and fulfilment invariant or ownership question before recommending merge, extraction, orchestration, or a policy-owned port.",
+        "The cycle-breaking recommendation explains both source dependency direction and runtime collaboration.",
+        "Mocks are distinguished from fakes, emulators, real integrations, and contract or conformance tests based on risk.",
+        "The migration overlaps old and new evidence and removes obsolete layers or tests only after replacement coverage and callers are proven."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I have a 120-line Python script that reads a CSV of orders, applies one discount rule, and writes a summary file. It runs nightly, I am the only maintainer, and it has not changed in a year. A teammate says we should add a repository interface, a service layer, and an event bus so it is properly architected, and that we need a clean boundary. What should we actually do?",
+      "expected_output": "A restrained recommendation that keeps the direct design, names the missing evidence that each proposed abstraction would need, and qualifies the ambiguous boundary request instead of accepting it as a mandate.",
+      "files": [],
+      "expectations": [
+        "The recommendation is to keep the direct in-process design, and it says so plainly rather than proposing a smaller version of the abstraction.",
+        "Each proposed abstraction is refused against a stated evidence gate: no second implementation, no independent change or failure axis, no trust or process boundary, no test-control pressure.",
+        "The response asks which kind of boundary is meant, or qualifies it explicitly, instead of using boundary as an unqualified synonym for module, seam, or service.",
+        "The response names concrete observable triggers that would later justify a seam, so the decision is reversible rather than permanent.",
+        "The discount rule's ownership and invariant are addressed at a scale appropriate to a single-file script, without ports, adapters, messaging, or distribution machinery."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Review our billing design. Notifications subscribes to an `OrderExported` event published by Billing and is the only subscriber; if Notifications does not send the invoice email, support gets a ticket the next morning. Billing also exposes a single `BillingFacade` used by the admin console, the customer portal, and a nightly reconciliation job, and the portal can currently call `voidInvoice` on it.",
+      "expected_output": "A review that reclassifies the disguised event as a command with a completion contract, and replaces the single union surface with coherent role-specific interfaces without fragmenting the module.",
+      "files": [],
+      "expectations": [
+        "`OrderExported` is identified as a command wearing past tense because the producer requires one specific receiver to act, and the response says what changes once it is treated as a command.",
+        "The response specifies the completion contract a required action needs: accepted, rejected, and completed outcomes, deduplication identity, and how a missed send is detected rather than discovered by a support ticket.",
+        "The response recommends coherent client-specific interfaces for the admin, portal, and reconciliation clients instead of one union surface, and treats portal access to `voidInvoice` as both an interface-segregation and an authorization problem.",
+        "Interface segregation is applied to client roles without fragmenting Billing into one interface per method or splitting its cohesive ownership.",
+        "The billing-to-notifications edge names its contract owner and authoritative state owner, plus duplicate and ordering scope for whichever intent and transport is recommended."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Two pricing paths contain identical rounding code. Finance owns the rounding rule, and a recent correction had to be made in both paths. The retail and wholesale discount-eligibility blocks also look similar, but different teams own them and their policies are already diverging. A reviewer says to make all of it DRY. Decide what to consolidate and what to leave separate.",
+      "expected_output": "A knowledge-centered DRY decision that gives the shared rounding policy one authoritative owner while leaving independently owned discount policies separate despite their textual similarity.",
+      "files": [],
+      "expectations": [
+        "The response distinguishes duplicated knowledge or intent from merely similar code.",
+        "The shared rounding rule is consolidated behind a finance-owned policy or similarly authoritative surface because coordinated edits and inconsistency risk are evidenced.",
+        "The retail and wholesale eligibility logic remains separate because ownership, policy, and change axes differ.",
+        "The proposed abstraction does not introduce caller flags, a generic rules language, or a union interface that exposes unrelated policy choices.",
+        "The recommendation states how tests prove the shared rounding invariant and the intentionally separate discount behavior."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "We have one CSV exporter. Because an AI model can generate the code cheaply, the team wants an Exporter interface, plugin registry, configuration DSL, and extension hooks for possible JSON and Parquet exports. No second format has been requested or prototyped. Review the design and say what should be built now and what evidence would change the decision.",
+      "expected_output": "A KISS- and YAGNI-based recommendation that keeps the current exporter direct, rejects speculative machinery despite cheap code generation, and records observable triggers for introducing a seam later.",
+      "files": [],
+      "expectations": [
+        "The response evaluates total complexity, including client knowledge, indirection, navigation, testing, migration, and operational burden, rather than equating simplicity with line count.",
+        "The interface, registry, DSL, and extension hooks are deferred because no present variation, owner, failure boundary, or second implementation pays for them.",
+        "Cheap code generation is not treated as evidence that speculative structure is cheap to understand, maintain, or remove.",
+        "The current design remains explicit and testable without manufacturing ports, adapters, plugins, or configuration concepts.",
+        "The response names observable triggers such as a real second format, independently changing policy, or concrete test-control pressure that would reopen the decision."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "A shared pricing normalizer now accepts region, channel, and customer-type flags and branches differently for every caller. Each new feature adds another flag, but the callers still share some rounding and tax invariants. Explain how to undo this wrong abstraction safely and decide what, if anything, should be extracted again.",
+      "expected_output": "A reversible recovery plan that characterizes current behavior, inlines the conditional abstraction into its callers, removes irrelevant branches, compares the resulting cases by owner and invariant, and only re-extracts genuinely shared knowledge.",
+      "files": [],
+      "expectations": [
+        "The response identifies caller-selected flags and growing conditional branches as evidence that the abstraction is encoding unrelated variation.",
+        "Characterization tests or equivalent behavior evidence are added before structural changes.",
+        "The shared normalizer is inlined into callers and irrelevant branches are removed before a replacement abstraction is designed.",
+        "The resulting cases are compared by authoritative owner, invariant, lifecycle, and change reason rather than by textual similarity alone.",
+        "Only rounding or tax knowledge proven to be authoritative and shared is re-extracted, with migration evidence and a rollback condition."
+      ]
+    }
+  ]
+}

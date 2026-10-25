@@ -1,0 +1,3 @@
+interface:
+  display_name: "Ship It"
+  short_description: "Carry finished work to a verified delivery endpoint"

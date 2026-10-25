@@ -1,0 +1,64 @@
+{
+  "skill_name": "code-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review my current branch before I open a pull request. The working tree is clean and the repository has an AGENTS.md. The branch adds a retry wrapper around an outbound webhook call. While I was in that module I noticed its existing `dispatch` function is enormous and there is a stale TODO from last year, neither of which I touched. Tell me only what I should actually fix.",
+      "expected_output": "A bounded standard review against the merge base with the branch's integration target that reads the complete diff and applicable instructions, validates concrete candidates with nearby callers or tests, leaves the untouched pre-existing code alone, and leads with actionable findings or an explicit no-findings result.",
+      "files": [],
+      "expectations": [
+        "The response reviews at standard depth without being asked to, and uses one reviewer rather than delegating to subagents.",
+        "The base is the branch the work merges into, resolved through a merge base and named explicitly, not the reviewed branch's own upstream and not a tip-to-tip diff.",
+        "Applicable AGENTS.md or nested repository instructions are read and applied.",
+        "Retry-specific risk in the changed code, such as duplicate delivery, backoff, or error classification, is examined against nearby callers, contracts, or tests before anything is reported.",
+        "The oversized `dispatch` function and the stale TODO are not reported, because the change did not introduce them.",
+        "The review does not inspect history, run a broad test suite, audit unrelated code, or report style and tooling nits by default.",
+        "Findings appear first and are followed by the review scope and residual risks."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Give the staged and unstaged checkout changes a quick review. The intended behavior is: an expired reservation must release inventory exactly once, and a retry must return the existing release result. There is also a new untracked helper file.",
+      "expected_output": "A quick review that treats the untracked helper as added content, uses only the supplied behavior as specification, reads the complete working-tree change, and reports only obvious concrete regressions without tests, history, distant-call-site exploration, or delegation.",
+      "files": [],
+      "expectations": [
+        "The response reviews at quick depth and includes staged, unstaged, and untracked content in the review boundary.",
+        "The untracked helper is enumerated in a way that excludes ignored paths and is then read in full as added content.",
+        "The supplied exactly-once release and retry behavior is used as the specification without an open-ended issue search.",
+        "No tests are run and no history inspection, distant caller fan-out, or subagents are used, and the review is not silently promoted to a deeper level.",
+        "Only introduced, concrete, actionable findings that pass the common finding gate are reported.",
+        "The final response names the target, level, inspected evidence, and checks intentionally not run."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Deep-review this pull request. It changes authorization checks, a database migration, and retry behavior for payment capture, and it is about 1,400 changed lines across 30 files. Compare it with the linked issue and our repository standards.",
+      "expected_output": "A deep review built from one fixed review packet, with independent defects, specification, and standards/architecture passes followed by evidence-based candidate validation, focused risk checks, an explicit statement about the change's size, and a concise severity-ordered report.",
+      "files": [],
+      "expectations": [
+        "The deep-review reference is loaded and one packet fixes the pull request target, merge base, changed files, instructions, intent sources, and high-risk areas.",
+        "Defects, specification, and standards/architecture are reviewed in independent passes, in parallel when subagents are available and isolated sequentially otherwise, and no reviewer delegates a further review.",
+        "The size of the change is addressed rather than sampled in silence: coverage is stated, the highest-risk files are reviewed in full, and a smallest coherent landing stage is named.",
+        "Authorization, migration safety, payment effects, retry ownership, idempotency, duplicates, and failure recovery receive concrete scrutiny.",
+        "History, distant callers, and targeted checks are used selectively to prove or disprove material candidates rather than by ritual.",
+        "The combined candidate pool is deduplicated and challenged against changed cause, trigger, guards, tests, intent, impact, and severity, and candidates that validation cannot confirm are dropped rather than hedged.",
+        "The final findings are concise, high-confidence, severity ordered, and followed by scope, checks, intent coverage, and residual risks.",
+        "A second-opinion reviewer on a different model or harness is used only when available and permitted, its absence or failure neither blocks nor fails the review, and its candidates go through the same validation."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review this branch. It removes the mutex around the session-cache eviction call because, per the commit message, every caller now already holds the store lock. It's a 40-line diff.",
+      "expected_output": "A standard review that names the load-bearing fact (every caller of the eviction path holds the store lock), states how far it was proven on the proof ladder, and labels it unproven when the evidence stops below running a script or test.",
+      "files": [],
+      "expectations": [
+        "The response reviews at standard depth and does not silently promote the review to deep.",
+        "The load-bearing fact is identified explicitly as the claim that every caller of the eviction path already holds the store lock.",
+        "The commit message's claim is treated as asserted only, and the review checks callers or cites lines rather than accepting it.",
+        "The report includes a blast-radius line stating the fact's rung on the ladder asserted, cited line, walked through, ran a script or test, reproduced live, with the supporting line or command.",
+        "When no script, test, or reproduction was run, the fact is labelled unproven rather than presented as safe.",
+        "A caller found without the lock is reported as a finding only when it passes the finding gate with a concrete path."
+      ]
+    }
+  ]
+}

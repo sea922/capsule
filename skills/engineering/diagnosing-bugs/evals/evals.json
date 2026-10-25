@@ -1,0 +1,68 @@
+{
+  "skill_name": "diagnosing-bugs",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Diagnose why our API intermittently returns 500 for large uploads. Do not change anything. The logs sometimes show ECONNRESET, and I suspect the HTTP client timeout.",
+      "expected_output": "A read-only, evidence-led investigation that pins the intermittent symptom, establishes a faithful reproduction or bounded comparison, tests competing timeout and connection-reset hypotheses, and ends in an honest terminal state without editing or deploying.",
+      "files": [],
+      "expectations": [
+        "The explicit diagnose-only boundary is honored: no source, configuration, persistent state, service, commit, or remote system is changed.",
+        "Expected and actual behavior, upload-size boundary, frequency, environment, revision, timing, and exact error evidence are recorded where available.",
+        "The HTTP timeout is treated as one hypothesis rather than the assumed cause, and alternatives such as upstream limits, proxy resets, connection reuse, and resource pressure are considered when evidence supports them.",
+        "A compact evidence ledger links each hypothesis to evidence for, evidence against, and one discriminating check.",
+        "Intermittency is measured through controlled repetitions or existing traces; one successful retry is not treated as disproof.",
+        "The final result is ROOT CAUSE CONFIRMED, INCONCLUSIVE, COULD NOT REPRODUCE, or BLOCKED, with no speculative fix presented as established fact."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Find and fix the checkout total race. Two workers occasionally apply the same discount, and a teammate says adding a mutex solved it locally.",
+      "expected_output": "A diagnose-then-remediate workflow that first proves the responsible concurrency boundary and duplicate transition, then hands a regression condition to TDD and implementation instead of adopting the mutex anecdote as proof.",
+      "files": [],
+      "expectations": [
+        "The request authorizes remediation, but production edits wait until the diagnosis gate is complete.",
+        "The teammate's mutex result is recorded as supporting evidence for a race hypothesis, not as root-cause confirmation.",
+        "The investigation seeks a controlled interleaving, state transition trace, or other experiment that separates duplicate reads, duplicate writes, retry ownership, and stale data hypotheses.",
+        "The confirmed cause identifies the responsible boundary and yields an observable regression condition.",
+        "The regression is handed to tdd and the fix to implement, followed by separate completion verification.",
+        "If the cause cannot be distinguished, the result remains inconclusive rather than applying the suggested mutex speculatively."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Production search was slow yesterday. I cannot give you production access, the dashboards have already expired the detailed metrics, and it is fast in development. Tell me the root cause.",
+      "expected_output": "An honest bounded investigation that uses available local and historical evidence, refuses to invent a root cause, and ends INCONCLUSIVE or BLOCKED with the precise missing evidence and a safe next observation plan.",
+      "files": [],
+      "expectations": [
+        "The response distinguishes the reported production symptom from currently observed development behavior.",
+        "It does not claim that local speed disproves the production regression or infer cause from code shape alone.",
+        "Available logs, configuration differences, recent changes, query plans, and workload shape are inspected only when accessible and relevant.",
+        "Missing production access and expired measurements are named as evidence limits, not bypassed through unauthorized access or speculative changes.",
+        "The terminal state is INCONCLUSIVE or BLOCKED and identifies the minimum future telemetry or reproduction needed to make progress."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "What does `ReferenceError: total is not defined` mean in JavaScript? I just want a quick explanation, not a repo investigation.",
+      "expected_output": "A direct explanation of what the error means and the likely places to check, without starting a reproduction workflow or claiming a specific root cause from missing code.",
+      "files": [],
+      "expectations": [
+        "Explains that JavaScript could not resolve `total` in the scope where it was referenced.",
+        "Distinguishes likely causes, such as a missing declaration or spelling mismatch, from an observed cause.",
+        "Does not invent a reproduction, build an evidence ledger, or label the answer with a diagnosis terminal state."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "The npm test script has `nmp test` instead of `npm test`; I found the typo. Please fix that one script entry.",
+      "expected_output": "Routes the known-cause edit to implementation and verifies the script entry, without forcing a speculative root-cause investigation.",
+      "files": [],
+      "expectations": [
+        "Treats the supplied typo as a known-cause change to verify in the target file before editing.",
+        "Does not require a hypothesis ledger or a separate reproduction phase before a verified one-line correction.",
+        "Does not change unrelated scripts or claim success without checking the resulting entry."
+      ]
+    }
+  ]
+}

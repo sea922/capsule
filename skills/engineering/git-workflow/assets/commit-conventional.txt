@@ -1,0 +1,9 @@
+<type>(<optional-scope>): <describe the concrete change>
+
+# Use only when the repository follows Conventional Commits.
+# Remove parentheses when scope is omitted. Choose a type allowed by the project.
+# Common examples: feat, fix, docs, refactor, test, chore, ci, perf.
+# Explain motivation or a consequential decision here when the subject is insufficient.
+# For a breaking change, follow project policy for ! and a BREAKING CHANGE: footer
+# describing impact and migration. Include only verified issue links/trailers.
+# Commit the filled file with --cleanup=strip so these comment lines are removed.

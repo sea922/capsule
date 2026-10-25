@@ -1,0 +1,3 @@
+interface:
+  display_name: "HTML Write-up"
+  short_description: "Build and verify a standalone HTML write-up"

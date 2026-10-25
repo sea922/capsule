@@ -1,0 +1,59 @@
+{
+  "skill_name": "verification-before-completion",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "The unit tests passed before my last edit, which only changed the retry branch. Please confirm the bug is fixed and tell the team this is ready.",
+      "expected_output": "A fresh claim-specific verification that reruns the decisive retry regression after the final edit, confirms what executed, adds proportionate nearby checks, and withholds ready or fixed language unless the evidence supports it.",
+      "files": [],
+      "expectations": [
+        "The pre-edit passing test result is classified as stale and is not used to support the final claim.",
+        "The bug-fix claim is restated as observable retry behavior including the relevant negative or duplicate-prevention condition.",
+        "A focused regression or acceptance test is run after the final edit and its discovery, execution, decisive output, and environment are checked.",
+        "The nearest relevant broader checks are selected proportionately rather than substituting an unrelated broad suite or compilation result.",
+        "The final verdict is VERIFIED, NOT VERIFIED, PARTIALLY VERIFIED, INCONCLUSIVE, or BLOCKED and uses ready or fixed language only when fully supported.",
+        "Communicating externally to the team is not performed unless the user has placed that channel and action in scope."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Verify this configuration and UI change. The config parser passes locally, but checking the real cloud setting would trigger a paid deployment. The new dialog also needs to look right on mobile, but no browser is available.",
+      "expected_output": "A claim matrix that verifies the local configuration evidence it can, preserves authority around the paid deployment, identifies missing visual evidence, and returns BLOCKED rather than a blanket success claim.",
+      "files": [],
+      "expectations": [
+        "Configuration syntax, effective local behavior, deployed cloud state, and mobile visual behavior are treated as separate claims.",
+        "The local parser is rerun after the final change and its scope is described without treating it as deployed-state proof.",
+        "The paid deployment is not triggered without explicit authority; its cost and verification value are presented as a decision gate.",
+        "The missing browser prevents a visual-ready claim and is reported as a concrete evidence gap with the needed viewport or artifact.",
+        "The result is BLOCKED because named cost and capability constraints prevent material cloud-state and mobile-visual claims, while locally verified claims are still reported separately."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Another agent says all 87 tests passed in its worktree, so mark the change complete. The main checkout has ignored integration fixtures that worktrees do not contain.",
+      "expected_output": "An independent verification that treats the agent result as reported-green, checks whether decisive fixtures and tests participated, and refuses completion if the worktree silently skipped the integration path.",
+      "files": [],
+      "expectations": [
+        "The other agent's result is labeled reported-green rather than independently verified.",
+        "The test output, skip counts, discovery, worktree base, and presence of ignored integration fixtures are checked before relying on the 87-pass count.",
+        "Verification runs in an environment containing the decisive fixtures when safe and available, without overwriting the main checkout's existing work.",
+        "If the integration test skipped or cannot run, the verdict is PARTIALLY VERIFIED, INCONCLUSIVE, or BLOCKED rather than VERIFIED.",
+        "The evidence receipt distinguishes what the unit tests prove from the unverified integration claim."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I fixed the pagination bug where filtered results skipped rows at page boundaries. `./scripts/check.sh` exits 0, so confirm the fix. The diff also lowers the coverage threshold from 85 to 80 and marks one flaky pagination test as skipped.",
+      "expected_output": "A verification that reads the underlying checker results behind the wrapper, flags the lowered threshold and skipped test as weakened checks, requires side-blind baseline-versus-patched evidence that reaches the pagination path, varies filtering and pagination alone and combined, and withholds a fixed verdict until that evidence exists.",
+      "files": [],
+      "expectations": [
+        "The wrapper's exit 0 is not accepted as evidence; the underlying checkers' own statuses and outputs are read, and any SKIPPED or ERROR checks are reported separately from pass and fail.",
+        "The lowered coverage threshold and the newly skipped pagination test are named as weakened-check red flags, and the affected claims are not marked VERIFIED without a stated, in-scope reason.",
+        "The fix claim is backed by a check that fails on the unpatched revision and passes on the patched one without detecting which revision it runs against.",
+        "The evidence shows the pagination code path was actually reached rather than inferring it from exit status.",
+        "Filtering and pagination are exercised separately and in combination, including a filter that spans a page boundary.",
+        "The verdict follows the stated precedence and the receipt lists the weakened-check flags under gaps."
+      ]
+    }
+  ]
+}

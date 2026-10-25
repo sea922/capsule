@@ -1,0 +1,26 @@
+{
+  "name": "capsule",
+  "owner": {
+    "name": "sy.truong"
+  },
+  "description": "capsule agent skills library as a Claude Code plugin.",
+  "plugins": [
+    {
+      "name": "capsule",
+      "source": "./",
+      "description": "capsule agent skills library.",
+      "category": "engineering",
+      "keywords": [
+        "agent-skills",
+        "skills",
+        "engineering",
+        "debugging",
+        "grilling",
+        "software-development",
+        "productivity",
+        "tdd",
+        "verification"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "skill_name": "html-writeup",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Create a standalone HTML decision brief comparing a modular monolith with microservices for a six-person SaaS team. The monolith ships in 6 weeks with low operational overhead but has moderate scaling isolation; microservices ship in 12 weeks with high operational overhead and strong scaling isolation. Recommend one, show the trade-offs on shared axes, include a migration trigger, and keep the file local.",
+      "expected_output": "A verified analytical comparison with a conclusion-first lede, accessible shared-axis table, clear recommendation, migration trigger, print support, and no publishing side effect.",
+      "files": [],
+      "expectations": [
+        "Exactly one local HTML artifact is created and no repository or remote publishing state is changed.",
+        "The lede recommends the modular monolith and the comparison uses a table with scoped headers.",
+        "The artifact passes scripts/check_html.py with zero errors.",
+        "The artifact includes print and reduced-motion handling and contains no unresolved placeholders.",
+        "The final response reports browser verification and the absolute artifact path."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Turn these incident notes into a standalone HTML post-incident review: API errors began 09:12, checkout failures peaked at 38%, rollback started 09:24, recovery completed 09:31, and the cause was an incompatible payment-client retry change. Actions: pin the client version, add a contract test, and assign the release checklist to the Payments team. Make the causal sequence obvious and preserve every timestamp and owner.",
+      "expected_output": "A verified operational incident document with current conclusion, causal timeline, impact stats, owned actions, and complete print rendering.",
+      "files": [],
+      "expectations": [
+        "Every supplied timestamp, percentage, cause, action, and owner appears in the artifact.",
+        "Chronology and causal explanation are visually distinct and accessible without colour alone.",
+        "The artifact passes scripts/check_html.py with zero errors.",
+        "The page has one h1, valid heading order, print support, and no horizontal overflow at mobile width.",
+        "The final response reports browser verification and the absolute artifact path."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Create a self-contained HTML architecture explainer for an order flow: browser sends checkout to an API gateway, the gateway calls Order Service, Order Service reserves inventory and requests payment, payment failure releases inventory, and success emits OrderConfirmed for fulfilment. Explain the boundary, show the relationships accessibly, and make the deliverable work offline.",
+      "expected_output": "A verified editorial architecture explainer with an accessible offline diagram, explicit failure path, concise boundary explanation, and no network dependency.",
+      "files": [],
+      "expectations": [
+        "The diagram includes every actor and both success and payment-failure paths.",
+        "The visible failure edges return the payment result to Order Service before a separate Order Service-to-Inventory release command; no shortcut implies Payment owns compensation.",
+        "The visible success edges return payment success to Order Service before Order Service emits OrderConfirmed to the event hand-off.",
+        "The diagram has an accessible description that states the relationships.",
+        "The artifact passes scripts/check_html.py with zero errors and no network warning.",
+        "The page works without external scripts, styles, fonts, or images.",
+        "The final response reports browser verification and the absolute artifact path."
+      ]
+    }
+  ]
+}

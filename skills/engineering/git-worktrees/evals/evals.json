@@ -1,0 +1,23 @@
+{
+  "skill_name": "git-worktrees",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Set up a checkout for an independent task. Primary checkout has unrelated staged changes. A managed worktree is free with its prior changes preserved, but has an old task name. Remote default is develop. Describe actions; do not execute tools.",
+      "expected_output": "Inspect and reuse suitable free managed checkout, verify correct base/branch, preserve primary staging, establish environment and baseline in selected absolute path. Does not replace a worktree for its name or assume main.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "The PR was squash-merged. Clean up its managed worktree. It contains an ignored test database needed for reproductions and a running dev server owned by another active task. Describe actions; do not execute tools.",
+      "expected_output": "Retains the in-use worktree and identifies active ownership as blocking retirement. Accounts for ignored data separately from archive coverage and distinguishes branch deletion from worktree retirement. Does not infer deletion safety from squash-merged status.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I want two agents working on separate features of this repo at the same time without stepping on each other. Set that up. Describe actions; do not execute tools.",
+      "expected_output": "Inspects the worktree inventory, creates or reuses one checkout per task at verified bases, assigns separate ports and writable resources, establishes a baseline in each absolute path, and records ownership.",
+      "files": []
+    }
+  ]
+}

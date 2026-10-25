@@ -1,0 +1,6 @@
+interface:
+  display_name: "ADLC Flow"
+  short_description: "Route work through the agentic development lifecycle"
+
+policy:
+  allow_implicit_invocation: false
