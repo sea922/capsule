@@ -9,7 +9,8 @@
     "test": "node --test scripts/*.test.mjs",
     "validate": "node scripts/validate-repo.mjs",
     "changeset": "changeset",
-    "version:skills": "changeset version && node scripts/sync-version.mjs && npm run validate"
+    "version:skills": "changeset version && node scripts/sync-version.mjs && npm run validate",
+    "package:agensi": "node scripts/package-agensi.mjs"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^1.0.1",
