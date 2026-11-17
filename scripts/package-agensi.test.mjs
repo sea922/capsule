@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { readZip } from './zip-archive.mjs';
 import { SCRIPT_DISCLOSURES, packageAll, readFrontmatter, toListingBody } from './package-agensi.mjs';
 
 function writeSkill(root, relativeDir, files) {
@@ -15,8 +15,8 @@ function writeSkill(root, relativeDir, files) {
 }
 
 const skillMd = (name, body = '') => `---\nname: ${name}\ndescription: Does ${name}.\n---\n${body}\n`;
-const unzipList = (zipPath) => execFileSync('unzip', ['-Z1', zipPath], { encoding: 'utf8' }).trim().split('\n').sort();
-const unzipRead = (zipPath, entry) => execFileSync('unzip', ['-p', zipPath, entry], { encoding: 'utf8' });
+const listZipEntries = (zipPath) => [...readZip(zipPath).keys()].sort();
+const readZipEntry = (zipPath, entry) => readZip(zipPath).get(entry);
 
 function makeRepo() {
   const root = mkdtempSync(join(tmpdir(), 'agensi-'));
@@ -40,19 +40,18 @@ test('packageAll_siblingLink_putsSkillMdAtRootAndVendorsSibling', () => {
   const flow = results.find(({ name }) => name === 'flow');
 
   assert.deepEqual(flow.vendored, ['adlc-gate']);
-  assert.deepEqual(unzipList(flow.zipPath), [
-    'LICENSE', 'SKILL.md', 'vendor/', 'vendor/adlc-gate/', 'vendor/adlc-gate/references/',
-    'vendor/adlc-gate/references/APPROVALS.md', 'vendor/adlc-gate/scripts/', 'vendor/adlc-gate/scripts/content-hash.mjs',
+  assert.deepEqual(listZipEntries(flow.zipPath), [
+    'LICENSE', 'SKILL.md', 'vendor/adlc-gate/references/APPROVALS.md', 'vendor/adlc-gate/scripts/content-hash.mjs',
   ]);
-  assert.match(unzipRead(flow.zipPath, 'SKILL.md'), /\(vendor\/adlc-gate\/references\/APPROVALS\.md#top\)/);
+  assert.match(readZipEntry(flow.zipPath, 'SKILL.md'), /\(vendor\/adlc-gate\/references\/APPROVALS\.md#top\)/);
 });
 
 test('packageAll_devArtifacts_areExcluded', () => {
   const root = makeRepo();
   const gate = packageAll(root).find(({ name }) => name === 'adlc-gate');
 
-  assert.deepEqual(unzipList(gate.zipPath), [
-    'LICENSE', 'SKILL.md', 'references/', 'references/APPROVALS.md', 'scripts/', 'scripts/content-hash.mjs',
+  assert.deepEqual(listZipEntries(gate.zipPath), [
+    'LICENSE', 'SKILL.md', 'references/APPROVALS.md', 'scripts/content-hash.mjs',
   ]);
 });
 
@@ -97,13 +96,31 @@ test('packageAll_undisclosedScript_throws', () => {
 });
 
 test('toListingBody_internalSectionsAndRelativeLinks_areRemoved', () => {
-  const page = '# Tdd\n\nSee [the guide](../workflow.md) and [docs](https://x.dev).\n\n## Example\n\nRun it.\n\n## Attribution and design basis\n\nFrom upstream.\n';
+  const page = '# Tdd\n\nRead [the guide](../workflow.md) and [docs](https://x.dev).\n\n## Example\n\nRun it.\n\n## Attribution and design basis\n\nFrom upstream.\n';
 
-  assert.equal(toListingBody(page), 'See the guide and [docs](https://x.dev).\n\n### Example\n\nRun it.');
+  assert.equal(toListingBody(page), 'Read the guide and [docs](https://x.dev).\n\n### Example\n\nRun it.');
 });
 
 test('toListingBody_provenanceParagraphs_areDroppedWithEmptiedHeadings', () => {
   const page = '# Ship\n\nShips work.\n\n## Composition\n\nAdapted from Superpowers.\n\n## Examples\n\nShip it.\n';
 
   assert.equal(toListingBody(page), 'Ships work.\n\n### Examples\n\nShip it.');
+});
+
+test('packageAll_backtickedSiblingName_listedAsCompanion', () => {
+  const root = makeRepo();
+  writeSkill(root, 'ship', { 'SKILL.md': skillMd('ship', 'Run `flow` first; flow-free text is ignored.') });
+  const ship = packageAll(root).find(({ name }) => name === 'ship');
+
+  assert.match(readFileSync(ship.listingPath, 'utf8'), /companion skills .*: `flow`\./);
+});
+
+test('toListingBody_repoPointersAndChangelogSections_areDropped', () => {
+  const page = '# X\n\nDoes X.\n\nSee the [research](../r.md).\n\nScenarios are in `skills/x/evals/evals.json`.\n\n## What v2 adds\n\nNew things.\n';
+
+  assert.equal(toListingBody(page), 'Does X.');
+});
+
+test('toListingBody_inlineSeeSentenceWithRepoLink_isRemoved', () => {
+  assert.equal(toListingBody('# X\n\nUses a fence. See the [review](../r.md)\nfor evidence.\n'), 'Uses a fence.');
 });

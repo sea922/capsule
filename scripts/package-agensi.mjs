@@ -1,8 +1,8 @@
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join, relative, resolve, sep } from 'node:path';
-import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import * as yaml from 'js-yaml';
+import { writeZip } from './zip-archive.mjs';
 
 const EXCLUDED_DIRS = new Set(['evals', '__pycache__', 'node_modules']);
 const isExcludedFile = (name) => name === '.DS_Store' || /(^test_.*\.py$)|(\.test\.[cm]?[jt]s$)/.test(name);
@@ -103,8 +103,8 @@ function discloseScripts(stageDir, name) {
 }
 
 // Repo-internal sections and links mean nothing to a buyer reading the listing.
-const INTERNAL_SECTION = /attribution|basis|evaluation|design and evidence|resources|references/i;
-const PROVENANCE_PARAGRAPH = /source sweep|research (report|record)|preferred source|upstream (skill|workflow|prose)|vendored|MIT-licensed|superpowers|pstack|gstack|mattpocock|trail of bits|compound engineering|\bECC\b/i;
+const INTERNAL_SECTION = /attribution|basis|evaluation|design and evidence|resources|references|what v\d+ adds/i;
+const PROVENANCE_PARAGRAPH = /source sweep|research (report|record)|preferred source|upstream (skill|workflow|prose)|vendored|MIT-licensed|superpowers|pstack|gstack|mattpocock|trail of bits|compound engineering|\bECC\b|evaluation record|evals?[/.]|^see the |research for sources/i;
 
 const isHeading = (paragraph) => paragraph?.startsWith('## ');
 
@@ -120,6 +120,7 @@ export function toListingBody(docsPage) {
     .filter((paragraph, index) => !isHeading(paragraph) || (index + 1 < paragraphs.length && !isHeading(paragraphs[index + 1])))
     .join('\n\n')
     .replace(/^## /gm, '### ')
+    .replace(/\s*See (the )?[^.]*\]\((?!https?:)[^)]*\)[^.]*\./g, '')
     .replace(/\[([^\]]+)\]\((?!https?:)[^)]*\)/g, '$1');
 }
 
@@ -131,7 +132,12 @@ function findDocsPage(root, name) {
   return page ? toListingBody(readFileSync(page, 'utf8')) : null;
 }
 
-export function renderListing({ name, frontmatter, docsPage, scripts, vendored }) {
+export function findCompanions(stageDir, name, skillNames) {
+  const text = readFileSync(join(stageDir, 'SKILL.md'), 'utf8');
+  return skillNames.filter((other) => other !== name && text.includes(`\`${other}\``));
+}
+
+export function renderListing({ name, frontmatter, docsPage, scripts, vendored, companions = [] }) {
   const invocation = frontmatter['disable-model-invocation']
     ? `User-invoked only: run it as \`/${name}\`.`
     : 'Loads automatically when a request matches its description; can also be invoked by name.';
@@ -140,6 +146,9 @@ export function renderListing({ name, frontmatter, docsPage, scripts, vendored }
     : '- None. Instructions and reference documents only; no code runs and no network access.';
   const vendoredLine = vendored.length
     ? `\nBundles the shared contracts it depends on from: ${vendored.join(', ')} (under \`vendor/\`).\n`
+    : '';
+  const companionLine = companions.length
+    ? `\nPart of a library; works alongside these companion skills (sold separately), which it names when handing off: ${companions.map((other) => `\`${other}\``).join(', ')}.\n`
     : '';
   return `# ${name}
 
@@ -155,7 +164,7 @@ ${docsPage ?? frontmatter.description}
 
 ${invocation}
 Works with agents that load SKILL.md skills (Claude Code, Codex, and compatible harnesses).
-${vendoredLine}
+${vendoredLine}${companionLine}
 ## Bundled scripts and external access
 
 ${scriptLines}
@@ -166,7 +175,7 @@ MIT — LICENSE is included in the zip.
 `;
 }
 
-export function packageSkill(skillDir, { root, stageRoot, outDir, licenseFile }) {
+export function packageSkill(skillDir, { root, stageRoot, outDir, licenseFile, skillNames = [] }) {
   const frontmatter = readFrontmatter(join(skillDir, 'SKILL.md'));
   const { name } = frontmatter;
   const stageDir = join(stageRoot, name);
@@ -176,19 +185,23 @@ export function packageSkill(skillDir, { root, stageRoot, outDir, licenseFile })
   const scripts = discloseScripts(stageDir, name);
   if (licenseFile && existsSync(licenseFile)) cpSync(licenseFile, join(stageDir, 'LICENSE'));
   const zipPath = join(outDir, `${name}.zip`);
-  rmSync(zipPath, { force: true });
-  execFileSync('zip', ['-qrX', zipPath, '.'], { cwd: stageDir });
+  writeZip(zipPath, walkFiles(stageDir).map((path) => ({ name: relative(stageDir, path).split(sep).join('/'), path })));
   const listingPath = join(outDir, 'listings', `${name}.md`);
   mkdirSync(dirname(listingPath), { recursive: true });
-  writeFileSync(listingPath, renderListing({ name, frontmatter, docsPage: findDocsPage(root, name), scripts, vendored }));
+  writeFileSync(listingPath, renderListing({
+    name, frontmatter, docsPage: findDocsPage(root, name), scripts, vendored,
+    companions: findCompanions(stageDir, name, skillNames),
+  }));
   return { name, zipPath, listingPath, vendored };
 }
 
 export function packageAll(root, outDir = join(root, 'dist', 'agensi')) {
   const stageRoot = join(outDir, '.stage');
   mkdirSync(stageRoot, { recursive: true });
-  const results = findSkillDirs(root).map((skillDir) =>
-    packageSkill(skillDir, { root, stageRoot, outDir, licenseFile: join(root, 'LICENSE') }));
+  const skillDirs = findSkillDirs(root);
+  const skillNames = skillDirs.map((skillDir) => basename(skillDir));
+  const results = skillDirs.map((skillDir) =>
+    packageSkill(skillDir, { root, stageRoot, outDir, licenseFile: join(root, 'LICENSE'), skillNames }));
   rmSync(stageRoot, { recursive: true, force: true });
   return results;
 }
