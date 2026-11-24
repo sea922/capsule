@@ -30,7 +30,9 @@
     "./skills/engineering/code-review/assets/claude-agents/code-review-type-design.md",
     "./skills/engineering/code-review/assets/claude-agents/code-review-comments.md",
     "./skills/engineering/code-review/assets/claude-agents/code-review-tests.md",
-    "./skills/adlc/adlc-spec/assets/claude-agents/adlc-spec-miner.md"
+    "./skills/adlc/adlc-spec/assets/claude-agents/adlc-spec-miner.md",
+    "./skills/engineering/code-review/assets/claude-agents/code-review-database.md",
+    "./skills/engineering/security-review/assets/claude-agents/security-review-sanitizer.md"
   ],
   "skills": [
     "./skills/adlc/adlc-flow",

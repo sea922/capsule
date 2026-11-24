@@ -33,7 +33,7 @@ Apply the instructions governing each changed file, the repository's established
 
 ### Specialist passes
 
-When the change touches their area and capsule's agents are available, add these read-only passes with the same packet: `code-review-silent-failures` for error handling, fallbacks, retries, and async work; `code-review-type-design` for types, schemas, and serialized shapes; `code-review-comments` for comments and docs beside changed code; `code-review-tests` for the tests offered as evidence. Without subagents, apply the same checks in the defects pass. Their candidates join the pool and face the same validation; none is a finding until validated.
+When the change touches their area and capsule's agents are available, add these read-only passes with the same packet: `code-review-silent-failures` for error handling, fallbacks, retries, and async work; `code-review-type-design` for types, schemas, and serialized shapes; `code-review-comments` for comments and docs beside changed code; `code-review-tests` for the tests offered as evidence; `code-review-database` for migrations, schema, and queries. Without subagents, apply the same checks in the defects pass. Their candidates join the pool and face the same validation; none is a finding until validated.
 
 ### Optional second opinion
 

@@ -6,7 +6,8 @@ import { test } from 'node:test';
 import * as yaml from 'js-yaml';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const READ_ONLY = ['code-review-silent-failures', 'code-review-type-design', 'code-review-comments', 'code-review-tests', 'adlc-spec-miner'];
+const READ_ONLY = ['code-review-silent-failures', 'code-review-type-design', 'code-review-comments', 'code-review-tests', 'code-review-database',
+  'security-review-sanitizer', 'adlc-spec-miner'];
 
 test('read-only review and spec agents are registered and cannot edit, run commands, or delegate', () => {
   const manifest = JSON.parse(readFileSync(join(ROOT, '.claude-plugin', 'plugin.json'), 'utf8'));
