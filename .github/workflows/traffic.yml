@@ -1,0 +1,45 @@
+name: Traffic
+
+# GitHub keeps clone and view counts for 14 days only; this stores them daily
+# on the `traffic` branch, where the README badges read them.
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency: traffic
+
+jobs:
+  record:
+    name: Record traffic
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .node-version
+      - name: Record and publish
+        env:
+          TRAFFIC_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+        run: |
+          if [ -z "$TRAFFIC_TOKEN" ]; then
+            echo "::notice::Add a TRAFFIC_TOKEN secret (fine-grained, Administration: read) to record traffic."
+            exit 0
+          fi
+          if git fetch --depth=1 origin traffic; then
+            git worktree add traffic-data FETCH_HEAD
+          else
+            git worktree add --orphan -b traffic traffic-data
+          fi
+          node scripts/traffic.mjs traffic-data
+          cd traffic-data
+          git add traffic.json clones.json views.json
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit --quiet -m "chore: record traffic" || exit 0
+          git push origin HEAD:refs/heads/traffic
