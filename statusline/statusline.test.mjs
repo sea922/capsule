@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { test } from 'node:test';
-import { formatDuration, nearest256 as painterCode, parseGitStatus, render } from './statusline.mjs';
+import { PALETTE, formatDuration, nearest256 as painterCode, parseGitStatus, render } from './statusline.mjs';
 import { installStatusline } from './install.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -18,26 +18,27 @@ const sample = {
 };
 const git = { branch: 'feat/x', changed: 2, ahead: 1, behind: 0 };
 const strip = (text) => text.replace(/\x1b\[[0-9;]*m/g, '');
-const BAR68 = `${'━'.repeat(15)}${'─'.repeat(7)}`;
+const BAR68 = `${'▮'.repeat(7)}${'▯'.repeat(3)}`;
 const FULL = `✦ Opus · capsule · feat/x ●2 ↑1 · ${BAR68} 68% of 200k · $1.23 · +120 −34 · 15m`;
 
 test('one line shows model, directory, git state, context, and session numbers', () => {
   assert.deepEqual(render(sample, { ...plain, git }), [FULL]);
 });
 
-test('with colour the text is the same, the bar is one glyph, and the fill is a gradient', () => {
+test('with colour the bar is one glyph, and its filled part is a gradient', () => {
   const [line] = render(sample, { color: 'truecolor', git });
-  assert.equal(strip(line), FULL.replace(BAR68, '━'.repeat(22)));
-  const cells = [...line.matchAll(/\x1b\[38;2;(\d+);(\d+);(\d+)m━/g)].map((match) => match.slice(1).join(','));
-  assert.equal(cells.length, 22);
-  assert.equal(cells[0], '45,212,191');
-  assert.ok(new Set(cells.slice(0, 15)).size >= 12, 'the filled cells should change colour along the bar');
-  assert.equal(new Set(cells.slice(15)).size, 1, 'the empty cells share one dim colour');
+  assert.equal(strip(line), FULL.replace(BAR68, '▮'.repeat(10)));
+  const cells = [...line.matchAll(/\x1b\[38;2;(\d+);(\d+);(\d+)m▮/g)].map((match) => match.slice(1).join(','));
+  assert.equal(cells.length, 10);
+  assert.equal(cells[0], '18,179,162');
+  assert.equal(new Set(cells.slice(0, 7)).size, 7, 'each filled cell has its own colour along the bar');
+  assert.equal(new Set(cells.slice(7)).size, 1, 'the empty cells share one colour');
+  assert.equal(cells[9], '114,123,153');
 });
 
 test('a terminal without 24-bit colour gets the nearest 256-colour codes', () => {
   const [line] = render(sample, { color: '256', git });
-  assert.equal(strip(line), FULL.replace(BAR68, '━'.repeat(22)));
+  assert.equal(strip(line), FULL.replace(BAR68, '▮'.repeat(10)));
   assert.match(line, /\x1b\[38;5;\d+m/);
   assert.ok(!line.includes('38;2;'));
   const code = (hex) => render({ model: { display_name: 'x' } }, { color: '256' })[0] && painterCode(hex);
@@ -46,6 +47,19 @@ test('a terminal without 24-bit colour gets the nearest 256-colour codes', () =>
   assert.equal(code('#5fafff'), 75);
   assert.equal(code('#808080'), 244);
   assert.equal(code('#232840'), 236);
+});
+
+test('every colour stays readable on both a dark and a light background', () => {
+  const luminance = (hex) => {
+    const [red, green, blue] = [1, 3, 5].map((index) => parseInt(hex.slice(index, index + 2), 16) / 255)
+      .map((value) => (value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4));
+    return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+  };
+  for (const [name, hex] of Object.entries(PALETTE)) {
+    const light = luminance(hex);
+    assert.ok((light + 0.05) / 0.05 >= 4.5, `${name} ${hex} is too dark for a black background`);
+    assert.ok(1.05 / (light + 0.05) >= 2.5, `${name} ${hex} is too pale for a white background`);
+  }
 });
 
 test('missing fields are left out instead of printed as blanks or zeros', () => {
@@ -63,18 +77,18 @@ test('git shows only what is true: clean, changed, ahead, behind, or a worktree 
 
 test('the context bar is clamped, sized from the window, and turns warm as it fills', () => {
   const bar = (used, size) => render({ context_window: { used_percentage: used, context_window_size: size } }, plain)[0].split(' · ')[1];
-  assert.equal(bar(0), `${'─'.repeat(22)} 0%`);
-  assert.equal(bar(3), `━${'─'.repeat(21)} 3%`);
-  assert.equal(bar(43, 1000000), `${'━'.repeat(9)}${'─'.repeat(13)} 43% of 1M`);
-  assert.equal(bar(140), `${'━'.repeat(22)} 100%`);
-  assert.equal(bar(-5), `${'─'.repeat(22)} 0%`);
+  assert.equal(bar(0), '▯▯▯▯▯▯▯▯▯▯ 0%');
+  assert.equal(bar(5), '▮▯▯▯▯▯▯▯▯▯ 5%');
+  assert.equal(bar(43, 1000000), '▮▮▮▮▯▯▯▯▯▯ 43% of 1M');
+  assert.equal(bar(140), '▮▮▮▮▮▮▮▮▮▮ 100%');
+  assert.equal(bar(-5), '▯▯▯▯▯▯▯▯▯▯ 0%');
   const percent = (used) => render({ context_window: { used_percentage: used } }, { color: 'truecolor' })[0].match(/(\x1b\[[0-9;]*m)+\d+%/)[0];
-  const lastFilled = (used) => [...render({ context_window: { used_percentage: used } }, { color: 'truecolor' })[0].matchAll(/\x1b\[38;2;([\d;]+)m━/g)].map((match) => match[1]).filter((cell) => cell !== '35;40;64').at(-1);
-  assert.equal(lastFilled(100), '251;113;133', 'a full bar ends in the hot colour');
-  assert.equal(lastFilled(70), '167;131;226', 'below 80% the bar stays on the cool gradient');
-  assert.match(percent(40), /38;2;165;180;252m40%/);
-  assert.match(percent(70), /38;2;253;186;116m70%/);
-  assert.match(percent(90), /\x1b\[1m\x1b\[38;2;251;113;133m90%/);
+  const lastFilled = (used) => [...render({ context_window: { used_percentage: used } }, { color: 'truecolor' })[0].matchAll(/\x1b\[38;2;([\d;]+)m▮/g)].map((match) => match[1]).filter((cell) => cell !== '114;123;153').at(-1);
+  assert.equal(lastFilled(100), '240;72;108', 'a full bar ends in the hot colour');
+  assert.equal(lastFilled(70), '153;107;216', 'below 80% the bar stays on the cool gradient');
+  assert.match(percent(40), /38;2;109;140;255m40%/);
+  assert.match(percent(70), /38;2;230;126;0m70%/);
+  assert.match(percent(90), /\x1b\[1m\x1b\[38;2;240;72;108m90%/);
 });
 
 test('rate limits stay hidden until a window is nearly used up, unless asked for', () => {
@@ -87,7 +101,7 @@ test('rate limits stay hidden until a window is nearly used up, unless asked for
 
 test('a narrow terminal wraps to two lines, then drops the least important details', () => {
   assert.deepEqual(render(sample, { ...plain, git, columns: [...FULL].length }), [FULL]);
-  assert.deepEqual(render(sample, { ...plain, git, columns: 70 }), ['✦ Opus · capsule · feat/x ●2 ↑1', `${BAR68} 68% of 200k · $1.23 · +120 −34 · 15m`]);
+  assert.deepEqual(render(sample, { ...plain, git, columns: 60 }), ['✦ Opus · capsule · feat/x ●2 ↑1', `${BAR68} 68% of 200k · $1.23 · +120 −34 · 15m`]);
   for (const columns of [50, 36, 24, 12]) {
     const lines = render(sample, { ...plain, git, columns });
     assert.equal(lines.length, 2, `${columns}: ${JSON.stringify(lines)}`);
@@ -101,7 +115,7 @@ test('a narrow terminal wraps to two lines, then drops the least important detai
 
 test('ASCII mode avoids every non-ASCII character', () => {
   const [line] = render(sample, { ...plain, ascii: true, git: { ...git, behind: 4 } });
-  assert.equal(line, `* Opus | capsule | feat/x +2 ^1 v4 | [${'#'.repeat(15)}${'.'.repeat(7)}] 68% of 200k | $1.23 | +120 -34 | 15m`);
+  assert.equal(line, '* Opus | capsule | feat/x +2 ^1 v4 | [#######...] 68% of 200k | $1.23 | +120 -34 | 15m');
   assert.ok(/^[\x20-\x7e]+$/.test(strip(render(sample, { color: 'truecolor', ascii: true, git })[0])));
 });
 
@@ -133,7 +147,7 @@ test('the script prints a line and exits 0 for real input, bad input, and no inp
   try {
     const good = run(JSON.stringify({ ...sample, workspace: { current_dir: outside } }));
     assert.equal(good.status, 0, good.stderr);
-    assert.match(good.stdout, /^✦ Opus · capsule-statusline-\S+ · ━{15}─{7} 68% of 200k · \$1\.23 · \+120 −34 · 15m$/);
+    assert.match(good.stdout, /^✦ Opus · capsule-statusline-\S+ · ▮{7}▯{3} 68% of 200k · \$1\.23 · \+120 −34 · 15m$/);
     for (const input of ['', 'not json', 'null', '[]', '42']) {
       const result = run(input);
       assert.equal(result.status, 0, `${JSON.stringify(input)}: ${result.stderr}`);

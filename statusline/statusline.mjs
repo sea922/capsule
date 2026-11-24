@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// capsule's optional status line for Claude Code, in the "Aurora" look: tinted text, dot separators, and a
-// context bar that fills along a teal-to-violet-to-pink gradient.
+// capsule's optional status line for Claude Code, in the "Aurora" look: coloured text, dot separators, and a
+// ten-block context bar that fills along a teal-to-violet-to-pink gradient.
 // It reads the JSON Claude Code passes on stdin and asks git for the branch. It makes no network request,
 // reads nothing outside the working directory, and always prints something and exits 0.
 import { execFileSync } from 'node:child_process';
@@ -9,15 +9,18 @@ import { fileURLToPath } from 'node:url';
 
 const RESET = '\x1b[0m';
 const BOLD = '\x1b[1m';
-const BAR_CELLS = 22;
+const BAR_CELLS = 10;
+// Mid-tone colours: each one keeps enough contrast on a black background and on a white one, so the line
+// stays readable over any terminal theme or background image. A test holds every entry to that.
 const COLORS = {
-  model: '#7ee8fa', separator: '#3a4160', directory: '#a5b4fc', branch: '#c4a7ff', changed: '#fbd38d', sync: '#7ee8fa',
-  track: '#232840', calm: '#a5b4fc', warm: '#fdba74', hot: '#fb7185', quiet: '#4b5375', cost: '#fde68a',
-  added: '#86efac', removed: '#fca5a5', time: '#64708f',
+  model: '#19a9c9', separator: '#8089a6', directory: '#6d8cff', branch: '#a678f5', changed: '#cf9200', sync: '#19a9c9',
+  track: '#727b99', calm: '#6d8cff', warm: '#e67e00', hot: '#f0486c', quiet: '#8089a6', cost: '#c99400',
+  added: '#27ae60', removed: '#ee5c6c', time: '#8089a6',
 };
-const GRADIENT = ['#2dd4bf', '#818cf8', '#f472b6'];
+const GRADIENT = ['#12b3a2', '#6f7cf7', '#ec4899'];
+export const PALETTE = { ...COLORS, ...Object.fromEntries(GRADIENT.map((hex, index) => [`gradient${index + 1}`, hex])) };
 const GLYPHS = {
-  unicode: { model: '✦ ', separator: ' · ', branch: '', changed: '●', ahead: '↑', behind: '↓', full: '━', empty: '─', open: '', close: '', minus: '−', more: '…' },
+  unicode: { model: '✦ ', separator: ' · ', branch: '', changed: '●', ahead: '↑', behind: '↓', full: '▮', empty: '▯', open: '', close: '', minus: '−', more: '…' },
   ascii: { model: '* ', separator: ' | ', branch: '', changed: '+', ahead: '^', behind: 'v', full: '#', empty: '.', open: '[', close: ']', minus: '-', more: '~' },
 };
 
@@ -163,7 +166,7 @@ export function render(input, options = {}) {
     return line;
   };
   const top = fit(identity, [{ nameWidth: 24 }, { sync: false }, { changed: false }, { nameWidth: 14 }, { directory: false }, { nameWidth: 8 }, { branch: false }, { modelWidth: Math.max(1, columns - 2) }]);
-  const bottom = fit(metrics, [{ time: false }, { diff: false }, { size: false }, { barCells: 10 }, { cost: false }, { limits: false }, { barCells: 0 }]);
+  const bottom = fit(metrics, [{ time: false }, { diff: false }, { size: false }, { barCells: 5 }, { cost: false }, { limits: false }, { barCells: 0 }]);
   return [top, bottom].filter(Boolean);
 }
 

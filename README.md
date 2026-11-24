@@ -195,18 +195,19 @@ License. See [`rules/README.md`](rules/README.md).
 
 ## 📟 Status line (optional)
 
-A status bar for Claude Code in tinted colours, with a context bar that fills
-along a teal-to-violet-to-pink gradient.
+A status bar for Claude Code whose colours stay readable on any background,
+dark, light, or an image, with a ten-block context bar that fills along a
+teal-to-violet-to-pink gradient.
 
 ```text
-✦ Fable 5.2 · capsule · feat/x ●3 ↑2 · ━━━━━━━━━───────────── 43% of 1M · $12.50 · +920 −247 · 1h23m
+✦ Fable 5.2 · capsule · feat/x ●3 ↑2 · ▮▮▮▮▯▯▯▯▯▯ 43% of 1M · $12.50 · +920 −247 · 1h23m
 ```
 
 | Part | Meaning |
 | --- | --- |
 | `✦ Fable 5.2 · capsule` | Model and directory |
 | `feat/x ●3 ↑2` | Branch, files changed and not committed, commits ahead (`↑`) or behind (`↓`) the remote |
-| `━━━─── 43% of 1M` | Context used and the window size. The percentage turns orange at 65% and red at 80% |
+| `▮▮▮▮▯▯▯▯▯▯ 43% of 1M` | Context used and the window size. The percentage turns orange at 65% and red at 80% |
 | `$12.50 · +920 −247 · 1h23m` | Session cost, lines added and removed, duration |
 | `5h 82%` | A rate-limit window, shown only once it passes 70% |
 
