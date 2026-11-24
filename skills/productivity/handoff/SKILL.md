@@ -13,6 +13,8 @@ Read the latest user direction, canonical issue/plan/research artifact, current 
 
 For pickup, treat a supplied handoff as historical evidence. Check its revision, files, unresolved decisions, and running work against the current environment before continuing. Resolve stale pointers and contradictory state first; completed work remains complete only where the current evidence supports it.
 
+When the reason is a session running low on context, read [references/COMPACTION.md](references/COMPACTION.md) for when to compact and what to write down first.
+
 **Complete when:** the destination, current phase, canonical sources, and material differences from recorded state are known.
 
 ## 2. Write the continuation contract

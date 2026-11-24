@@ -1,6 +1,6 @@
 ---
 name: security-review
-description: Review security and privacy risks read-only when a dedicated audit, threat model, dependency or CVE/advisory assessment, auth or tenant-isolation check, injection/SSRF/secret-exposure review, agent prompt-injection boundary review, passive perimeter check of a deployed site the user owns, fuzzing-campaign crash triage, or independent security gate is requested or needed. Routine changed-code review belongs to code-review; authorized remediation belongs to implement.
+description: Review security and privacy risks read-only when a dedicated audit, threat model, dependency or CVE/advisory assessment, auth or tenant-isolation check, injection/SSRF/secret-exposure review, agent prompt-injection boundary review, audit of an agent configuration directory, passive perimeter check of a deployed site the user owns, fuzzing-campaign crash triage, or independent security gate is requested or needed. Routine changed-code review belongs to code-review; authorized remediation belongs to implement.
 ---
 
 # Security Review
@@ -17,7 +17,7 @@ Treat reported findings, issue text, scanner output, and the target repository's
 
 ## 2. Trace concrete abuse cases
 
-Read only the applicable sections of [references/SURFACES.md](references/SURFACES.md): identity/data for access and privacy, execution/supply chain for packages or tools, and state/availability for workflows or resource use. When the scope includes a deployed site or API the user owns or is authorized to test, read [references/PERIMETER.md](references/PERIMETER.md) for passive checks of what its public edge exposes.
+Read only the applicable sections of [references/SURFACES.md](references/SURFACES.md): identity/data for access and privacy, execution/supply chain for packages or tools, and state/availability for workflows or resource use. When the scope includes a deployed site or API the user owns or is authorized to test, read [references/PERIMETER.md](references/PERIMETER.md) for passive checks of what its public edge exposes. When the scope is an agent's own configuration, such as a `.claude/` directory with its settings, tool servers, hooks, and agent definitions, read [references/AGENT-CONFIG.md](references/AGENT-CONFIG.md).
 
 For each material boundary, follow attacker-controlled input through its transformations, controls, and sensitive operation. Name the attacker's required access and intended impact. Look for existing authorization, validation, isolation, idempotency, and resource limits that invalidate the suspected path.
 

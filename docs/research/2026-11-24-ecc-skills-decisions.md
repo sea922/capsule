@@ -18,15 +18,15 @@ of scope after reading the files instead of only their descriptions.
 
 | Decision | Skills | Meaning |
 | --- | --- | --- |
-| Adopted | 100 | Built into capsule on the `feat/ecc-adoption` branch as a skill, reference, agent, hook, or addition to an existing skill. |
-| Covered | 47 | Capsule already has a skill that does this job. |
-| Out of scope | 181 | Not a fit for a general engineering skill library. |
+| Adopted | 102 | Built into capsule on the `feat/ecc-adoption` branch as a skill, reference, agent, hook, or addition to an existing skill. |
+| Covered | 49 | Capsule already has a skill that does this job. |
+| Out of scope | 177 | Not a fit for a general engineering skill library. |
 | **Total** | **328** | |
 
 First decisions, for the record: Adopted 24, Recommend 8, Possible 18, Fold as
 reference 30, Covered 53, Out of scope 195.
 
-## Adopted (100)
+## Adopted (102)
 
 Built into capsule on the `feat/ecc-adoption` branch as a skill, reference, agent, hook, or addition to an existing skill.
 
@@ -119,6 +119,7 @@ Built into capsule on the `feat/ecc-adoption` branch as a skill, reference, agen
 | `safety-guard` | Guard against destructive operations with three modes: Careful intercepts dangerous commands (rm -rf, git push | `block-destructive` hook | A narrow guard on commands that destroy more than a task needs | Out of scope |
 | `search-first` | Research-before-coding workflow: search npm/PyPI, MCP servers, skills, and GitHub for existing tools before wr | `implement`, `codebase-design`, `writing-for-agents` | Reuse-before-build as one decision step | Adopted |
 | `security-bounty-hunter` | Hunt for exploitable, bounty-worthy security issues in repositories. Focuses on remotely reachable vulnerabili | `code-review-security` agent | Its list of look-alikes that are not findings | Out of scope |
+| `security-scan` | Scan your Claude Code configuration (.claude/ directory) for security vulnerabilities, misconfigurations, and | `security-review` (`AGENT-CONFIG.md`) | The surfaces to read when auditing an agent configuration; its scanner tool and score are not taken | Out of scope |
 | `seo` | Audit, plan, and implement SEO improvements across technical SEO, on-page optimization, structured data, Core | `seo` skill | Search visibility is web work no capsule skill owned | Out of scope |
 | `skill-host-compat` | Lint ECC skills for Codex/Cursor-safe frontmatter and Claude-only substitutions before a skill PR | `scripts/validate-repo.mjs` | Capsule ships one SKILL.md to several hosts, so the check runs in its validator | Adopted |
 | `skill-scout` | Search existing local, marketplace, GitHub, and web skill sources before creating a new skill. Use when the us | `implement`, `codebase-design`, `writing-for-agents` | Reuse-before-build as one decision step | Adopted |
@@ -127,13 +128,14 @@ Built into capsule on the `feat/ecc-adoption` branch as a skill, reference, agen
 | `springboot-security` | Spring Security best practices for authn/authz, validation, CSRF, secrets, headers, rate limiting, and depende | `coding-standards` (`JAVA-SPRING.md`), `rules/java/springboot.md` | Catalogue of idioms that repeats the stack rules capsule now ships; better as an on-demand reference than as a skill | Fold as reference |
 | `springboot-tdd` | Test-driven development for Spring Boot using JUnit 5, Mockito, MockMvc, Testcontainers, and JaCoCo. Use when | `coding-standards` (`JAVA-SPRING.md`), `rules/java/springboot.md` | Catalogue of idioms that repeats the stack rules capsule now ships; better as an on-demand reference than as a skill | Fold as reference |
 | `springboot-verification` | Run the full Spring Boot verification loop — Maven or Gradle build, SpotBugs, PMD, and Checkstyle static analy | `coding-standards` (`JAVA-SPRING.md`), `rules/java/springboot.md` | Catalogue of idioms that repeats the stack rules capsule now ships; better as an on-demand reference than as a skill | Fold as reference |
+| `strategic-compact` | Suggests manual context compaction at logical intervals to preserve context through task phases rather than ar | `handoff` (`COMPACTION.md`) | When to compact a long session and what to write down first; its hook and thresholds are not taken | Out of scope |
 | `terraform-patterns` | Terraform and OpenTofu infrastructure-as-code patterns for project layout, remote state, modules, variables, s | `containers-and-deploys` skill | `production-readiness` reviews these but does not build them | Possible |
 | `typescript-patterns` | TypeScript patterns for strict, type-safe, maintainable code in modern TypeScript and JavaScript applications | `coding-standards` (`TYPESCRIPT.md`) | Catalogue of idioms that repeats the stack rules capsule now ships; better as an on-demand reference than as a skill | Fold as reference |
 | `vite-patterns` | Vite build tool patterns including config, plugins, HMR, env variables, proxy setup, SSR, library mode, depend | `coding-standards` (`REACT.md`) | Catalogue of idioms that repeats the stack rules capsule now ships; better as an on-demand reference than as a skill | Fold as reference |
 | `web-perimeter-owasp-2025-audit` | Passive, non-destructive web perimeter security auditing mapped to OWASP Top 10:2025 surface leads, CDN Unkeye | `security-review` (`PERIMETER.md`) | Passive checks on a deployed site complement the code review | Out of scope |
 | `yoruba-localization-testing` | Test Yoruba (yo) and English bilingual interfaces for tone marks, underdots, Unicode normalization, translatio | `i18n-sync` skill additions | Unicode normalization and language tags apply to any language | Out of scope |
 
-## Covered (47)
+## Covered (49)
 
 Capsule already has a skill that does this job.
 
@@ -183,11 +185,13 @@ Capsule already has a skill that does this job.
 | `story-lifecycle` | Manage a file-based epic → story → sprint development loop without requiring an external project management to | `sprint-planning` | Same ground |
 | `tdd-workflow` | Test-driven development workflow: write a failing test first, watch it fail, implement the smallest change to | `tdd` | Same job; capsule follows the project coverage threshold instead of a fixed 80% |
 | `team-agent-orchestration` | Run team-based orchestration for agent squads: work items with owners and scope, agent Kanban state, branch is | `orchestrate` | Delegation, parallel lanes, and loop control are owned there |
+| `team-builder` | Interactive picker that discovers available agent personas via the claude agents command and agents/ markdown | `orchestrate`, `grilling` (`DISSENT.md`) | An interactive picker of agent personas; delegation to bounded roles and independent voices are already covered |
+| `terminal-ops` | Evidence-first repo execution workflow for ECC. Use when the user wants a command run, a repo checked, a CI fa | `implement`, `verification-before-completion` | Run a command and report proof of what ran; those two skills already require it |
 | `test-collaboration` | Inventory and govern a project's test assets. Connect requirements, business rules, risks, bugs, and cross-bou | `tdd`, `verification-before-completion` | Test registries and regression evidence are owned there |
 | `unified-memory` | Share durable, inspectable context and handoffs between Claude, Codex, Hermes, Cursor, OpenCode, and other age | `handoff` | Task state across sessions and agents is owned there |
 | `verification-loop` | Run a six-phase verification of a Claude Code session's work — build, type check, lint, tests with coverage, s | `verification-before-completion` | Same job; capsule ties the evidence to each claim instead of running a fixed checklist |
 
-## Out of scope (181)
+## Out of scope (177)
 
 Not a fit for a general engineering skill library.
 
@@ -343,11 +347,9 @@ Not a fit for a general engineering skill library.
 | `scientific-pkg-gget` | gget CLI and Python workflow for quick genomic database queries, sequence lookup, BLAST-style searches, enrich | — | Single industry or specialist domain |
 | `scientific-thinking-literature-review` | Systematic literature-review workflow for academic, biomedical, technical, and scientific topics, including se | — | Single industry or specialist domain |
 | `scientific-thinking-scholar-evaluation` | Structured scholarly-work evaluation for papers, proposals, literature reviews, methods sections, evidence qua | — | Single industry or specialist domain |
-| `security-scan` | Scan your Claude Code configuration (.claude/ directory) for security vulnerabilities, misconfigurations, and | — | ECC runtime, hook, or harness tooling rather than a portable skill |
 | `short-video-distribution` | Ship a finished vertical video to TikTok, YouTube Shorts, and Instagram Reels. Checks the file against each pl | — | Business, marketing, or operations work, not software engineering |
 | `social-graph-ranker` | Weighted social-graph ranking for warm intro discovery, bridge scoring, and network gap analysis across X and | — | Business, marketing, or operations work, not software engineering |
 | `social-publisher` | Agent-driven scheduling and publishing of social media posts across 13 platforms via SocialClaw. Use when the | — | Business, marketing, or operations work, not software engineering |
-| `strategic-compact` | Suggests manual context compaction at logical intervals to preserve context through task phases rather than ar | — | ECC runtime, hook, or harness tooling rather than a portable skill |
 | `swift-actor-persistence` | Thread-safe data persistence in Swift using actors — in-memory cache with file-backed storage, eliminating dat | — | Language, framework, or platform outside the seven stacks capsule targets |
 | `swift-concurrency-6-2` | Swift 6.2 Approachable Concurrency — single-threaded by default, @concurrent for explicit background offloadin | — | Language, framework, or platform outside the seven stacks capsule targets |
 | `swift-protocol-di-testing` | Protocol-based dependency injection for testable Swift code — mock file system, network, and external APIs usi | — | Language, framework, or platform outside the seven stacks capsule targets |
@@ -356,11 +358,9 @@ Not a fit for a general engineering skill library.
 | `taste-application` | Generate new video against a distilled style pack and cut it into a finished piece - plan takes from the refer | — | Media production or an ECC-specific design direction |
 | `taste-distillation` | Measure a set of reference videos into a reusable style pack - colour grade as a 3D LUT, cut rhythm as a shot- | — | Media production or an ECC-specific design direction |
 | `tasteforge-video` | Use for file-driven multimodal image, video, and 3D-asset discovery; taste interviews; distill or apply workfl | — | Media production or an ECC-specific design direction |
-| `team-builder` | Interactive picker that discovers available agent personas via the claude agents command and agents/ markdown | — | ECC runtime, hook, or harness tooling rather than a portable skill |
-| `terminal-opener` | Open an executable and its argument array in a visible terminal window through a reusable, shell-free launch p | — | ECC runtime, hook, or harness tooling rather than a portable skill |
-| `terminal-ops` | Evidence-first repo execution workflow for ECC. Use when the user wants a command run, a repo checked, a CI fa | — | ECC runtime, hook, or harness tooling rather than a portable skill |
-| `tinystruct-patterns` | Expert guidance for developing with the tinystruct Java framework. Use when working on the tinystruct codebase | — | Language, framework, or platform outside the seven stacks capsule targets |
-| `token-budget-advisor` | Offer a choice of response depth (25%/50%/75%/100%) with token estimates before answering, then answer at that | — | ECC runtime, hook, or harness tooling rather than a portable skill |
+| `terminal-opener` | Open an executable and its argument array in a visible terminal window through a reusable, shell-free launch p | — | Opens a command in a visible terminal through its own launcher script; tooling for one host, with no method to adapt |
+| `tinystruct-patterns` | Expert guidance for developing with the tinystruct Java framework. Use when working on the tinystruct codebase | — | A guide to one small Java framework; the Java references cover Spring Boot and Quarkus only |
+| `token-budget-advisor` | Offer a choice of response depth (25%/50%/75%/100%) with token estimates before answering, then answer at that | — | Offers answer lengths before replying; a chat preference, not an engineering method |
 | `token-card` | Render a token-usage stat card from local Claude Code, Codex, Gemini CLI, and OpenCode session logs and commit | — | ECC runtime, hook, or harness tooling rather than a portable skill |
 | `ui-canvas` | Preview a UI component mockup in a local browser canvas where the human directly edits it (move, resize, edit | — | ECC runtime, hook, or harness tooling rather than a portable skill |
 | `ui-demo` | Record polished UI demo videos using Playwright. Use when the user asks to create a demo, walkthrough, screen | — | Media production or an ECC-specific design direction |
@@ -372,5 +372,5 @@ Not a fit for a general engineering skill library.
 | `visa-doc-translate` | Translate visa document images (bank deposit, employment, income, and retirement certificates; HEIC, PNG, or J | — | Single industry or specialist domain |
 | `vue-patterns` | Vue.js 3 Composition API patterns, component architecture, reactivity best practices, Pinia state management, | — | Language, framework, or platform outside the seven stacks capsule targets |
 | `windows-desktop-e2e` | E2E testing for Windows native desktop apps (WPF, WinForms, Win32/MFC, Qt) using pywinauto and Windows UI Auto | — | Language, framework, or platform outside the seven stacks capsule targets |
-| `workspace-surface-audit` | Audit the active repo, MCP servers, plugins, connectors, env surfaces, and harness setup, then recommend the h | — | ECC runtime, hook, or harness tooling rather than a portable skill |
+| `workspace-surface-audit` | Audit the active repo, MCP servers, plugins, connectors, env surfaces, and harness setup, then recommend the h | — | Audits the environment to recommend its own catalogue of skills and hooks |
 | `x-api` | X/Twitter API integration for posting tweets, threads, reading timelines, search, and analytics. Covers OAuth | — | Business, marketing, or operations work, not software engineering |

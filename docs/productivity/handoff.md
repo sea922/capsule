@@ -16,6 +16,8 @@ Existing task artifacts retain ownership of status. A portable record links them
 
 The next agent should know what to inspect first without assuming that old test results or another agent's promise prove completion.
 
+When a session is running low on context, a compaction reference says when to compact, what survives, and what to write down first.
+
 ## Design basis
 
 The [preferred-source research](../research/preferred-skill-repositories-workflow-gap-research.md) records all six sources. Matt Pocock contributes the portability boundary, pstack contributes pause/pickup and decision receipts, and Addy Osmani contributes selective context retention. Ordinary final summaries stay with the active workflow.

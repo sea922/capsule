@@ -140,6 +140,8 @@ catalogue audit (`skill-evolve`), keeping docs current
 | `codebase-onboarding` `LIVING-DOCS.md` | `living-docs-governance`, `docs-governance`, command `update-docs` | Found, not used: gstack `document-release` (a post-ship documentation audit); testdouble/han `han-documentation` (writes feature and decision docs, which `decision-records` covers) |
 | `llm-features` `RETRIEVAL.md` | Agent `rag-pipeline-reviewer` | wshobson `llm-application-dev` (topic list only) |
 | `diagnosing-bugs` `BUILD-ERRORS.md` | Agent `build-error-resolver`, command `build-fix` | addyosmani `debugging-and-error-recovery` lists broken builds as a debugging trigger, consistent with keeping this under `diagnosing-bugs`; trailofbits `codeql` `build-fixes.md` is tool-specific; nothing else relevant |
+| `handoff` `COMPACTION.md` | `strategic-compact` (when to compact, what survives, write state first; its hook and thresholds are not taken) | Not searched |
+| `security-review` `AGENT-CONFIG.md` | `security-scan` (the surfaces it checks; its scanner tool and score are not taken) | Not searched |
 | Additions to `i18n-sync`, `implement`, `TOOLS.md` | `yoruba-localization-testing`, `agent-introspection-debugging`, `agentic-engineering` | Not searched |
 
 The searches behind the third column were by file name and keyword across

@@ -27,3 +27,5 @@ The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) treats 
 Before something is published, such as a repository made public, a shared fork, or a released package, the skill sweeps it for secrets, personal data, and internal references using the read-only `security-review-sanitizer` agent when available. Findings name the location and kind of each item, never its value.
 
 For a deployed site the user owns or is authorized to test, a perimeter reference lists passive, read-only checks: exposed repository and environment files, source maps, security headers, cross-origin rules, cookie flags, and what an outside check cannot prove. The review also reads the forge's open dependency and secret-scanning alerts as leads.
+
+For an agent's own configuration, such as a `.claude/` directory, an agent-configuration reference lists what to read in instruction files, permissions, tool server entries, hooks, agent definitions, and installed skills, and how to tell hardening from a reachable weakness. Nothing is run.
