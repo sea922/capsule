@@ -120,7 +120,7 @@ compose.
 
 ## 🧩 Agents and hooks
 
-capsule also ships read-only agents that its skills hand work to, in [`agents/`](agents/README.md), and two hooks.
+capsule also ships read-only agents that its skills hand work to, indexed in [`agents/`](agents/README.md), and two hooks.
 
 | Agent | Used by | What it checks |
 | --- | --- | --- |
@@ -151,7 +151,7 @@ The hooks need Node.js. They stop an agent from casually skipping checks; they a
 | `skills/` | The skills, grouped into bucket folders |
 | `docs/` | Human-facing skill pages under `adlc/`, `engineering/`, `productivity/`, and `authoring/`, with source research under `research/` |
 | `scripts/` | Maintainer helpers: validation, versioning, audit, packaging, traffic |
-| `agents/` | Read-only agents the skills hand work to |
+| `agents/` | Index of the agents, which live with the skills that own them |
 | `hooks/` | The plugin's hooks and their tests |
 | `.claude-plugin/` | Claude Code plugin and marketplace metadata |
 | `.changeset/` | Versioning metadata |

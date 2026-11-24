@@ -49,7 +49,7 @@ read with it.
 
 ## 2. Agents
 
-All read-only. Each agent is its own file in the top-level `agents/` folder and names the skill that uses it.
+All read-only. Each agent is its own file, kept with the skill that owns it and indexed in `agents/README.md`.
 
 | Capsule use | ECC source | Owner skill |
 | --- | --- | --- |
