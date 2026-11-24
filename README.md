@@ -195,11 +195,26 @@ License. See [`rules/README.md`](rules/README.md).
 
 ## 📟 Status line (optional)
 
-A one-line status bar for Claude Code: model, directory and git branch, context
-used, and the session's cost, lines changed, and duration.
+A status bar for Claude Code in tinted colours, with a context bar that fills
+along a teal-to-violet-to-pink gradient.
 
 ```text
-Opus │ capsule ⎇ feat/x* │ ██████░░░░ 68% │ $1.23 +120/-34 15m
+✦ Fable 5.2 · capsule · ⎇ feat/x ●3 ↑2 · ━━━━━━━━━───────────── 43% of 1M · $12.50 · +920 −247 · 1h23m
+```
+
+| Part | Meaning |
+| --- | --- |
+| `✦ Fable 5.2 · capsule` | Model and directory |
+| `⎇ feat/x ●3 ↑2` | Branch, files changed and not committed, commits ahead (`↑`) or behind (`↓`) the remote |
+| `━━━─── 43% of 1M` | Context used and the window size. The percentage turns orange at 65% and red at 80% |
+| `$12.50 · +920 −247 · 1h23m` | Session cost, lines added and removed, duration |
+| `5h 82%` | A rate-limit window, shown only once it passes 70% |
+
+A terminal too narrow for one line gets two, then loses the least important
+details first. See it in your own terminal and font before installing:
+
+```sh
+node statusline/statusline.mjs --demo
 ```
 
 A plugin cannot register a status line, so install it into a project yourself:
@@ -210,19 +225,20 @@ node statusline/install.mjs --target /path/to/your-project --apply
 
 This copies the script to the project's `.claude/` folder and sets `statusLine`
 in `.claude/settings.local.json`. Without `--apply` it only shows what it would
-write, and it never replaces a status line you already have. To use it
-everywhere, copy `statusline/statusline.mjs` somewhere stable and point
-`statusLine.command` in `~/.claude/settings.json` at it.
+write, and it never replaces a status line you already have. Run it again after
+updating capsule to refresh the copy. To use it everywhere, copy
+`statusline/statusline.mjs` somewhere stable and point `statusLine.command` in
+`~/.claude/settings.json` at it.
 
 | Setting | Effect |
 | --- | --- |
-| `CAPSULE_STATUSLINE_USAGE=1` | Adds a second line with the 5-hour and 7-day rate-limit windows, when Claude Code reports them |
-| `CAPSULE_STATUSLINE_ASCII=1` | Uses plain ASCII instead of block and box characters |
+| `CAPSULE_STATUSLINE_USAGE=1` | Always shows the 5-hour and 7-day rate-limit windows, when Claude Code reports them |
+| `CAPSULE_STATUSLINE_COLOR` | `truecolor`, `256`, or `none`. By default it uses 24-bit colour when the terminal sets `COLORTERM`, and 256 colours otherwise |
+| `CAPSULE_STATUSLINE_ASCII=1` | Plain ASCII instead of symbols and line characters |
 | `NO_COLOR=1` | Turns colour off |
 
-The context bar turns yellow at 50%, orange at 65%, and red at 80%. The script
-needs Node.js, makes no network request, and reads only what Claude Code passes
-it plus `git status` for the branch.
+The script needs Node.js, makes no network request, and reads only what Claude
+Code passes it plus `git status` for the branch.
 
 ## 📁 Repository structure
 
