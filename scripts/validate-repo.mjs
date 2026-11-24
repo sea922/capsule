@@ -12,6 +12,9 @@ function walk(path) {
   });
 }
 
+const PORTABLE_KEYS = new Set(['name', 'description', 'metadata', 'license', 'allowed-tools', 'disable-model-invocation']);
+const CLAUDE_VARIABLE = /\$\{?CLAUDE_[A-Z_]+\}?|\$ARGUMENTS\b/g;
+
 export function validateRepository(root) {
   root = realpathSync(root);
   const errors = [];
@@ -74,6 +77,13 @@ export function validateRepository(root) {
     }
     if (meta.name !== name || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(meta.name) || name.length > 64) fail(file, 'name must match directory and skill naming rules');
     if (typeof meta.description !== 'string' || !meta.description.trim() || meta.description.length > 1024) fail(file, 'description must contain 1-1024 characters');
+    // Codex and Cursor read the same SKILL.md: they reject other keys and leave Claude variables as literal text.
+    for (const key of Object.keys(meta)) {
+      if (!PORTABLE_KEYS.has(key)) fail(file, `frontmatter key not portable to other agent hosts: ${key}`);
+    }
+    for (const fence of text.matchAll(/```(?:bash|sh|zsh|shell)\r?\n([\s\S]*?)```/g)) {
+      for (const variable of new Set(fence[1].match(CLAUDE_VARIABLE) ?? [])) fail(file, `Claude-only variable in a shell snippet: ${variable}`);
+    }
     if (!hasEntry(topReadme, name)) fail(file, 'missing top-level README entry');
     const parent = dirname(folder);
     if (parent !== join(root, 'skills') && !hasEntry(read(join(parent, 'README.md')), name)) fail(file, 'missing bucket README entry');
