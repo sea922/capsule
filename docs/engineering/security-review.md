@@ -29,3 +29,5 @@ Before something is published, such as a repository made public, a shared fork, 
 For a deployed site the user owns or is authorized to test, a perimeter reference lists passive, read-only checks: exposed repository and environment files, source maps, security headers, cross-origin rules, cookie flags, and what an outside check cannot prove. The review also reads the forge's open dependency and secret-scanning alerts as leads.
 
 For an agent's own configuration, such as a `.claude/` directory, an agent-configuration reference lists what to read in instruction files, permissions, tool server entries, hooks, agent definitions, and installed skills, and how to tell hardening from a reachable weakness. Nothing is run.
+
+When findings will go to a maintainer, a disclosure channel, or a bounty program, a reportability reference narrows the review to weaknesses an outside party can reach, lists the look-alikes that are usually not reportable, and sets the gate a finding must pass before a report is drafted. The skill sends nothing itself.

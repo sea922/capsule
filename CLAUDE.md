@@ -6,7 +6,7 @@ the skill directory.
 
 Each agent lives with the skill that owns it, at
 `skills/<bucket>/<skill>/assets/claude-agents/<name>.md`, and is listed under
-`agents` in `.claude-plugin/plugin.json` and in the `agents/README.md` index.
+`agents` in `.claude-plugin/plugin.json` and in the `docs/agents.md` index.
 
 Rules live under `rules/<set>/`, at most 250 lines each, adapted from ECC (see
 `rules/THIRD-PARTY-NOTICE.md`). A stack rule starts with a `paths:` header; a

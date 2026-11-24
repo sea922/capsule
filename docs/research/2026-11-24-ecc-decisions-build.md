@@ -141,6 +141,7 @@ catalogue audit (`skill-evolve`), keeping docs current
 | `llm-features` `RETRIEVAL.md` | Agent `rag-pipeline-reviewer` | wshobson `llm-application-dev` (topic list only) |
 | `diagnosing-bugs` `BUILD-ERRORS.md` | Agent `build-error-resolver`, command `build-fix` | addyosmani `debugging-and-error-recovery` lists broken builds as a debugging trigger, consistent with keeping this under `diagnosing-bugs`; trailofbits `codeql` `build-fixes.md` is tool-specific; nothing else relevant |
 | `handoff` `COMPACTION.md` | `strategic-compact` (when to compact, what survives, write state first; its hook and thresholds are not taken) | Not searched |
+| `security-review` `REPORTABILITY.md` | `security-bounty-hunter` (scope first, entry points, the skip list, the quality gate, report structure; nothing is submitted) | Not searched |
 | `security-review` `AGENT-CONFIG.md` | `security-scan` (the surfaces it checks; its scanner tool and score are not taken) | Not searched |
 | Additions to `i18n-sync`, `implement`, `TOOLS.md` | `yoruba-localization-testing`, `agent-introspection-debugging`, `agentic-engineering` | Not searched |
 

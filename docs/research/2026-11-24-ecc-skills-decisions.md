@@ -11,8 +11,9 @@ share a group reason. See the [review](2026-11-24-ecc-review.md), the
 
 The tables show where each skill ended up. The "First decision" column keeps
 the original call: Recommend, Possible, and Fold as reference rows were all
-built, and two review passes then built some rows first marked Covered or Out
-of scope after reading the files instead of only their descriptions.
+built, and two review passes and later requests then built some rows first
+marked Covered or Out of scope after reading the files instead of only their
+descriptions.
 
 ## Summary
 
@@ -118,7 +119,7 @@ Built into capsule on the `feat/ecc-adoption` branch as a skill, reference, agen
 | `regex-vs-llm-structured-text` | Decision framework for parsing structured text (quizzes, forms, invoices, receipts, tables) with a hybrid rege | `llm-features` skill | Useful only for projects that build on LLMs | Possible |
 | `safety-guard` | Guard against destructive operations with three modes: Careful intercepts dangerous commands (rm -rf, git push | `block-destructive` hook | A narrow guard on commands that destroy more than a task needs | Out of scope |
 | `search-first` | Research-before-coding workflow: search npm/PyPI, MCP servers, skills, and GitHub for existing tools before wr | `implement`, `codebase-design`, `writing-for-agents` | Reuse-before-build as one decision step | Adopted |
-| `security-bounty-hunter` | Hunt for exploitable, bounty-worthy security issues in repositories. Focuses on remotely reachable vulnerabili | `code-review-security` agent | Its list of look-alikes that are not findings | Out of scope |
+| `security-bounty-hunter` | Hunt for exploitable, bounty-worthy security issues in repositories. Focuses on remotely reachable vulnerabili | `security-review` (`REPORTABILITY.md`), `code-review-security` agent | Narrowing a review to reachable, reportable findings and dropping the look-alikes | Out of scope |
 | `security-scan` | Scan your Claude Code configuration (.claude/ directory) for security vulnerabilities, misconfigurations, and | `security-review` (`AGENT-CONFIG.md`) | The surfaces to read when auditing an agent configuration; its scanner tool and score are not taken | Out of scope |
 | `seo` | Audit, plan, and implement SEO improvements across technical SEO, on-page optimization, structured data, Core | `seo` skill | Search visibility is web work no capsule skill owned | Out of scope |
 | `skill-host-compat` | Lint ECC skills for Codex/Cursor-safe frontmatter and Claude-only substitutions before a skill PR | `scripts/validate-repo.mjs` | Capsule ships one SKILL.md to several hosts, so the check runs in its validator | Adopted |
@@ -137,7 +138,8 @@ Built into capsule on the `feat/ecc-adoption` branch as a skill, reference, agen
 
 ## Covered (49)
 
-Capsule already has a skill that does this job.
+Capsule already has a skill that does this job. `team-builder` and
+`terminal-ops` were first marked Out of scope.
 
 | ECC skill | What it is (ECC's description) | In capsule | Reason |
 | --- | --- | --- | --- |

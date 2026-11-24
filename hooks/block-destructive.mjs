@@ -122,10 +122,10 @@ function databaseReason(parts, position) {
   const client = isClient(tool) ? tool : REMOTE_RUNNERS.has(tool) ? args.find(isClient) : undefined;
   if (!client || args.includes('--help')) return null;
   if (client === 'dropdb') return 'dropdb deletes a whole database';
-  let input = `${parts[position].text}\n${parts[position].heredoc ?? ''}`;
-  for (let index = position; index > 0 && parts[index].operator === '|'; index -= 1) {
-    input += `\n${parts[index - 1].text}\n${parts[index - 1].heredoc ?? ''}`;
-  }
+  // Shell quotes are removed first, so what is left in quotes is a SQL string literal: text, not a statement.
+  const sql = (part) => `${tokens(part.text).join('\n')}\n${part.heredoc ?? ''}`.replace(/'(?:[^']|'')*'/g, "''");
+  let input = sql(parts[position]);
+  for (let index = position; index > 0 && parts[index].operator === '|'; index -= 1) input += `\n${sql(parts[index - 1])}`;
   const dropped = DROP_DATABASE.exec(input);
   return dropped ? `DROP ${dropped[1].toUpperCase()} deletes a whole ${dropped[1].toLowerCase()}` : null;
 }

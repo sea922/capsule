@@ -13,8 +13,6 @@ Read the latest user direction, canonical issue/plan/research artifact, current 
 
 For pickup, treat a supplied handoff as historical evidence. Check its revision, files, unresolved decisions, and running work against the current environment before continuing. Resolve stale pointers and contradictory state first; completed work remains complete only where the current evidence supports it.
 
-When the reason is a session running low on context, read [references/COMPACTION.md](references/COMPACTION.md) for when to compact and what to write down first.
-
 **Complete when:** the destination, current phase, canonical sources, and material differences from recorded state are known.
 
 ## 2. Write the continuation contract
@@ -35,6 +33,8 @@ Include only the fields relevant to continuation:
 When the recipient is a person, open with what is waiting on them, or say nothing is. Give each pending decision the facts, evidence, and risk needed to make it from the handoff alone; a link can add depth but cannot stand in for the item. Assume they remember the last thing they asked and nothing after it.
 
 Use pointers for lengthy investigation and keep active errors and constraints directly visible. Include commands needed to reproduce evidence, but exclude credentials, tokens, personal data, and environment dumps. Name the authorized credential source when needed, never its value.
+
+When the reason is a session running low on context, read [references/COMPACTION.md](references/COMPACTION.md) for when to compact and what to write down first.
 
 **Complete when:** another agent can identify the next action and its prerequisites without guessing task state or rereading the conversation — and, when the recipient is a person, every pending decision is self-contained and what waits on them leads the handoff.
 

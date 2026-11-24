@@ -27,6 +27,6 @@ with their Codex versions.
 
 Every agent file lives with the skill that owns it, at
 `skills/<bucket>/<skill>/assets/claude-agents/<name>.md`, so it travels with
-that skill. This page is the index. To add an agent, put its file there, list
+that skill. This page is the index; it lives under `docs/` because the plugin host reads every file in a root `agents/` folder as an agent definition. To add an agent, put its file beside its skill, list
 it under `agents` in `.claude-plugin/plugin.json` and in the table above, and
-add it to `scripts/review-agents.test.mjs` if it is read-only.
+keep its tools read-only; `scripts/review-agents.test.mjs` checks every agent except the `orchestrate-*` roles.

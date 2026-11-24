@@ -129,6 +129,8 @@ const allowed = [
   'brew install mysql && echo "do not drop database"',
   'createdb x && echo "use DROP DATABASE x later" && psql -l',
   'psql -c "CREATE SCHEMA reporting"',
+  'psql -c "select \'drop schema\' as note"',
+  'psql -c "COMMENT ON TABLE t IS \'do not drop database\'"',
   'echo "never DROP SCHEMA public" && psql -l',
   'psql -h db.internal -c "select 1"',
   'dropdb --help',

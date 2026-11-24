@@ -19,7 +19,7 @@ function walk(directory) {
 const skillDirectories = manifest.skills.map((entry) => join(ROOT, entry));
 
 test('every agent file is in the manifest and both agent indexes', () => {
-  const agentsIndex = read('agents', 'README.md');
+  const agentsIndex = read('docs', 'agents.md');
   const registered = new Set(manifest.agents.map((entry) => join(ROOT, entry)));
   const files = walk(join(ROOT, 'skills')).filter((path) => dirname(path).endsWith(join('assets', 'claude-agents')));
   assert.ok(files.length > 0);
@@ -27,7 +27,7 @@ test('every agent file is in the manifest and both agent indexes', () => {
     const name = basename(file, '.md');
     assert.ok(registered.has(file), `${name} is not in plugin.json`);
     if (name.startsWith('orchestrate-')) continue; // indexed as a group
-    assert.ok(agentsIndex.includes(`[${name}]`), `${name} is not in agents/README.md`);
+    assert.ok(agentsIndex.includes(`[${name}]`), `${name} is not in docs/agents.md`);
     assert.ok(readme.includes(`| \`${name}\` |`), `${name} is not in the README agent table`);
   }
 });
