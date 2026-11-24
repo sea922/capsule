@@ -1,5 +1,14 @@
 # Review triage
 
+## Contents
+
+- [1. Collect](#1-collect)
+- [2. Classify each author](#2-classify-each-author)
+- [3. Extract every finding](#3-extract-every-finding)
+- [4. Deduplicate and verify](#4-deduplicate-and-verify)
+- [5. Decide each cluster](#5-decide-each-cluster)
+- [Replies and resolution](#replies-and-resolution)
+
 Turn every piece of PR feedback into a short worklist. Each **cluster** (one
 defect, however many reviewers raised it) gets exactly one outcome: **Fix**,
 **Dismiss** with a reason, or **Escalate** to a human. People outrank bots. Bot
@@ -11,15 +20,14 @@ round's Fix wave is pushed, or when nothing is left to fix.
 
 ## 1. Collect
 
-Use the watcher snapshot for one head. It does not include some fields, so add
-them with read-only `gh api` calls on the same head, keeping host and
-repository explicit:
+Use the watcher snapshot for one head. It already includes PR reactions (`feedback.reactions` and `eyes_reactions`) and check summaries (`checks.held_failures` vs `checks.actionable_failures`). Add the fields it does not include with read-only `gh api` calls on the same head, keeping host and repository explicit:
 
 - **Review threads:** location (`path`, `line`, `startLine`, `originalLine`),
   `resolvedBy`, and every comment's `databaseId` and `author { login __typename }`.
   Use GraphQL `reviewThreads` and paginate.
 - **Inline comments:** `original_line` and `original_commit_id`. `line` is
   null on an outdated comment.
+- **Comment reactions (when checking an announced reviewer on a comment):** `repos/{repo}/issues/comments/{id}/reactions` (PR-level reactions are already in `feedback.reactions`).
 - **Check-run annotations:** fetch `check-runs/{id}/annotations` only for runs
   whose `annotations_count > 0`.
 - **Diff hunks:** take the changed files and hunk ranges from `pulls/{n}/files`.

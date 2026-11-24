@@ -3,7 +3,7 @@
 Match the library the project already uses; a second property-testing library is not worth the property you wanted. Detect before proposing:
 
 ```bash
-rg -l "from hypothesis|fast-check|Test.QuickCheck|Hedgehog|proptest|quickcheck|FsCheck|net.jqwik|pgregory.net/rapid|io.kotest.property|StreamData|scalacheck|test.check"
+rg -l "hypothesis|fast-check|QuickCheck|Hedgehog|proptest|quickcheck|FsCheck|jqwik|pgregory\.net/rapid|kotest\.property|StreamData|scalacheck|test\.check" -g "*.{py,ts,js,rs,hs,go,java,kt,cs,fs,ex,exs,scala,clj,toml,json,txt,yaml,yml,cabal,gradle,xml}"
 ```
 
 Confirm API details against the installed version's documentation before relying on them; the names below are orientation, not a pinned reference.

@@ -1,12 +1,20 @@
 # Git workflow
 
-`git-workflow` handles commits, branches, rebases and syncs, stacks, backports,
-local integration, and recovery from interrupted Git operations. It is
-model-invoked and can also be requested directly.
+`git-workflow` handles commits, branches, rebases and syncs, branch freshness,
+stacks, backports, local integration, and recovery from interrupted Git
+operations. It is model-invoked and can also be requested directly.
 
 Try: “Commit my fix without the other staged files,” “Rebase this stack after
-the parent squash-merged,” “Backport this fix to release/2,” “I committed to the
-wrong branch,” or “Choose a branching policy for our release process.”
+the parent squash-merged,” “Backport this fix to release/2,” “Split this one-way-door PR into a
+reversible PR and a stacked follow-up,” “I committed to the
+wrong branch,” “Is my branch up to date, and did these fixes already land in a
+PR?” or “Choose a branching policy for our release process.”
+
+For a stale branch or an old PR, the skill decides a verdict before syncing:
+current, partially landed, already landed, superseded by another PR, or needing
+a rewrite. It checks where each commit went, including squash merges, and what
+landing the branch would still change, so it does not rebase work that is
+already on the base or bring back something the base removed.
 
 The skill establishes repository state and the requested endpoint, then loads
 only the relevant references. It follows existing repository policy and user
@@ -27,7 +35,8 @@ existing owners.
 | --- | --- |
 | Run local inspection or create a commit message draft | [Runnable tooling and templates](../../skills/engineering/git-workflow/references/tooling.md) |
 | Discover rules or choose a branch/merge policy | [Repository policy](../../skills/engineering/git-workflow/references/policy.md) |
-| Start, review, commit selected paths, sync, backport, or maintain a stack | [Common recipes](../../skills/engineering/git-workflow/references/recipes.md) |
+| Start, review, commit selected paths, sync, backport, maintain a stack, or split a one-way-door PR | [Common recipes](../../skills/engineering/git-workflow/references/recipes.md) |
+| Decide whether a branch or PR is current, already landed, or superseded | [Branch freshness](../../skills/engineering/git-workflow/references/freshness.md) |
 | Recover misplaced commits or interrupted Git operations | [Recovery](../../skills/engineering/git-workflow/references/recovery.md) |
 | Handle squash ancestry, leases, stale checks, and merge queues | [Integration pitfalls](../../skills/engineering/git-workflow/references/integration.md) |
 
@@ -58,4 +67,9 @@ universal rules.
 The [kit expansion record](../research/2026-09-26-git-workflow-kit.md) adds official
 Git references. The [validation record](../research/2026-09-26-git-workflow-validation.md)
 documents a blind scenario comparison and six executable local Git exercises,
-including their limits.
+including their limits. The [branch freshness record](../research/2026-10-26-branch-freshness.md)
+covers the stale-branch verdict, its sources including Theo Browne's tstack
+`modernize` skill, two more Git exercises, and a blind comparison on three
+freshness scenarios.
+
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) extends the freshness check with conceptual conflicts in untouched files, merge commits a rebase would silently drop, and an explanation for every changed hunk in `git range-diff`. These come from gstack's `modernize`.

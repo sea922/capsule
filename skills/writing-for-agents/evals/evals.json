@@ -67,6 +67,17 @@
         "It offers the concrete next step of running the baseline scenario and capturing verbatim rationalizations.",
         "It does not simply refuse; it proposes the work that would justify the claim."
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "Review this draft eval entry for our `sql-review` skill: `{\"id\": 1, \"prompt\": \"Review the SELECT * example from SKILL.md\", \"expected_output\": \"Good SQL review\", \"files\": []}`. Notice there is no `expectations` array and it references an inline example from SKILL.md. Fix the eval design without editing files.",
+      "expected_output": "Identifies three defects — missing checkable `expectations` array, vague `expected_output`, and eval contamination from referencing an inline `SKILL.md` example — and rewrites it into a realistic, uncontaminated prompt with concrete, discriminating `expectations`.",
+      "files": [],
+      "expectations": [
+        "Flags the missing `expectations` array as preventing objective pass/fail grading.",
+        "Flags the reference to an inline `SKILL.md` example as eval contamination that lets a model memorize rather than generalize.",
+        "Supplies a realistic, self-contained SQL review prompt paired with specific, checkable `expectations` without editing repository files."
+      ]
     }
   ]
 }

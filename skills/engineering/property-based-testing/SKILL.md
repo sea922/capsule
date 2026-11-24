@@ -9,7 +9,11 @@ An example test pins one point; a property states a rule for every valid input a
 
 ## Entry contract
 
-Detect the project's language and any property-testing library already in use; see [references/libraries.md](references/libraries.md). Write in the existing library. When none is present, adding one is the user's dependency decision: propose it once with the specific property you would write, and continue with example tests if they decline.
+Route by task before starting:
+
+- **Author new property tests:** detect the library with [references/libraries.md](references/libraries.md) and run Steps 1–4. If no property-testing library is present, propose adding one once (naming the exact property) and continue with example tests via `tdd` if the user declines.
+- **Review existing property tests (read-only):** read [references/generators-and-triage.md](references/generators-and-triage.md#reviewing-existing-property-tests) and grade every test against its severity rubric without mutating files.
+- **Triage a counterexample:** jump to Step 4 and [references/generators-and-triage.md](references/generators-and-triage.md#triage-a-counterexample).
 
 A property can be the red test in a `tdd` slice. It must then fail for the missing behavior before production code changes, like any other red test.
 
@@ -38,20 +42,13 @@ A property test asserts nothing in two ways:
 - **Tautology:** the assertion restates the implementation (`add(a, b) == a + b`, `encode(d) == urlencode(d)` when `encode` wraps `urlencode`), so any bug they share passes. Replace it with a relation that constrains the function without recomputing it. `f(x) == f(x)` is a real determinism property only when `f` touches hashing, iteration order, clocks, or shared state.
 - **Vacuity:** filters discard nearly every case, contradict each other, or narrow the domain to one value, so the test passes having exercised nothing.
 
-Name a realistic wrong implementation the property would reject. Then confirm it: run the test against a deliberate local sabotage (drop an escape, flip a comparison, lose the last element) and restore the original, or cite an existing counterexample. Leave no sabotage in the tree.
+Name a realistic wrong implementation the property would reject. Then confirm it: run the test against a deliberate local sabotage (drop an escape, flip a comparison, lose the last element) in an isolated copy or task-owned temporary edit, diff against a pristine copy to prove the sabotage landed, and restore without stashing, resetting, or reverting user work — or cite a concrete counterexample (for review-only requests, cite the defect without mutating files). Leave no sabotage in the tree.
 
 **Complete when:** each property has an observed or cited failure against a realistic defect, and the run reports a non-trivial number of executed cases.
 
 ## 4. Run and triage
 
-Run the tests with a case count suited to the loop: small while iterating, larger in CI. Record the seed or replay token for every failure. A shrunk counterexample means one of four things:
-
-| Finding | Response |
-| --- | --- |
-| Input violates a documented precondition | Constrain the generator |
-| Property contradicts the contract | Fix the property |
-| Contract is silent at this edge | Report as ambiguous and ask the owner; not a bug |
-| Documented guarantee violated | Real defect: report the shrunk input with the contract quote |
+Run the tests with a case count suited to the loop: small while iterating, larger in CI. Record the seed or replay token for every failure. Classify every shrunk counterexample using the six-category triage table and language-contract rules in [references/generators-and-triage.md](references/generators-and-triage.md#triage-a-counterexample) (`Over-broad generator`, `Wrong property`, `Ambiguous spec`, `Code defect`, `Test artifact`, or `Possible inconsistency`).
 
 Pin every real counterexample as an explicit example so it replays on every run. A defect whose cause is not obvious goes to `diagnosing-bugs`; its fix proceeds through `tdd` with the pinned counterexample as red.
 
@@ -79,4 +76,9 @@ Sabotage check: removing the escaping of `&` in `encode_params` makes the second
 
 ## Report
 
-For each property: the contract source, the property and its strength rank, the generator's domain and exclusions, the distribution evidence, the sabotage or counterexample that proves it can fail, the run command with case count, and any classified failures with seeds. State properties considered and rejected, and why.
+Match the output to the branch:
+
+- **Authoring:** contract source, property and strength rank, generator domain/exclusions, distribution evidence, sabotage/counterexample proof, run command with case count, classified failures with seeds, and rejected properties.
+- **Review:** severity-graded findings per test and the strongest missing catalog property supported by the contract.
+- **Triage:** shrunk input, replay seed, contract quote, classification, and pinned example or next route (`diagnosing-bugs` / `tdd`).
+- **No algebraic shape:** explain why and route to example tests via `tdd`.

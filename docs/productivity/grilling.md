@@ -27,3 +27,5 @@ When the tree is resolved, the skill summarizes the outcome, decisions, assumpti
 ## Attribution and design basis
 
 This original local skill generalizes the design-tree, frontier-round, fact-versus-decision, and confirmation model in Matt Pocock's MIT-licensed [`grilling`](https://github.com/mattpocock/skills/tree/main/skills/productivity/grilling). It also draws on source-backed questioning, option, trade-off, and composition practices from the repository's preferred skill sources. No upstream skill instructions are vendored. See the pinned [research record](../research/grilling-skill-research.md).
+
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) words yes-or-no questions so "yes" accepts the recommendation (Matt Pocock's `grilling`, EveryInc's `ce-plan`) and turns choices that would not change the outcome into stated proposals (Superpowers' rebuilt `brainstorming`).

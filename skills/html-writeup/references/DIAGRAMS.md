@@ -74,7 +74,7 @@ The accessible description and the visible arrows must agree on initiator, recei
 
 ## Styling within a diagram
 
-Prefer the page's theme (set once in `initialize`, see SHELL.md) over per-diagram colors. When one node must stand out, use `classDef` + `class` rather than inline styles so it stays theme-consistent:
+Prefer the page's theme (set once in `initialize`, see [MERMAID.md](MERMAID.md)) over per-diagram colors. When one node must stand out, use `classDef` + `class` rather than inline styles so it stays theme-consistent:
 
 ```
 flowchart LR
@@ -103,6 +103,7 @@ Sequence with numbered steps:
 ```
 sequenceDiagram
   accTitle: Checkout call sequence
+  accDescr: User sends POST /checkout to API, API reserves stock in DB, DB confirms ok, and API returns 200 confirmed to User.
   autonumber
   participant U as User
   participant API

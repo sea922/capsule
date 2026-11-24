@@ -19,11 +19,13 @@ class WatchTests(unittest.TestCase):
         }}}}
         replies = [PR, [[{"id": 1}], [{"id": 2}]], [[]],
                    [[{"id": 3, "user": {"login": "copilot-pull-request-reviewer"}}]],
+                   [[{"content": "eyes", "user": {"login": "reviewer-a"}}]],
                    [connection([{"id": "t1"}], True), connection([{"id": "t2"}], False)], PR]
         with patch.object(watcher, "gh", side_effect=replies):
             result = watcher.snapshot("github.com", "owner/repo", 1)
         self.assertEqual(len(result["feedback"]["comments"]), 2)
         self.assertEqual(result["feedback"]["reviews"][0]["id"], 3)
+        self.assertEqual(result["eyes_reactions"], ["reviewer-a"])
         self.assertEqual(len(result["threads"]), 2)
 
     def test_pending_review_and_its_comments_are_left_out(self):
@@ -31,7 +33,7 @@ class WatchTests(unittest.TestCase):
             "nodes": [], "pageInfo": {"hasNextPage": False}}}}}}]
         inline = [[{"id": 10, "pull_request_review_id": 7}, {"id": 11, "pull_request_review_id": 8}]]
         reviews = [[{"id": 7, "state": "PENDING"}, {"id": 8, "state": "COMMENTED"}]]
-        with patch.object(watcher, "gh", side_effect=[PR, [[]], inline, reviews, pages, PR]):
+        with patch.object(watcher, "gh", side_effect=[PR, [[]], inline, reviews, [[]], pages, PR]):
             result = watcher.snapshot("github.com", "owner/repo", 1)
         self.assertEqual([r["id"] for r in result["feedback"]["reviews"]], [8])
         self.assertEqual([c["id"] for c in result["feedback"]["inline_comments"]], [11])
@@ -40,9 +42,20 @@ class WatchTests(unittest.TestCase):
         later = dict(PR, headRefOid="h2")
         pages = [{"data": {"repository": {"pullRequest": {"reviewThreads": {
             "nodes": [], "pageInfo": {"hasNextPage": False}}}}}}]
-        with patch.object(watcher, "gh", side_effect=[PR, [[]], [[]], [[]], pages, later]):
+        with patch.object(watcher, "gh", side_effect=[PR, [[]], [[]], [[]], [[]], pages, later]):
             with self.assertRaisesRegex(RuntimeError, "moved"):
                 watcher.snapshot("github.com", "owner/repo", 1)
+
+    def test_failed_check_is_held_while_its_rerun_is_in_progress(self):
+        rollup = [
+            {"workflowName": "CI", "name": "test", "status": "COMPLETED", "conclusion": "FAILURE"},
+            {"workflowName": "CI", "name": "test", "status": "IN_PROGRESS", "conclusion": None},
+            {"workflowName": "CI", "name": "lint", "status": "COMPLETED", "conclusion": "FAILURE"},
+        ]
+        summary = watcher.summarize_checks(rollup)
+        self.assertEqual(summary["in_progress"], ["test"])
+        self.assertEqual(summary["held_failures"], ["test"])
+        self.assertEqual(summary["actionable_failures"], ["lint"])
 
     def test_edit_same_id_wakes_and_closure_is_not_merge(self):
         with tempfile.TemporaryDirectory() as directory:

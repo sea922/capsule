@@ -1,6 +1,6 @@
 ---
 name: writing-for-agents
-description: Write and revise documents that agents consume - skills, SKILL.md, AGENTS.md, CLAUDE.md, and reference files reached by a pointer. Use when creating, editing, reviewing, or splitting a skill, when writing or updating AGENTS.md or CLAUDE.md, when a skill triggers unreliably or gets ignored, when agent instructions are bloated or followed inconsistently, or when deciding what belongs in context versus behind a pointer. Do not use for human-facing prose, which belongs to writing-for-humans.
+description: Write, test, and revise documents that agents consume - skills, SKILL.md, AGENTS.md, CLAUDE.md, and reference files reached by a pointer. Use when creating, editing, reviewing, splitting, or writing evals for a skill, when writing or updating AGENTS.md or CLAUDE.md, when a skill triggers unreliably or gets ignored, when agent instructions are bloated or followed inconsistently, or when deciding what belongs in context versus behind a pointer. Do not use for human-facing prose (writing-for-humans) or for changing a skill because of session evidence (skill-evolve).
 ---
 
 # Writing for agents
@@ -83,6 +83,12 @@ the agent needs it:
    set, which is a fine arrangement rather than a smell.
 3. **Disclosed reference** is pushed into a separate file behind a pointer and
    loaded only when the pointer fires.
+
+Below the document sits the **tool** itself: its `--help`, and the errors and
+replies it gives when a guess is wrong. An error that names the right value and
+the next step reaches the agent at the moment it needs it and costs nothing on
+every other run. When a failure comes from a tool call, fix the tool's message
+or add a check before adding a line of prose.
 
 Push too little down and the top bloats. Push too much and you hide material the
 agent actually needs. That tension is the whole decision.
@@ -200,13 +206,8 @@ restatements that leading words retire.
 2. **Place each piece on the hierarchy.** Sort content into steps and reference,
    then assign each piece a rung. Inline what every branch needs and disclose what
    only some branches reach. *Complete when every piece has a rung and a reason.*
-3. **Write the pointer.** Front-load the leading word, carry one trigger per
-   branch, and keep only the identity needed to separate this document from its
-   neighbours. *Complete when the pointer names the material and every distinct
-   branch that should reach it.*
-4. **Prune.** Apply single source of truth, the environment test, relevance, and
-   the no-op hunt. Fold restatements into leading words. *Complete when every
-   remaining line changes behaviour against the default.*
+3. **Write the pointer.** Apply the three rules in [Context pointers](#context-pointers). *Complete when the pointer names the material and every distinct branch that should reach it.*
+4. **Prune.** Apply [Pruning](#pruning) and fold restatements into leading words. When an edit adds an idea, change the line that already covers it before appending a new one, and report the document's size before and after. *Complete when environment caches, duplicates, and obvious filler are removed and the before/after size is noted (Step 5 tests whether remaining lines beat the default).*
 5. **Verify proportionately.** Match the effort to the stakes using
    [`references/TESTING-SKILLS.md`](references/TESTING-SKILLS.md). A document that
    enforces a rule under pressure needs a documented baseline failure before it
@@ -216,12 +217,9 @@ restatements that leading words retire.
 
 ## Deliver
 
-Lead with the document. Report the rung decisions and what you pruned only when
-the user is reviewing structure or a material constraint needs disclosure.
+Lead with the document. For edits or trims, include the before/after size and a brief reason for what was pruned; for new drafts, explain rung decisions only when the user is reviewing structure or a material constraint needs disclosure.
 
-State what you verified and what you did not, in plain terms. An untested
-document is a legitimate delivery when the stakes are low and you say so. An
-untested document presented as proven is not.
+State what you verified and what you did not, in plain terms (see [`references/TESTING-SKILLS.md`](references/TESTING-SKILLS.md)).
 
 Decline to write a document whose stated purpose and actual effect differ, such
 as instructions that quietly redirect an agent's trust, exfiltrate data, or

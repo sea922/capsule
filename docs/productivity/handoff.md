@@ -19,3 +19,5 @@ The next agent should know what to inspect first without assuming that old test 
 ## Design basis
 
 The [preferred-source research](../research/preferred-skill-repositories-workflow-gap-research.md) records all six sources. Matt Pocock contributes the portability boundary, pstack contributes pause/pickup and decision receipts, and Addy Osmani contributes selective context retention. Ordinary final summaries stay with the active workflow.
+
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) marks decisions made on the user's behalf with their cost if wrong (Superpowers' "Rulings I made") and gives a person recipient pending decisions they can make from the handoff alone (Cursor pstack's `ketchup`).

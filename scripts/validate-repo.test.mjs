@@ -58,12 +58,22 @@ test('rejects missing documentation links, ignores illustrative code', (t) => {
   assert.doesNotMatch(errors, /missing-example/);
 });
 
-test('rejects malformed evals and missing fixture files', (t) => {
+test('rejects malformed evals, missing expectations, and missing fixture files', (t) => {
   const { root, put } = fixture(t);
   put('skills/engineering/sample/evals/evals.json', { skill_name: 'other', evals: [{ id: 1, prompt: 'Try it', expected_output: 'Result', files: ['evals/missing.txt'] }] });
   const errors = validateRepository(root).join('\n');
   assert.match(errors, /skill_name/);
+  assert.match(errors, /expectations/);
   assert.match(errors, /missing.txt/);
+});
+
+test('accepts valid evals with nonempty expectations', (t) => {
+  const { root, put } = fixture(t);
+  put('skills/engineering/sample/evals/evals.json', {
+    skill_name: 'sample',
+    evals: [{ id: 1, prompt: 'Try it', expected_output: 'Result', files: [], expectations: ['Returns the expected result.'] }],
+  });
+  assert.deepEqual(validateRepository(root), []);
 });
 
 test('accepts backtick README labels and rejects unsafe workflow defaults', (t) => {

@@ -86,11 +86,3 @@ Resolve the conflict using total system complexity:
 4. isolate evidenced change and failure;
 5. count navigation, testing, migration, and operational costs;
 6. choose the more reversible option when evidence is close.
-
-## Primary sources
-
-- [Martin, Single Responsibility Principle](https://blog.cleancoder.com/uncle-bob/2014/05/08/SingleReponsibilityPrinciple.html)
-- [Martin, Open-Closed Principle](https://objectmentor.com/resources/articles/ocp.pdf)
-- [Liskov and Wing, A Behavioral Notion of Subtyping](https://www.cs.cmu.edu/~wing/publications/LiskovWing94.pdf)
-- [Martin, Interface Segregation Principle](https://objectmentor.com/resources/articles/isp.pdf)
-- [Martin, Dependency Inversion Principle](https://objectmentor.com/resources/articles/dip.pdf)

@@ -1,6 +1,6 @@
 ---
 name: grilling
-description: Stress-test a consequential or ambiguous plan, decision, or idea through a live interview. Use when the user asks to be grilled, wants their thinking challenged, or material choices remain silently assumed. Do not use for clear mechanical work, information retrieval, or review of a completed artifact.
+description: Stress-test a consequential or ambiguous plan, decision, or idea through a live interview. Use when the user asks to be grilled, wants you to poke holes in an idea or interview them, wants their thinking challenged, or material choices remain silently assumed. Do not use for clear mechanical work (implement), information retrieval (research), review of a completed artifact (code-review), or sequencing already-clear requirements (planning-and-task-breakdown).
 ---
 
 # Grilling
@@ -36,7 +36,9 @@ Ask independent frontier questions together unless the user requests one questio
 3. concrete options when comparison helps;
 4. a recommendation with its principal trade-off.
 
-Before sending the round, remove any question whose wording, options, or recommendation could change based on another unanswered question in that round. For example, settle the intended user and guest definition before asking about conversion thresholds, packaging, limits, or rollout evidence.
+Word a yes-or-no or confirm question so that "yes" accepts your recommendation. A choice whose answer would not change the outcome is not a question: list those calls separately under **Proposals (correct if you disagree)** rather than mixing them into the numbered questions.
+
+Before sending the round, remove any question whose wording, options, or recommendation could change based on another unanswered question in that round. For example, settle whether a webhook delivery system targets at-least-once or best-effort semantics before asking about retry backoff curves, dead-letter retention windows, or alert thresholds.
 
 Wait for the user's answers. Do not choose on their behalf or bury the recommendation in neutral option lists.
 
@@ -60,6 +62,6 @@ Summarize:
 - rejected alternatives and why;
 - remaining unknowns and their owners.
 
-Ask the user to confirm or correct the summary. Do not edit files, update trackers, create a plan, implement, commit, publish, or take other downstream action as part of grilling. The caller owns the durable artifact and all execution.
+Ask the user to confirm or correct the summary. If the user ends the interview early and asks to move on, return the settled decisions alongside every unconfirmed assumption and open branch without claiming confirmed shared understanding. Do not edit files, update trackers, create a plan, implement, commit, publish, or take other downstream action as part of grilling. The caller owns the durable artifact and all execution.
 
 **Complete when:** the user explicitly confirms the summary. Return that summary to the caller without the interview transcript.

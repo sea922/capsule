@@ -88,6 +88,9 @@ export function validateRepository(root) {
         if (!Number.isInteger(item.id) || ids.has(item.id)) fail(evalPath, 'eval ids must be unique integers');
         ids.add(item.id);
         for (const field of ['prompt', 'expected_output']) if (typeof item[field] !== 'string' || !item[field].trim()) fail(evalPath, `missing ${field}`);
+        if (!Array.isArray(item.expectations) || !item.expectations.length || item.expectations.some((e) => typeof e !== 'string' || !e.trim())) {
+          fail(evalPath, `eval ${item.id} must have a nonempty expectations array of strings`);
+        }
         if (!Array.isArray(item.files)) fail(evalPath, 'files must be an array');
         for (const path of Array.isArray(item.files) ? item.files : []) {
           if (typeof path !== 'string') { fail(evalPath, 'fixture path must be a string'); continue; }

@@ -152,9 +152,9 @@ repeatable. Save the prompts in `evals/evals.json`.
 Write prompts a real user would plausibly send, not prompts engineered to
 succeed. Two or three realistic ones beat ten synthetic ones.
 
-Run each prompt twice, in the same batch: once with the document, once without.
+Run each prompt as a paired batch — at least 3 reps per arm (matching `skill-evolve`), once with the document and once with the control.
 For a new document the control is no document at all. For an edit, the control is
-the previous version, so snapshot it before editing.
+the previous version, so snapshot it before editing. When testing catalog trigger routing (especially among sibling skills), add an optional `"trigger": { "positive": [...], "negative": [...] }` block alongside `"evals"` naming the expected sibling owner on negative queries.
 
 Expectations must be objectively verifiable and worded so the result reads
 clearly later. Check them with a script wherever a script can decide, since

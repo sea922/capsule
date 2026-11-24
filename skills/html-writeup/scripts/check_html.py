@@ -30,15 +30,26 @@ class DocumentParser(HTMLParser):
         self.fragments: list[str] = []
         self.external_resource_urls: list[str] = []
         self.embedded_resource_text: list[str] = []
+        self.script_texts: list[str] = []
+        self.style_texts: list[str] = []
+        self.prose_texts: list[str] = []
+        self.mermaid_blocks: list[str] = []
         self.images_without_alt = 0
         self.img_roles_without_name = 0
         self.table_count = 0
+        self.th_total = 0
+        self.th_unscoped = 0
         self.scoped_headers = 0
         self.has_charset = False
         self.has_viewport = False
         self.html_lang = ""
         self._in_title = False
-        self._in_resource_block = False
+        self._in_style = False
+        self._in_importmap = False
+        self._in_script = False
+        self._code_depth = 0
+        self._mermaid_depth = 0
+        self._current_mermaid: list[str] = []
         self.title = ""
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
@@ -81,28 +92,64 @@ class DocumentParser(HTMLParser):
         style = values.get("style", "")
         if style:
             self.embedded_resource_text.append(style)
-        if tag == "style" or (tag == "script" and values.get("type", "").lower() == "importmap"):
-            self._in_resource_block = True
+            self.style_texts.append(style)
+        if tag == "style":
+            self._in_style = True
+        elif tag == "script":
+            script_type = values.get("type", "").lower()
+            if script_type == "importmap":
+                self._in_importmap = True
+            else:
+                self._in_script = True
+        if tag in {"code", "pre"}:
+            self._code_depth += 1
+            classes = set(values.get("class", "").split())
+            if tag == "pre" and "mermaid" in classes:
+                self._mermaid_depth += 1
+                self._current_mermaid = []
         if tag == "img" and "alt" not in values:
             self.images_without_alt += 1
         if values.get("role") == "img" and not (values.get("aria-label") or values.get("aria-labelledby")):
             self.img_roles_without_name += 1
         if tag == "table":
             self.table_count += 1
-        if tag == "th" and values.get("scope") in {"row", "col", "rowgroup", "colgroup"}:
-            self.scoped_headers += 1
+        if tag == "th":
+            self.th_total += 1
+            if values.get("scope") in {"row", "col", "rowgroup", "colgroup"}:
+                self.scoped_headers += 1
+            else:
+                self.th_unscoped += 1
 
     def handle_endtag(self, tag: str) -> None:
         if tag == "title":
             self._in_title = False
-        if tag in {"style", "script"}:
-            self._in_resource_block = False
+        if tag == "style":
+            self._in_style = False
+        if tag == "script":
+            self._in_importmap = False
+            self._in_script = False
+        if tag in {"code", "pre"}:
+            if tag == "pre" and self._mermaid_depth > 0:
+                self._mermaid_depth -= 1
+                if self._mermaid_depth == 0:
+                    self.mermaid_blocks.append("".join(self._current_mermaid))
+                    self._current_mermaid = []
+            self._code_depth = max(0, self._code_depth - 1)
 
     def handle_data(self, data: str) -> None:
         if self._in_title:
             self.title += data
-        if self._in_resource_block:
+        if self._in_style:
             self.embedded_resource_text.append(data)
+            self.style_texts.append(data)
+        elif self._in_importmap:
+            self.embedded_resource_text.append(data)
+        elif self._in_script:
+            self.script_texts.append(data)
+        elif self._mermaid_depth > 0:
+            self._current_mermaid.append(data)
+        elif self._code_depth == 0:
+            self.prose_texts.append(data)
 
 
 def inspect(path: Path) -> list[Finding]:
@@ -144,31 +191,48 @@ def inspect(path: Path) -> list[Finding]:
         add("error", "image-alt", f"{parser.images_without_alt} image(s) have no alt attribute.")
     if parser.img_roles_without_name:
         add("error", "diagram-name", f"{parser.img_roles_without_name} role=img element(s) lack an accessible name.")
-    if parser.table_count and not parser.scoped_headers:
+    if parser.th_unscoped:
+        add("warning", "table-scope", f"{parser.th_unscoped} of {parser.th_total} <th> header(s) lack a scope attribute.")
+    elif parser.table_count and not parser.scoped_headers:
         add("warning", "table-scope", "Tables are present but no <th> has a scope attribute.")
 
+    for index, block in enumerate(parser.mermaid_blocks, start=1):
+        if re.search(r"^\s*```", block, re.M):
+            add("error", "mermaid-fence", f"Mermaid block {index} contains Markdown code fences inside <pre class=\"mermaid\">.")
+        if not re.search(r"\baccTitle\s*:", block) or not re.search(r"\baccDescr\b", block):
+            add("warning", "mermaid-a11y", f"Mermaid block {index} should declare both accTitle and accDescr.")
+
+    prose_text = "\n".join(parser.prose_texts)
     placeholders = []
     for pattern, label in (
         (r"\{\{[^{}]+\}\}", "template braces"),
         (r"\bLorem ipsum\b", "Lorem ipsum"),
         (r"\[PLACEHOLDER\]", "placeholder marker"),
     ):
-        if re.search(pattern, text, re.I):
+        if re.search(pattern, prose_text, re.I):
             placeholders.append(label)
     if placeholders:
         add("error", "placeholder", f"Unresolved content: {', '.join(placeholders)}.")
 
-    if not re.search(r"color-scheme|prefers-color-scheme", text, re.I):
+    style_text = "\n".join(parser.style_texts)
+    if not re.search(r"color-scheme|prefers-color-scheme", style_text, re.I):
         add("warning", "theme", "Declare a colour scheme or explicit theme handling.")
-    if not re.search(r"@media\s+print", text, re.I):
+    if not re.search(r"@media\s+print", style_text, re.I):
         add("warning", "print", "Add print rules so the document remains complete on paper.")
-    has_motion = bool(re.search(r"\b(animation|transition)\s*:", text, re.I))
-    if has_motion and not re.search(r"prefers-reduced-motion", text, re.I):
+    has_motion = bool(re.search(r"\b(animation|transition)\s*:", style_text, re.I))
+    if has_motion and not re.search(r"prefers-reduced-motion", style_text, re.I):
         add("error", "reduced-motion", "Motion is present without a prefers-reduced-motion fallback.")
 
     urls = set(parser.external_resource_urls)
     embedded_text = "\n".join(parser.embedded_resource_text)
     urls.update(re.findall(r"(?:https?:)?//[^\s\"')<>]+", embedded_text))
+    script_text = "\n".join(parser.script_texts)
+    urls.update(
+        re.findall(
+            r"""(?:from\s+|import\s*\(\s*|fetch\s*\(\s*)["']((?:https?:)?//[^"'`\s]+)["']""",
+            script_text,
+        )
+    )
     if urls:
         hosts = sorted({urlparse(url if not url.startswith("//") else f"https:{url}").netloc for url in urls})
         add("warning", "network", f"External requests make the file network-dependent: {', '.join(hosts)}.")

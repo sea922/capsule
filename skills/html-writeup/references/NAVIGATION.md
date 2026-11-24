@@ -4,7 +4,7 @@ A write-up that fits on two screens needs no navigation; one that runs to twelve
 
 ## Choose by length and by shape
 
-Measure the built page in **screens** (`document.body.scrollHeight / window.innerHeight`) at a 1200×900 viewport:
+Measure the built page in **screens** (`document.body.scrollHeight / window.innerHeight`) at a 1440×900 desktop viewport:
 
 | Screens | Affordance |
 | --- | --- |
@@ -77,7 +77,7 @@ For long, continuous documents. The rail sits beside the prose on wide screens a
 }
 ```
 
-Mark the current section with `aria-current` from an `IntersectionObserver` — it states position for assistive tech, not just visually:
+Mark the current section with `aria-current` by viewport position — it states position for assistive tech, not just visually:
 
 ```js
 const links = new Map([...document.querySelectorAll('.rail a')].map(a => [a.hash.slice(1), a]));
@@ -90,6 +90,7 @@ const mark = () => {
     if (s.getBoundingClientRect().top <= line) current = s;   // last one past the line
   }
   links.forEach(a => a.removeAttribute('aria-current'));
+  if (!current) return;
   links.get(current.id)?.setAttribute('aria-current', 'true');
 };
 
@@ -198,7 +199,7 @@ So render first, hide second:
 
 ```js
 import mermaid from "mermaid";
-mermaid.initialize({ startOnLoad: false, /* …as in SHELL.md */ });
+mermaid.initialize({ startOnLoad: false, /* …as in MERMAID.md */ });
 await mermaid.run();                                   // every panel still visible here
 document.querySelectorAll('[data-tabs]').forEach(initTabs);   // now it's safe to hide
 ```
@@ -207,7 +208,7 @@ document.querySelectorAll('[data-tabs]').forEach(initTabs);   // now it's safe t
 
 ## Verify the navigation
 
-Beyond the checks in SKILL.md:
+Beyond the checks in [VERIFY.md](VERIFY.md):
 
 - **Keyboard** — `Tab` reaches the tablist once, then `←`/`→` move between tabs and `Home`/`End` jump to the ends. Tabbing again leaves the widget.
 - **Diagram width** — a diagram in a non-default panel is its real size, not 16px wide.

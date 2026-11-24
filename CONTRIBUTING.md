@@ -14,6 +14,13 @@ It does not prove that a skill changes agent behavior or validate remote links.
 Run meaningful paired scenario evaluations for behavioral changes and record
 what was exercised and what remains unproven.
 
+CI's dependency audit (`node scripts/audit.mjs high`) fails on any high or
+critical advisory. An advisory with no fixed release that cannot reach a real
+attack path may get an entry in `.github/audit-exceptions.json`: the advisory
+ID, the package, the reason, and an expiry date. An entry covers only that
+advisory in that package, an expired entry fails the check, and an entry the
+audit no longer needs should be removed.
+
 ## Add or change a skill
 
 Read [AGENTS.md](AGENTS.md) and the [preferred sources](docs/source-repos.md).

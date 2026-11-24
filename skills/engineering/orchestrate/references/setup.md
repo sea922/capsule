@@ -6,11 +6,11 @@ Read this reference when the user requests agent installation or configuration. 
 
 The full Claude plugin manifest registers the five Markdown definitions in `assets/claude-agents/`. A skill-only install or development skill link does not register them. For that case, use the project installer with `--host claude`. For Codex, use `--host codex` to copy the five TOML definitions from `assets/codex-agents/`.
 
-Run with Node.js 24 from this repository root, replacing the target with an existing project directory:
+Run with Node.js 20+ from this repository root, replacing the target with an existing project directory:
 
 ```sh
-node skills/engineering/orchestrate/scripts/install-agents.mjs --host codex --target "D:/Source/my-project"
-node skills/engineering/orchestrate/scripts/install-agents.mjs --host codex --target "D:/Source/my-project" --apply
+node skills/engineering/orchestrate/scripts/install-agents.mjs --host codex --target "/path/to/your-project"
+node skills/engineering/orchestrate/scripts/install-agents.mjs --host codex --target "/path/to/your-project" --apply
 ```
 
 For Claude Code, replace `codex` with `claude`. From a standalone skill directory, use `node scripts/install-agents.mjs` with the same arguments. Preview the proposed destinations before applying. The installer writes only project-local `.claude/agents/` or `.codex/agents/` definitions; it leaves global configuration and the root model alone. Identical files are unchanged. Any conflicting file blocks the batch before writes; resolve conflicts explicitly rather than deleting existing agents automatically.
@@ -25,7 +25,7 @@ For Claude Code, replace `codex` with `claude`. From a standalone skill director
 | orchestrate-tester | sonnet | gpt-5.6-luna / max | Run checks and edit assigned tests |
 | orchestrate-reviewer | opus | gpt-6-astra / low | Independently review the current change |
 
-These are the bundled defaults, based on the existing repository profile. Preserve explicit user/project preferences and check account availability before dispatch. A configured model is not evidence of the model that actually executed a task.
+These are bundled profile defaults (Codex model and reasoning-effort IDs vary by signed-in account and can be rejected pre-egress if unadvertised). Verify model and effort availability against the active host catalog and preserve explicit user/project preferences before dispatch. A configured model is not evidence of the model that actually executed a task.
 
 All Claude roles allow Skill to load relevant instructions. Explorer and reviewer otherwise allow only Read, Glob and Grep; researcher additionally allows WebSearch and WebFetch. Worker and tester additionally allow Edit, Write and Bash. Supply the reviewer with the latest diff inline or as a readable file. None exposes Agent for recursive delegation.
 
@@ -33,19 +33,9 @@ Codex explorer, researcher and reviewer request `read-only`; worker and tester r
 
 ## Verify discovery
 
-### Explicit skill loading
+### Skill availability
 
-| Role | Skills loaded before work |
-| --- | --- |
-| Reviewer | `code-review`; `coding-standards` for convention checks |
-| Worker | `implement`; applicable `coding-standards` |
-| Tester | `verification-before-completion`; `tdd` for assigned TDD work |
-| Researcher | `research` |
-| Explorer | Only task-relevant skills named in its assignment |
-
-Install the applicable skills as well as the agent definitions. The agent installer copies role files only. The full plugin includes these skills; standalone users must make the required skills available separately. Roles explicitly load skills at runtime using the host's exposed identifier or a parent-provided readable `SKILL.md` path. This supports plugin namespaces and standalone installations without assuming that a bare preload name resolves in both.
-
-Each role reports which skills it loaded and any missing ones. Missing defaults are disclosed with a bounded fallback; a skill explicitly required by the assignment, user or repository blocks dependent work if unavailable. Loading instructions grants no additional tools or ownership. For example, a Claude reviewer returns a needed shell check to the root, and a tester cannot use TDD guidance to take ownership of production code.
+The agent installer copies role files only; standalone users must install the applicable skills named in `../SKILL.md` Step 3 separately (the full plugin includes them). Roles load skills at runtime by exposed catalog identifier or parent-provided `SKILL.md` path and report missing skills without gaining extra tools or ownership.
 
 ### Host registration
 

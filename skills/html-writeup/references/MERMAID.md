@@ -24,7 +24,7 @@ Place the diagram source in one `<pre class="mermaid">` block, then load the exa
 <script type="module">
   import mermaid from "mermaid";
   mermaid.initialize({
-    startOnLoad: true,
+    startOnLoad: true, // set false and call await mermaid.run() before initTabs() when tabs are present (see NAVIGATION.md)
     theme: matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "neutral",
     securityLevel: "loose",
     fontFamily: "inherit",
@@ -53,10 +53,11 @@ For a shared or long-lived networked file, compute a SHA-384 hash for the exact 
 </script>
 ```
 
-Compute the hash from the same URL:
+Compute the hash from the same URL (POSIX with `openssl`, or cross-platform Python/Node):
 
 ```bash
 curl -sL <url> | openssl dgst -sha384 -binary | openssl base64 -A
+python -c "import base64, hashlib, urllib.request; print(base64.b64encode(hashlib.sha384(urllib.request.urlopen('<url>').read()).digest()).decode())"
 ```
 
 Use integrity only with a hash computed for that exact file. A stale hash blocks the module and leaves raw diagram source visible.

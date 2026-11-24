@@ -104,6 +104,17 @@
         "The resulting cases are compared by authoritative owner, invariant, lifecycle, and change reason rather than by textual similarity alone.",
         "Only rounding or tax knowledge proven to be authoritative and shared is re-extracted, with migration evidence and a rollback condition."
       ]
+    },
+    {
+      "id": 9,
+      "prompt": "Review our order-fulfillment module read-only. Four functions repeat nested if/else checks on three booleans (`isPaid`, `isShipped`, `isCancelled`), and a recent bug left an order both `isShipped: true` and `isCancelled: true`. Propose a cleaner model and migration plan without editing code.",
+      "expected_output": "Diagnoses scattered domain-state conditionals and unowned boolean invariants, proposes replacing the boolean flags with one explicit state model (tagged union / state machine) owning valid states and transitions, compares at least two design options on a shared scorecard, and specifies characterization tests and migration/rollback steps.",
+      "files": [],
+      "expectations": [
+        "Identifies the impossible `isShipped && isCancelled` combination as an unowned invariant spread across scattered conditionals.",
+        "Proposes consolidating lifecycle rules into one explicit state model (tagged union, state machine, or transition table) that owns valid states and transitions.",
+        "Compares at least two materially different options and includes migration steps, test evidence, and a rollback condition while staying read-only."
+      ]
     }
   ]
 }

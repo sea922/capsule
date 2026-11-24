@@ -21,3 +21,5 @@ The answer should resolve the installed version, inspect the matching contract, 
 Research alone produces evidence and an artifact. Already-authorized implementation resumes through `implement`; a material human decision can return to `grilling`.
 
 The [preferred-source research](../research/preferred-skill-repositories-workflow-gap-research.md) records all six sources. Matt Pocock contributes primary-source investigation; Addy Osmani contributes version-aware contracts; last30days contributes recency, coverage, and raw-evidence handling. No upstream engine or skill is vendored. The [2026-09-27 source sweep](../research/2026-09-27-source-repos-sweep.md) adds the freshness fingerprint from wshobson/agents' `grounded-vault`.
+
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) adds trust classes, a corroboration gate for single-source web claims, and a "no evidence" label distinct from weak evidence, from testdouble/han's evidence rule.

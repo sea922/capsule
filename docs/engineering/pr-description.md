@@ -15,9 +15,9 @@ project's domain language:
 - **Summary:** what changes and why, with the smallest visual that makes the
   point when the change has a shape (pseudocode, a call, component, or file
   tree, a Mermaid diagram, or a diff sketch).
-- **Evidence:** before and after: screenshots of the real app on both revisions
-  for a visual change, otherwise the exact test or command that failed and now
-  passes, quoted rather than pasted as logs. Unrun checks are named. A docs or
+- **Evidence:** before and after: screenshots for a visual change, captured
+  and attached by [pr-images](pr-images.md), otherwise the exact test or
+  command that failed and now passes, quoted rather than pasted as logs. Unrun checks are named. A docs or
   copy change gets one line on how it was checked.
 - **Review notes**, when needed: decisions the diff cannot explain, and rollout
   or compatibility implications.

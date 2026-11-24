@@ -35,7 +35,7 @@
       "files": [],
       "expectations": [
         "The counterexample is checked against the JSDoc contract before any verdict.",
-        "The failure is classified using the defined categories (over-broad generator, wrong property, ambiguous spec, or code defect) with reasoning tied to the documented guarantee.",
+        "The failure is classified specifically against the JSDoc contract — as a code defect if `slugify(\"-\")` returns a leading/trailing hyphen violating 'never starts or ends with a hyphen', or as an ambiguous spec if all-punctuation input's empty-string contract is undefined — rather than listing categories without picking.",
         "The response asks for or uses the seed and path so the failure can be replayed.",
         "The shrunk input is pinned as an explicit example or regression test.",
         "A fix, if proposed, is routed through a failing test first rather than edited in directly."
@@ -49,6 +49,28 @@
       "expectations": [
         "No property-testing library is introduced or proposed as necessary.",
         "The test is a concrete example asserting the 404 status for an unknown id."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Write property-based tests for our Go money parser `ParseCents(string) (int64, error)`. Do not add any new Go module dependencies; our go.mod has only the standard library.",
+      "expected_output": "Respects the no-new-dependency boundary, uses Go's standard-library testing/quick or a bounded deterministic seeded generator with shrinking/replay notes rather than adding rapid without permission, and states the trade-off.",
+      "files": [],
+      "expectations": [
+        "Does not add `pgregory.net/rapid` or run `go get` against the user's no-new-dependency constraint.",
+        "Uses a standard-library approach (such as `testing/quick` or a deterministic seeded generator) or asks permission if advanced shrinking is required.",
+        "Defines non-tautological parser properties (such as format/parse round-trip and rejection of malformed strings) with pinned edge cases."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Write Hypothesis tests for `apply_discounts(cart)` where a cart has line items (sku, qty > 0, unit_cents >= 0), optional percentage coupon (0..100), and tax region. A naive generator of arbitrary dicts keeps getting rejected by validation. Show how to structure the generator and prove interesting cases are covered.",
+      "expected_output": "Builds a composed domain-valid cart strategy without filtering invalid dicts via assume, tests conservation/monotonicity/non-negativity invariants, pins boundary cases (0% and 100% coupons, single-cent rounding), and inspects generator distribution statistics.",
+      "files": [],
+      "expectations": [
+        "Composes domain-valid strategies directly (valid quantities, non-negative cents, bounded coupon percentages) instead of filtering arbitrary dicts with `assume`.",
+        "Tests real financial invariants (non-negative totals, discount bounds, order independence or tax monotonicity) without re-implementing `apply_discounts`.",
+        "Pins boundary examples and checks generator distribution/event statistics to confirm interesting cases (coupons, multi-item carts) actually run."
       ]
     }
   ]

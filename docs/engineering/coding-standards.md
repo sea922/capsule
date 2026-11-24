@@ -33,3 +33,5 @@ instructions here are original; no upstream skill is copied.
 See the [skill instructions](../../skills/engineering/coding-standards/SKILL.md),
 [research](../research/coding-standards-skill-research.md), and
 [evaluation record](../research/coding-standards-skill-validation.md).
+
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) adds searching for every standards file with the nearer file deciding a conflict (EveryInc's `ce-code-review`, Matt Pocock's `code-review`) and branded values created only through a checking function or type guard (Cursor pstack's `typescript-best-practices`).

@@ -11,6 +11,10 @@ all produce results that look fine.
 - Write the claim you expect to make, in the words you would report: "export is
   30% faster at p50 on the 60k-row dataset". The checks below test that
   sentence.
+- Write the decision each possible result would lead to. If every result leads
+  to the same action, the measurement changes nothing: do not run it. Name the
+  noise floor too, and stop when the run-to-run spread is larger than the
+  effect you are looking for.
 - Read the measurement script. Note what it times, what it counts, and what it
   ignores.
 - Check machine load and core count. If you cannot quiet the machine, alternate
@@ -45,13 +49,21 @@ checks 4 and 7 and say it was one run. A choice between options is never a
 ballpark.
 
 For an eval score, ask the same of the trials: did every trial do the task,
-does the gap hold across trials and models, and does the scenario matter.
+does the gap hold across trials and models, and does the scenario matter. Four
+more checks apply to evals:
+
+- **A baseline arm.** Run each model once with no skill or prompt variant
+  loaded, on the same inputs, so a gain is measured against nothing as well as
+  against the other variant.
+- **A checked judge.** A model judge comes from a different model family than
+  every arm, is checked against hand-labelled outputs before its scores count,
+  and sees anonymised labels, never the arm's name or model.
+- **A planted zero.** Any count the results may report as zero, such as
+  "no regressions", needs a fixture that holds at least one case, shown to be
+  found.
+- **Frozen terms.** Write the pass bar, arms, and stop rules before the first
+  scored run. Changing them afterwards starts a new eval.
 
 ## Report
 
-Lead with the verdict: faster, slower, no measurable difference, or
-inconclusive. Give the number with its unit, run count, range, and limiter, for
-example "p50 41 ms to 33 ms, median of 7 runs per side, range 32 to 35 ms,
-bound by JSON parsing on one core". The verdict is INCONCLUSIVE when the
-limiter is unnamed, a side ran untuned, or checks 4 or 7 could not be done;
-name the gap.
+Lead with the measured outcome (`faster`, `slower`, `no measurable difference`, or `inconclusive`) and map it to the receipt verdict in `../SKILL.md`: `VERIFIED` only when the claimed effect holds above the noise floor with all checks satisfied, `NOT VERIFIED` when the measurement contradicts the claim, and `INCONCLUSIVE` when the limiter is unnamed, a side ran untuned, or checks 4 or 7 could not be done. Give the number with its unit, run count, range, and limiter, for example "p50 41 ms to 33 ms, median of 7 runs per side, range 32 to 35 ms, bound by JSON parsing on one core", and name any gap.

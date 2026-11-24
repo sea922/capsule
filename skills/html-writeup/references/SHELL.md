@@ -141,6 +141,10 @@ One `.html` file. CSS, JavaScript, data, and images stay inline, so it opens off
         <p class="meta">{{ context — repo, date, scope }}</p>
         <h1>{{ the question this answers }}</h1>
         <p class="lede">{{ the answer, in one or two sentences }}</p>
+        <ul class="takeaways">
+          <li>{{ plain takeaway a reader could act on immediately }}</li>
+          <li>{{ second plain takeaway }}</li>
+        </ul>
       </header>
 
       <h2 id="section-one">{{ section }}</h2>

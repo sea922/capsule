@@ -63,6 +63,17 @@
         "Does not require a hypothesis ledger or a separate reproduction phase before a verified one-line correction.",
         "Does not change unrelated scripts or claim success without checking the resulting entry."
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "Diagnose why our report generator's p95 latency regressed from 120ms to 890ms after commit abc123. I ran it once locally just now and it took 140ms, so maybe it's fixed already? Do not edit production code.",
+      "expected_output": "Refuses to dismiss the regression from one fast 140ms run, establishes a repeatable paired measurement comparing baseline and commit abc123 under realistic workload/data shape, profiles competing hypotheses (N+1 queries, cache cold-start, serialization overhead), and ends in an honest terminal state without editing production code.",
+      "files": [],
+      "expectations": [
+        "Refuses to treat a single 140ms local run as disproof of the p95 regression.",
+        "Establishes controlled repeated measurements or profiling comparing before and after commit abc123 on realistic workload/data shape.",
+        "Tracks competing hypotheses in an evidence ledger with discriminating checks and ends in an honest terminal state without modifying production code."
+      ]
     }
   ]
 }

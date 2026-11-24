@@ -165,14 +165,18 @@ test('status parses staged renames and Unicode paths', (t) => {
   }]);
 });
 
-test('status on an unborn branch names the missing commit', (t) => {
+test('status on an unborn branch reports null head and the initial branch', (t) => {
   const sandbox = createSandbox(t);
   const repository = path.join(sandbox.root, 'empty');
   mkdirSync(repository);
   git(sandbox, repository, ['init', '--initial-branch=main']);
   const result = runKit(sandbox, sandbox.root, ['status', '--repo', repository]);
-  assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /HEAD has no commit/);
+  assert.equal(result.status, 0, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.head, null);
+  assert.equal(payload.branch, 'main');
+  assert.deepEqual(payload.changes, []);
+  assert.equal(payload.worktrees.length, 1);
 });
 
 test('CLI runs when invoked through a linked skill directory', (t) => {

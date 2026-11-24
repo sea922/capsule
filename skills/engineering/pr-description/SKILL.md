@@ -1,6 +1,6 @@
 ---
 name: pr-description
-description: Pull request creation and PR titles and descriptions written from the final diff, with before/after evidence and a merge-danger section. Use whenever creating, opening, raising, or updating a pull request or PR (including `gh pr create` or a PR tool call), writing or rewriting a PR title or description, or drafting PR text before publishing. Load it before writing any PR title or body, even when the harness has its own PR instructions. Commits and pushes belong to git-workflow; CI repair, review follow-up, and merging to babysit-pr; end-to-end "ship it" delivery to ship-it.
+description: Pull request creation and PR titles and descriptions written from the final diff. Use whenever creating, opening, raising, or updating a pull request or PR (including `gh pr create` or a PR tool call), writing or rewriting a PR title or description, or drafting PR text before publishing. Load it before writing any PR title or body, even when the harness has its own PR instructions. Commits and pushes belong to git-workflow; capturing and attaching screenshots to pr-images; CI repair, review follow-up, and merging to babysit-pr; end-to-end "ship it" delivery to ship-it.
 ---
 
 # PR description
@@ -73,12 +73,11 @@ exists.
    clear, placed beside the sentence it supports; read
    [visuals](references/visuals.md) to choose one. A one-line fix needs no visual.
 2. **Evidence.** Before and after, from observed results. For a visual change
-   in an environment that can capture it, screenshots are the strongest
-   evidence: capture the real app on the base and head revisions with the same
-   region and size, and report a pair with no visible difference as unchanged.
-   Otherwise show execution: the exact test, command, or reproduction that
-   failed before and passes after, with the output line that proves it or a
-   pseudocode sketch of the test. Quote output; never paste command
+   screenshots are the strongest evidence; use `pr-images` to capture, check,
+   and attach them, and place its section here. When it cannot attach them,
+   keep its one-line reason. Otherwise show execution: the exact test,
+   command, or reproduction that failed before and passes after, with the
+   output line that proves it or a pseudocode sketch of the test. Quote output; never paste command
    transcripts, CI logs, or validation dumps. Name material checks not run and
    keep material negative results. A change with no runtime behavior to
    exercise, such as documentation, copy, or comments, needs at most one line on
@@ -106,11 +105,15 @@ resulting change; file inventories and the conversation's implementation
 chronology add no review context. Cut any sentence a reader could reconstruct
 from the diff, and replace prompt, plan, or session wording with the behavior it
 produced. Preserve useful existing issue links, demonstrations, and required
-disclosures when rewriting.
+disclosures when rewriting. Use a closing keyword (`Fixes #N`) only when this
+PR delivers the whole issue and that was verified; otherwise link it (`Refs #N`)
+and name what remains.
 
 Keep customer or organization names, user emails, support-ticket text, secrets,
 tokens, and other personal data out of the title, body, quoted output, and
-screenshots; redact them in images before upload.
+screenshots; `pr-images` retakes any image that shows them before upload. Also
+keep raw security finding `file:line` locations and exploit details out of
+public PR bodies unless disclosure is explicitly authorized.
 
 PRs credit their human author alone: titles and bodies end with the change
 content. Leave out agent attribution such as "Generated with Claude Code"
@@ -133,9 +136,13 @@ updates, use a structured tool argument or a UTF-8 body file so newlines
 and literal shell characters survive unchanged:
 
 ```sh
-gh pr create --base "BASE_BRANCH" --head "HEAD_BRANCH" --title "REVIEWED_TITLE" --body-file "PATH_TO_REVIEWED_BODY.md"
+gh pr create --repo OWNER/REPO --base "BASE_BRANCH" --head "HEAD_BRANCH" --title "REVIEWED_TITLE" --body-file "PATH_TO_REVIEWED_BODY.md"
 gh pr edit NUMBER --repo OWNER/REPO --title "REVIEWED_TITLE" --body-file "PATH_TO_REVIEWED_BODY.md"
 ```
+
+When `pr-images` is attaching screenshots to a new PR, hand it the reviewed
+title and body file so it runs `gh pr create --attach` once with the final body
+and images together rather than creating the PR twice.
 
 Set base/head explicitly when publishing; choose draft/ready from the task's
 readiness and repository policy. Re-read the saved metadata after the write,

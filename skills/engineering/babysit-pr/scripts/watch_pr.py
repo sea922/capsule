@@ -43,6 +43,59 @@ def gh(*args):
     return json.loads(result.stdout)
 
 
+FAILING_CONCLUSIONS = {"FAILURE", "TIMED_OUT", "STARTUP_FAILURE", "ACTION_REQUIRED", "CANCELLED"}
+FAILING_STATES = {"FAILURE", "ERROR"}
+PENDING_STATES = {"PENDING", "EXPECTED"}
+
+
+def _check_key(item):
+    if "context" in item:
+        return ("status", item.get("context") or "")
+    return ("check", item.get("workflowName") or "", item.get("name") or "")
+
+
+def summarize_checks(rollup):
+    items = rollup or []
+    in_progress_keys = set()
+    for item in items:
+        status = (item.get("status") or "").upper()
+        state = (item.get("state") or "").upper()
+        if (status and status != "COMPLETED") or state in PENDING_STATES:
+            in_progress_keys.add(_check_key(item))
+
+    in_progress = []
+    held_failures = []
+    actionable_failures = []
+    for item in items:
+        key = _check_key(item)
+        status = (item.get("status") or "").upper()
+        state = (item.get("state") or "").upper()
+        conclusion = (item.get("conclusion") or "").upper()
+        name = item.get("name") or item.get("context") or ""
+        if (status and status != "COMPLETED") or state in PENDING_STATES:
+            in_progress.append(name)
+        elif conclusion in FAILING_CONCLUSIONS or state in FAILING_STATES:
+            if key in in_progress_keys:
+                held_failures.append(name)
+            else:
+                actionable_failures.append(name)
+    return {
+        "in_progress": in_progress,
+        "held_failures": held_failures,
+        "actionable_failures": actionable_failures,
+    }
+
+
+def summarize_eyes_reactions(reactions):
+    logins = []
+    for item in reactions or []:
+        if item.get("content") == "eyes":
+            login = (item.get("user") or {}).get("login")
+            if login and login not in logins:
+                logins.append(login)
+    return logins
+
+
 def snapshot(host, repo, number):
     target = f"{host}/{repo}"
 
@@ -57,6 +110,7 @@ def snapshot(host, repo, number):
         ("comments", f"issues/{number}/comments"),
         ("inline_comments", f"pulls/{number}/comments"),
         ("reviews", f"pulls/{number}/reviews"),
+        ("reactions", f"issues/{number}/reactions"),
     ):
         pages = gh("api", "--hostname", host, "--method", "GET",
                    f"repos/{repo}/{endpoint}?per_page=100", "--paginate", "--slurp")
@@ -83,7 +137,13 @@ def snapshot(host, repo, number):
     for key in ("headRefOid", "baseRefOid", "headRefName", "baseRefName"):
         if before[key] != after[key]:
             raise RuntimeError("PR head/base moved during collection; take a fresh snapshot")
-    return {"pr": after, "feedback": feedback, "threads": threads}
+    return {
+        "pr": after,
+        "feedback": feedback,
+        "threads": threads,
+        "checks": summarize_checks(after.get("statusCheckRollup")),
+        "eyes_reactions": summarize_eyes_reactions(feedback["reactions"]),
+    }
 
 
 def digest(value):

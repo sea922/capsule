@@ -1,6 +1,6 @@
 ---
 name: git-workflow
-description: Git workflow - commits, pushes, branches, rebasing and syncing, stacks, backports, local integration, branch policy, and recovery. Use whenever committing or pushing changes, preparing a branch for review, rebasing, merging locally, resolving conflicts, backporting, maintaining a stack, or recovering from an interrupted rebase, a failed push, or commits on the wrong branch. Creating, opening, or updating a PR and writing its title or description belong to pr-description; setting up or cleaning up a worktree to git-worktrees; CI repair, review feedback, PR monitoring, and PR merges to babysit-pr; end-to-end "ship it" delivery to ship-it.
+description: Git workflow for commits, pushes, branches, rebasing, freshness, stacks, backports, local integration, policy, and recovery. Use whenever committing or pushing changes, preparing a branch for review, rebasing or syncing, checking whether a branch is up to date or already landed in a merged or incoming PR, deciding whether an old PR should still exist, merging locally, resolving conflicts, backporting, maintaining a stack, splitting a risky schema or API change into reversible expand and contract PRs, or recovering from an interrupted rebase, failed push, or misplaced commits. Creating or updating a PR and its text belong to pr-description; worktrees to git-worktrees; CI repair, review feedback, and PR merges to babysit-pr; end-to-end delivery to ship-it.
 ---
 
 # Git workflow
@@ -34,6 +34,7 @@ Load each reference when its condition applies:
 | --- | --- |
 | Policy is missing, conflicting, or being designed | [Repository policy](references/policy.md) |
 | Choose/create a branch, commit, update its base, resolve integration conflicts, or merge locally | [Branching and integration](references/branching.md) |
+| A branch or PR may be stale, already landed, or superseded by other work | [Branch freshness](references/freshness.md) |
 | Git is interrupted, commits are misplaced/missing, or push/checkout state is unexpected | [Recovery](references/recovery.md) |
 
 Branching links its task-specific recipes and pitfalls. Read those at the stated
@@ -70,3 +71,6 @@ those checks require fresh verification.
 
 Report the outcome, verification, and any remaining action briefly. Distinguish
 local commits, pushed branch, published PR, and merged state.
+
+**Complete when:** every mutated branch, commit, or remote ref has been re-read,
+required checks match the final revision, and the resulting state is reported.

@@ -53,6 +53,8 @@ The browser pass then checks desktop and mobile overflow, console errors, diagra
 - A pinned Mermaid CDN keeps the file single-file but network-dependent; the handoff must disclose it, or the diagram must be frozen to inline SVG before the file is called offline.
 - Visual design guidance lives here only to serve comprehension. Product UI belongs to a frontend-design skill.
 
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) adds two or three plain takeaways under the one-sentence answer (gstack's write-up checklist) and keeps each visual beside the short text it supports (humanlayer's `rpi` document review).
+
 ## Resources
 
 - `skills/html-writeup/references/PROFILES.md` - presentation profiles and the variance, motion, and density controls.

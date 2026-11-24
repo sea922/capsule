@@ -226,9 +226,22 @@ function parseWorktreesPorcelain(raw) {
   return worktrees;
 }
 
+function resolveHead(root) {
+  const result = runGit(
+    ['rev-parse', '--verify', '--quiet', '--end-of-options', 'HEAD^{commit}'],
+    root,
+    { allowFailure: true },
+  );
+  const sha = result.stdout.trim();
+  if (result.status === 0 && /^[0-9a-f]{40,64}$/i.test(sha)) return sha;
+  const symbolic = runGit(['symbolic-ref', '--quiet', 'HEAD'], root, { allowFailure: true });
+  if (symbolic.status === 0 && symbolic.stdout.trim()) return null;
+  throw new CliError('HEAD has no commit yet (unborn branch)');
+}
+
 function statusCommand(repoArg) {
   const root = repositoryRoot(repoArg);
-  const head = resolveCommit(root, 'HEAD', 'HEAD');
+  const head = resolveHead(root);
   const branch = currentBranch(root);
   const porcelain = runGit(
     ['status', '--porcelain=v1', '-z', '--untracked-files=all'],

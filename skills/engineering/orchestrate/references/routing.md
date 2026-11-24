@@ -20,11 +20,4 @@ Delegate only a slice with one observable outcome, explicit ownership, available
 
 If a user names an exact model, treat it as a capability requirement: verify that the active native catalog and role permit it. If the user expresses an economical or stronger qualitative preference, a supported configured equivalent can satisfy it when recorded as such. A requested model is never evidence of an observed model. Preserve the root model, role locks, permissions, and existing profiles.
 
-## Compact contract
-
-```text
-objective → inputs → owned files → prerequisites → acceptance check
-→ native role/model/effort request → tool permissions → retry/return bound
-```
-
-The root decides architecture and dependency order. Workers report evidence and stay inside the contract. When no suitable native role exists, return a precise capability gap or take only authorized root work that does not claim the missing delegation.
+The root decides architecture and dependency order. Workers follow the full contract in `../SKILL.md` Step 3, report evidence, and stay inside their assignment. When no suitable native role exists, return a precise capability gap or take only authorized root work that does not claim the missing delegation.

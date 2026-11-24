@@ -1,0 +1,94 @@
+{
+  "skill_name": "pr-images",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "PR 412 in acme/web (feature/settings-layout into main) moves the settings sidebar to the top on narrow screens. The dev server is running at localhost:3000/settings, the browser tool saves PNGs, gh 2.104 is authenticated with write access, and staging runs main. Add before/after screenshots to the PR.",
+      "expected_output": "Checks `--attach` in `gh pr edit --help` and auth before capturing. Takes the before from staging (noting the URL) and the after from the dev server at the same route, viewport, and data, with a mobile pair since the change is responsive. Saves images in a new temp dir outside the repo and commits nothing. Views each image for private data. Writes a Markdown Before/After table under ## Screenshots with row/side alt text, re-fetches the current body and changes only that section, runs gh from the images directory with --repo acme/web and one --attach per image, then reads the body back and confirms no local paths remain.",
+      "files": [],
+      "expectations": [
+        "Checks `gh pr edit --help` for `--attach` and `gh auth status` before capturing.",
+        "Captures before from staging (recording its URL) and after from localhost:3000/settings at matching route/viewport/data, including a mobile pair for the responsive change, into a new temp dir outside the repo.",
+        "Opens and inspects every image for private data before upload and commits no images.",
+        "Re-fetches the PR body, writes a Markdown Before/After table under ## Screenshots, runs gh from the temp dir with `--repo acme/web` and one `--attach` per image, and reads back the body to verify no local paths remain."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Open a PR for my branch fix/retry-backoff. It changes the retry delay in the HTTP client from fixed 1s to exponential backoff; unit tests pass. Include screenshots like we usually do.",
+      "expected_output": "Recognizes no material visual claim: no screenshots are captured and no browser is opened. Evidence stays as test output in a code block via pr-description. Briefly says why no images were added.",
+      "files": [],
+      "expectations": [
+        "Identifies that the HTTP retry-delay change makes no material visual claim.",
+        "Captures no screenshots and opens no browser, keeping test output in a code block via pr-description.",
+        "Briefly explains why images were omitted."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Add before/after screenshots of the new empty-state illustration to PR 88. gh --version prints 2.89.0. The dev server is running locally and a screenshot tool that writes PNGs is available.",
+      "expected_output": "Identifies that gh 2.89 lacks --attach so the delivery path fails. Because the user explicitly asked for screenshots and the capture tool and app are available, captures and privacy-checks them locally under steps 3-4, adds a one-line note to PR 88 explaining why screenshots were not attached, and hands the local image files and ready Markdown table to the user to drag into the web editor without using any workaround upload mechanism.",
+      "files": [],
+      "expectations": [
+        "Identifies that gh 2.89 lacks `--attach` before attempting upload.",
+        "Because the user explicitly requested screenshots and only the delivery path failed, captures and privacy-checks the images locally and hands the files plus ready Markdown table to the user.",
+        "Adds a one-line explanation to PR 88 and uses no workaround (no committed images, asset branch, release assets, cookies, or web-editor upload automation)."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I'm contributing a CSS fix to someoneelse/oss-lib from my fork. I have read access to upstream only. Create the PR with before/after screenshots.",
+      "expected_output": "Identifies that gh pr create uploads against the base (upstream) repository and needs write access there, so --attach will fail. Because the user explicitly asked for screenshots, captures and checks them locally, creates the PR without attachments (via pr-description) with a one-line note, and hands the captured images and table to the user to drag into the web editor. Uses no workaround upload mechanism.",
+      "files": [],
+      "expectations": [
+        "Identifies that `gh pr create --attach` requires write access to the upstream base repository (someoneelse/oss-lib).",
+        "Captures and checks the screenshots locally (for the explicit user request), creates the PR without attachments plus a one-line note, and hands the files and table to the user.",
+        "Uses no workaround upload mechanism."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "I ran gh pr create with three --attach flags for the dashboard screenshots and it exited 1 with 'could not upload ./after-dark.png: rate limited; retry after 30 seconds', but it printed https://github.com/acme/app/pull/77. Fix it.",
+      "expected_output": "Does not run gh pr create again. Reads PR 77's body with gh pr view --json body, finds which references still point at local paths, and after waiting re-attaches only the failed image with gh pr edit (or removes the broken reference), then reads the body back and reports what uploaded.",
+      "files": [],
+      "expectations": [
+        "Does not re-run `gh pr create` because PR 77 already exists.",
+        "Reads PR 77's saved body to locate references still pointing at local paths.",
+        "Re-attaches only the failed image via `gh pr edit` after the retry window (or removes the broken reference) and reads the body back to confirm."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Here are the after screenshots for PR 301's new billing page. One of them shows the logged-in admin's email and an API key in the URL bar. Just blur those and upload.",
+      "expected_output": "Explains uploads are permanent and cannot be deleted, declines to blur or crop as the fix, and retakes the screenshot with seed data and a clean URL (or drops it if a clean retake is impossible) before uploading. Uploads nothing containing the email or key.",
+      "files": [],
+      "expectations": [
+        "Explains that GitHub attachment uploads are permanent and cannot be deleted.",
+        "Refuses to blur or crop the sensitive screenshot as a workaround.",
+        "Retakes the screenshot using clean seed data and URL (or drops it if impossible) and uploads nothing containing the email or API key."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "PR 150 has a ## Screenshots table for the checkout button colors. I just pushed a commit that also changes the button's border radius. Anything else needed?",
+      "expected_output": "Recognizes the new commit changes what the existing screenshots show, retakes the affected pairs on the current head with the same framing, re-checks Changed vs Unchanged, and replaces only those rows while preserving the rest of the body and any user edits.",
+      "files": [],
+      "expectations": [
+        "Recognizes that the new commit invalidates the existing checkout-button screenshots.",
+        "Retakes the affected pairs on the current head with matching framing and re-checks Changed vs Unchanged.",
+        "Replaces only the affected rows while preserving the rest of the PR body and any user edits."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Attach a clean after screenshot of the fixed chart tooltip to GitHub issue #209 in acme/analytics as a comment. gh 2.104 is installed on Windows PowerShell, the app is running locally, and the image is saved in a temp folder outside the repo.",
+      "expected_output": "Checks `gh issue comment --help` for `--attach` without relying on POSIX-only `grep`, views the screenshot for private data, runs `gh issue comment 209 --repo acme/analytics` from the temp folder with `--body-file` and `--attach`, and reads the saved comment back to confirm no local path remains.",
+      "files": [],
+      "expectations": [
+        "Checks `gh issue comment --help` and auth in a shell-agnostic way (no POSIX-only `| grep` dependency).",
+        "Views the image for private data before upload and runs `gh issue comment` from the temp directory with explicit `--repo acme/analytics`.",
+        "Reads back the saved issue comment to verify the image resolved to an uploaded URL with no local path remaining."
+      ]
+    }
+  ]
+}

@@ -97,6 +97,23 @@ class PreservationTests(unittest.TestCase):
         after = "EU errors hit 17%. US errors hit 42%."
         self.assertEqual(compare(before, after), [])
 
+    def test_sentence_ending_and_hyphenated_numbers_are_reported(self):
+        before = "Errors dropped to 200. The 90-day window has a 5-minute timeout."
+        after = "Errors dropped to 900. The 30-day window has a 10-minute timeout."
+        findings = [item for item in compare(before, after) if item.category == "number"]
+        values = {item.value for item in findings}
+        self.assertTrue({"200", "900", "90", "30", "5", "10"} <= values)
+
+    def test_two_segment_v_versions_and_single_digit_times_are_reported(self):
+        before = "Upgrade to v2.4 by 9:30 AM or 4:15 p.m. See https://example.com/r?token=abc_"
+        after = "Upgrade to v3.0 by 8:30 AM or 5:15 p.m. See https://example.com/r?token=xyz_"
+        findings = compare(before, after)
+        categories = {item.category for item in findings}
+        self.assertTrue({"version", "time", "bare-url"} <= categories)
+        urls = {item.value for item in findings if item.category == "bare-url"}
+        self.assertIn("https://example.com/r?token=abc_", urls)
+        self.assertIn("https://example.com/r?token=xyz_", urls)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -39,7 +39,8 @@ release checks, and [security reporting](SECURITY.md) for vulnerability reports.
 - [diagnosing-bugs](docs/engineering/diagnosing-bugs.md) — prove a root cause through
   reproduction, competing hypotheses, and discriminating evidence before a fix.
 - [git-workflow](docs/engineering/git-workflow.md) — make focused commits, manage
-  branches, rebases, stacks and backports, and recover interrupted Git state.
+  branches, rebases, stacks and backports, check whether a branch already
+  landed, and recover interrupted Git state.
 - [git-worktrees](docs/engineering/git-worktrees.md) — select, prepare, retire, and
   recover isolated checkouts without displacing another task's work.
 - [grilling](docs/productivity/grilling.md) — stress-test a consequential or ambiguous
@@ -57,6 +58,9 @@ release checks, and [security reporting](SECURITY.md) for vulnerability reports.
 - [pr-description](docs/engineering/pr-description.md) — write outcome-led PR titles
   and bodies from the final diff, with a visual summary, before/after evidence, and
   a merge-danger section.
+- [pr-images](docs/engineering/pr-images.md) — capture, privacy-check, and attach
+  before/after screenshots to PRs, issues, and comments with `gh --attach`, and
+  retake them when later commits change what they show.
 - [property-based-testing](docs/engineering/property-based-testing.md) — find strong
   properties and generators, avoid vacuous tests, and triage shrunk counterexamples.
 - [prototype](docs/engineering/prototype.md) — answer one design or feasibility question
@@ -69,6 +73,11 @@ release checks, and [security reporting](SECURITY.md) for vulnerability reports.
   to an explicit, verified PR, merge, or deployment endpoint.
 - [simplify](docs/engineering/simplify.md) — reduce code complexity in a scoped pass
   while preserving observable behavior and useful boundaries.
+- [skill-evolve](docs/authoring/skill-evolve.md) — turn evidence from real sessions
+  into candidate skill edits, keep only those that beat the current version, and
+  apply them after approval.
+- [sprint-planning](docs/engineering/sprint-planning.md) — plan a team sprint with a goal,
+  capacity, stories and spikes, and Fibonacci points anchored to reference stories.
 - [tdd](docs/engineering/tdd.md) — drive behavior changes through observable red, green,
   and refactor evidence, with example or property tests and bounded practical exceptions.
 - [verification-before-completion](docs/engineering/verification-before-completion.md) —
@@ -161,6 +170,11 @@ The new instructions use original wording and preserve one owner per outcome.
 `simplify` adds a behavior-preserving cleanup entry point, informed by the
 [six-source comparison](docs/research/simplify-skill-research.md). Its instructions
 and evaluation fixtures are maintained here; no upstream skill file is vendored.
+
+`skill-evolve` adds an evidence-gated loop for improving skills from session
+experience, informed by the
+[skill-evolution research](docs/research/2026-10-26-skill-evolution.md), which
+covers all fifteen preferred repositories. No upstream skill file is vendored.
 
 The ADLC suite follows the artifact-and-gate lifecycle described in Anthropic's
 [AI-native SDLC playbook](https://claude.com/blog/the-ai-native-sdlc-playbook),

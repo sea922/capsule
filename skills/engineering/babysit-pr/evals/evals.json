@@ -126,6 +126,31 @@
       "expected_output": "Handles the human request first, fixes at most five bot clusters in one push, and holds the rest for the next round without dismissing them.",
       "files": [],
       "expectations": ["The human's rename is decided in this round and is not counted against the bot limit.", "The push carries no more than five bot Fix clusters, chosen by severity, then agreement, then file.", "Bot findings over the limit stay open with no outcome and no reply, rather than being dismissed.", "P3 findings are fixed only when they are one-line changes in files the wave already edits."]
+    },
+    {
+      "id": 19,
+      "prompt": "Babysit PR 101. CI is green and there are no open comments, but main has moved three commits ahead of the branch, and the required approval from a code owner is still missing.",
+      "expected_output": "Merges main into the branch with a normal push, rewatches the new head, waits for the code owner's approval without approving itself, then merges once green and approved.",
+      "files": [],
+      "expectations": ["Base is merged into the head as a new commit; there is no rebase or force-push.", "The merged result is verified locally before pushing, and checks on the new head are awaited.", "The branch update is recorded but not counted as a repair wave.", "The agent never submits an approving review.", "Merge authority comes from the babysit request, so the agent merges after the approval arrives without asking again."]
+    },
+    {
+      "id": 20,
+      "prompt": "Babysit PR 102; I'll merge it myself. main has moved ahead, and merging it into the branch produces a conflict where both sides changed the same validation rule in incompatible ways.",
+      "expected_output": "Attempts the base update, recognizes a semantic conflict, leaves the branch behind and hands the choice back, and does not merge the PR.",
+      "files": [],
+      "expectations": ["The semantic conflict is presented with both alternatives rather than resolved by guess.", "Nothing conflicted is pushed and no rebase or force-push is attempted.", "The ready claim is withheld while the branch is behind.", "The agent does not merge, because the user withheld merge authority."]
+    },
+    {
+      "id": 21,
+      "prompt": "Babysit PR 118; you may fix, commit and push. On the current head SHA, `unit-tests` has an older failed check run and a newer `in_progress` rerun for the same check key. Also, an automated review bot placed an `eyes` reaction on the PR indicating its review is still running. What do you do?",
+      "expected_output": "Holds repair and readiness while the active rerun of `unit-tests` and the `eyes`-signaled bot review are still in progress; continues watching until both settle before deciding whether a fix is needed or readiness holds.",
+      "files": [],
+      "expectations": [
+        "Does not push a speculative fix for `unit-tests` while an active rerun of the same check key is in progress on the current head.",
+        "Treats the `eyes` reaction as an in-progress automated review signal and withholds any merge-ready claim until both the rerun and review finish.",
+        "Continues watching and evaluates the settled results once complete."
+      ]
     }
   ]
 }

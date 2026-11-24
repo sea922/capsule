@@ -1,6 +1,6 @@
 ---
 name: codebase-design
-description: Design or improve software architecture through cohesive modules, intentional dependency direction, explicit inter-module contracts, and evidence-gated abstraction. Use when the user asks about module or service boundaries, interfaces, coupling or cohesion, DRY/KISS/YAGNI, duplication versus abstraction, over- or under-engineering, SOLID trade-offs, ports and adapters, layers or vertical slices, dependency cycles, synchronous or asynchronous communication, architecture refactoring, test seams and substitutes, reliability semantics at a boundary, or making a codebase easier for humans and coding agents to navigate. Route UI-only visual design and infrastructure topology with no software ownership decision to their dedicated skills.
+description: Design or improve software architecture through cohesive modules, intentional dependency direction, explicit inter-module contracts, and evidence-gated abstraction. Use for module or service boundaries, coupling/cohesion, abstraction timing (KISS/YAGNI/DRY), SOLID trade-offs, ports and adapters, dependency cycles, sync vs async communication, boundary reliability semantics, test seams, architecture refactoring, or agent-navigable structure. Route scoped behavior-preserving cleanup to simplify, coding conventions to coding-standards, and UI-only visual design or pure infrastructure topology to their dedicated skills.
 ---
 
 # Codebase Design
@@ -45,7 +45,7 @@ Read [references/MODULE-DESIGN.md](references/MODULE-DESIGN.md) when deciding wh
 
 Draw or tabulate the important modules and every relationship that can constrain change. Use precise verbs: **calls**, **queries**, **commands**, **publishes**, **subscribes**, **streams**, **reads**, **writes**, **shares state with**, **orchestrates**, or **reacts to**.
 
-For each important edge, record this **edge card**:
+For each important edge, record this **edge card** (for purely in-process edges inside one trust/transaction boundary, mark `Topology`, `Delivery`, and `Trust` as `N/A` and focus on `Intent`, `Owner`, `Direction`, `State`, `Failure`, and `Evidence`):
 
 | Dimension | Required decision                                                                        |
 | --------- | ---------------------------------------------------------------------------------------- |
@@ -99,12 +99,13 @@ Translate prose into evidence at the same seams where assumptions cross:
 
 Read [references/TESTING.md](references/TESTING.md) for seam-aligned evidence and [references/OBSERVABILITY.md](references/OBSERVABILITY.md) for production evidence.
 
-**Complete when:** the proposal names its enforcement, test portfolio, migration and rollback path, production evidence, unresolved risks, and the next authorized action.
+**Complete when:** the proposal names its enforcement, test portfolio, migration and rollback path, production evidence where edges cross process or ownership boundaries, unresolved risks, and the next authorized action (such as `planning-and-task-breakdown`, `prototype`, or `implement`).
 
 ## Design rules
 
 - Consolidate duplicated knowledge, not similar syntax. Similar code stays separate when owners, invariants, or change axes differ, and caller flags multiplying inside a shared abstraction are evidence it has joined unrelated knowledge.
 - Cheap code generation lowers the cost of writing an abstraction, not the cost of understanding, maintaining, migrating, or deleting it. Speculative structure still needs present evidence or a recorded trigger.
+- Once evidence justifies a structure, prefer the strictly simpler form that meets the same evidence: a function over a class, one concrete type over an interface with one implementation, a literal over a configurable value, an inline check over a shared middleware. Move up a step only when the simpler form demonstrably falls short.
 - Hide difficult or volatile decisions, not merely steps in a processing sequence.
 - Put cohesion before depth. A small interface does not redeem an unrelated god module.
 - Expose coherent client-specific interfaces instead of one union surface for every caller.

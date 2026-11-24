@@ -1,6 +1,6 @@
 ---
 name: ship-it
-description: Coordinates delivery of finished changes. Use when asked to ship completed work, take it to a merge-ready or merged PR, or resume an interrupted delivery across local work and a PR. A request only to commit or push belongs to git-workflow; only to create or open a PR, or write its title or description, to pr-description; an existing PR watch to babysit-pr; product or UX audits to code-review or specialist review.
+description: Coordinates delivery of finished changes. Use when asked to ship completed work, take it to a merge-ready PR, merged PR, release, or deployment, or resume an interrupted delivery across local work and a PR. A request only to commit or push belongs to git-workflow; only to create or open a PR, or write its title or description, to pr-description; an existing PR watch to babysit-pr; product or UX audits to code-review or specialist review.
 ---
 
 # Ship it
@@ -40,6 +40,12 @@ Required routes, loaded when their condition applies:
 | A finding has an unknown cause | `diagnosing-bugs`: established cause and repair scope |
 | A supported finding needs repair | `implement`: scoped correction and affected checks |
 | Final local result needs proof | `verification-before-completion`: fresh evidence for the final changed artifacts |
+
+Before review, compare the delivery diff with what the task asked for. Revert
+accidental stray edits made by this task, exclude and preserve unrelated user
+changes (including their staging state), or report ambiguous paths — never ship
+out-of-scope changes silently or discard user work. A changed behavior that no
+check exercises is a gap to report even when every check passes.
 
 Reuse a completed review when it covers the current diff. Otherwise review the
 delivery diff and address supported blockers. After a repair or base update,

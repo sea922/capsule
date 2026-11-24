@@ -80,6 +80,17 @@
         "The pre-existing test_currency_rounding failure is not fixed as part of this slice, not hidden, and is named in the report as observed but unrelated.",
         "The handoff maps plan Task 3 to its test, red evidence, and green evidence."
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "Use TDD to fix issue #91 where `parseAmount('$0.00')` throws instead of returning 0. The issue description already pastes the failing stack trace from production, so skip running the red test and jump straight to the fix and green test.",
+      "expected_output": "Declines to substitute a pasted production stack trace for a local red run, writes a focused test for `parseAmount('$0.00')` first, observes it execute and fail locally for the expected reason before editing production code, then applies the minimal fix and verifies green.",
+      "files": [],
+      "expectations": [
+        "Does not treat the issue's pasted stack trace as valid red-phase evidence.",
+        "Writes and runs the focused regression test before editing production code and confirms it fails for the expected `parseAmount('$0.00')` error.",
+        "Applies the minimal fix, reruns the focused and nearby tests to green, and reports fresh red and green evidence."
+      ]
     }
   ]
 }

@@ -1,6 +1,6 @@
 ---
 name: diagnosing-bugs
-description: Investigate an unexplained bug or performance regression when its cause requires evidence from code, runtime behavior, logs, or reproduction. Use for explicit diagnosis or root-cause requests, intermittent or environment-specific failures, and fix requests with an unknown cause. Answer quick questions from available evidence directly; send known-cause fixes to implement and review-only findings to code-review. Diagnose-only work remains read-only.
+description: Investigate an unexplained bug or performance regression when its cause requires evidence from code, runtime behavior, logs, or reproduction. Use for explicit diagnosis or root-cause requests, intermittent or environment-specific failures, and fix requests with an unknown cause, including when the stack trace or failing code is pasted inline. Answer quick questions from available evidence directly; send known-cause fixes to implement and review-only findings to code-review. Diagnose-only work remains read-only.
 ---
 
 # Diagnosing Bugs
@@ -39,6 +39,8 @@ Record:
 
 Separate direct observations from reports and assumptions. Preserve exact error text and timestamps where they matter.
 
+If the user handed you an issue or ticket, that is the bug's record: state its title as the record gives it, and carry its link to the report. A bug with no record is an ordinary state; do not open one. Before investigating further (when tracker or forge access is available), check whether an open pull request or a closed issue already addresses the symptom; if one does, lead with that link rather than a fresh diagnosis. When escalated from `implement` after failed fix attempts, record the prior relied-on assumption and failed attempts in the ledger up front so they are not repeated.
+
 **Complete when:** the failure is falsifiable and its observation context is explicit.
 
 ## 2. Reproduce or bound the failure
@@ -76,6 +78,8 @@ Change one investigative variable at a time. Prefer checks that can disprove the
 - bisect revisions or configuration when history supports it;
 - measure instead of inferring performance from code shape.
 
+When you force a failure by mutating code, a fixture, or configuration, run the mutation only in an isolated copy/worktree (or a separately authorized scratch edit restored cleanly without stashing or resetting user work), and diff against a pristine copy to prove the mutation landed before you trust the result.
+
 After each check, update the ledger. Do not accumulate commands without saying which hypothesis their result changed.
 
 If a diagnostic action can be destructive, costly, rate-limited, privacy-sensitive, or externally visible, stop and request authority with the expected benefit and risk.
@@ -94,7 +98,26 @@ A root cause is confirmed only when the evidence:
 
 A proposed patch that suppresses the symptom is not confirmation by itself. When evidence cannot reach this bar, preserve the leading hypothesis as such.
 
-Once confirmed, search for the same root-cause pattern at other sites. When it recurs, a check at one more layer still leaves the next caller free to write the bug. Name a **structural prevention** that removes that freedom: one helper every site routes through, a type or constructor that cannot hold the bad state, or a lint rule or test that fails when the pattern reappears. Keep it separate from the minimal fix in the handoff, so `implement` can land the fix first and the prevention only within authorized scope, or record it as follow-up.
+Ask whether the state that triggered the symptom is legitimate. If the system may be in that state, the code that broke on it is the root cause, and handling the state there is the fix. If the state should never exist, a check where it broke hides the bug; trace back to what produced the state. Guards, retries, swallowed errors, clamped values, and discarded state are the usual ways a symptom fix hides a cause.
+
+If the deciding fact took a deep dig because the existing logs, metrics, and errors did not show it, propose the cheap always-on signal that would have shown it at first look: a log field, a metric, or an assertion. Report it as a proposal; adding it is a change for `implement`.
+
+If no fix within the current design corrects the mechanism that produced the bug, only this occurrence of it, say so. That holds when the cause is a wrong responsibility or interface, the requirement itself is wrong, or every candidate fix works around an assumption that no longer holds. Route that finding to `codebase-design` or back to the user instead of handing `implement` a workaround. Size alone is not a design problem.
+
+Once confirmed, search for other sites repeating the same root-cause mistake. Every site making that same mistake belongs in the minimal fix (leaving divergent or user-dirty sites untouched as residuals to report). When the pattern recurs, also name a **structural prevention** that removes the freedom to repeat it — one shared helper, a type/constructor that cannot hold the bad state, or a lint rule/test — kept separate from the minimal fix so `implement` lands the fix first and the prevention only within authorized scope or as follow-up.
+
+### Common rationalizations
+
+| Excuse | Reality |
+| --- | --- |
+| "The cause is obvious from the stack trace" | A stack trace shows where the symptom surfaced, not what produced the state. |
+| "Adding a null-check / retry guard is safe" | Guarding an illegitimate state hides the real defect upstream. |
+| "Let me try a quick fix to test my theory" | Unproven edits destroy diagnostic state and violate read-only boundaries. |
+| "It passed when I retried" | One green retry on an intermittent failure is not disproof. |
+
+Red flags: editing production code before confirming the cause, collapsing multiple hypotheses into one guess, or treating a silenced error as fixed — stop and return to the ledger.
+
+**Complete when:** the root cause satisfies the confirmation gate (including legitimate-state, sibling-site, structural-prevention, always-on-signal, and design-route checks), or the remaining uncertainty is bounded honestly.
 
 ## Terminal states
 
@@ -105,4 +128,13 @@ Assign a terminal state only after the requested diagnostic scope and all safe, 
 - **COULD NOT REPRODUCE:** faithful attempts did not produce the symptom; list conditions tried and evidence needed next.
 - **BLOCKED:** a named access, authority, environment, data, or safety constraint prevents the next discriminating check.
 
-Then report the symptom and scope, reproduction evidence, decisive observations, the per-hypothesis ledger table, cause or remaining hypotheses, any recurrence sites with the proposed structural prevention, and the smallest next action. If remediation was authorized and the cause is confirmed, explicitly pass the regression condition to `tdd`, the bounded change to `implement`, and the final claim to `verification-before-completion`; do not erase the diagnosis boundary by silently editing first.
+## Report
+
+Include:
+
+1. **Issue of record & scope** — ticket title/link (or "none"), existing open PR/issue if found, symptom, and environment.
+2. **Reproduction & decisive observations** — exact commands/logs and what each proved or disproved.
+3. **Evidence ledger** — the per-hypothesis table.
+4. **Terminal state & cause** — confirmed mechanism (or remaining hypotheses) and whether the triggering state is legitimate.
+5. **Sibling sites & prevention** — other sites repeating the root-cause mistake, proposed structural prevention, any proposed cheap always-on signal, and whether a `codebase-design` route is needed.
+6. **Next action** — smallest next step; if remediation is authorized and the cause is confirmed, explicitly hand the regression condition to `tdd`, the bounded fix (including sibling sites) to `implement`, and the final claim to `verification-before-completion`.

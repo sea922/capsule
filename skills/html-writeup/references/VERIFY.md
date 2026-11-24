@@ -51,7 +51,7 @@ Exercise every control with keyboard input. For tabs, verify arrow keys, deep li
 
 Take desktop and mobile screenshots in the same pass. Apply every rendered-page test in [CRAFT.md](CRAFT.md). For diagrams, also apply [DIAGRAMS.md](DIAGRAMS.md)'s edge-integrity test and compare the visible source, action, destination, and order with the accessible description.
 
-Capture a full-page overview at one viewport when the browser tool supports it, plus a bounded viewport when detail would otherwise be illegible. If full-page capture fails, keep the useful viewport evidence and disclose the limitation; do not hold delivery open on screenshot tooling alone.
+Capture a full-page overview at one viewport when the browser tool supports it, plus a bounded viewport when detail would otherwise be illegible. If full-page capture fails, keep the useful viewport evidence and disclose the limitation; do not hold delivery open on screenshot tooling alone. When no browser automation tool is available in this harness, complete Step 1 (`check_html.py`) cleanly and state honestly in the handoff that browser, print, and visual checks were not run rather than claiming rendered verification.
 
 ## Bounded repair
 
@@ -59,4 +59,4 @@ Collect every defect from the static, browser, and visual checks before editing.
 
 ## Network truth
 
-A file with remote scripts, styles, fonts, images, or module imports is single-file but not fully offline. Prefer inline CSS, JavaScript, SVG, and data. When a diagram needs the pinned Mermaid runtime from SHELL.md, either disclose that one dependency or replace the rendered diagram with inline SVG before calling the artifact offline.
+A file with remote scripts, styles, fonts, images, or module imports is single-file but not fully offline. Prefer inline CSS, JavaScript, SVG, and data. When a diagram needs the pinned Mermaid runtime from [MERMAID.md](MERMAID.md), either disclose that one dependency or replace the rendered diagram with inline SVG before calling the artifact offline.

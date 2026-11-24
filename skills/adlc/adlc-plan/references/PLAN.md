@@ -55,6 +55,7 @@ Combined acceptance: <check of the integrated user outcome, environment, and own
 <implement | orchestrate within existing delegation authority>, starting from the initial ready frontier. Pass the approved plan hash, slice/AC IDs, conditions, code revision, and progress path. Current state and frontier are updated only in `progress.md`; a human sign-off the plan or a carried item requires goes through `/adlc-gate slice <id>`.
 
 - Delivery endpoint: <local verification | PR ready | merged | deployed to named environment>.
+- Delivery shape: <one pull request | named split reason and PR grouping>.
 - Action authority: <existing human instruction and its scope; unresolved external action if any>.
 - Delivery owner: <existing engineering workflow; ship-it for remote delivery>.
 - Outcome observation: <intent success signal, owner, method, and observation point; pending if not yet observable>.

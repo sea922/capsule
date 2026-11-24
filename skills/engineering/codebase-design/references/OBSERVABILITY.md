@@ -82,9 +82,3 @@ An observable relationship has:
 - bounded cardinality and protected sensitive data;
 - an owner who can act on the signal;
 - a way to verify instrumentation before production incidents.
-
-## Primary sources and specifications
-
-- [Google, Dapper](https://research.google/pubs/dapper-a-large-scale-distributed-systems-tracing-infrastructure/)
-- [OpenTelemetry specification](https://opentelemetry.io/docs/specs/otel/)
-- [Google SRE, Monitoring Distributed Systems](https://sre.google/sre-book/monitoring-distributed-systems/)

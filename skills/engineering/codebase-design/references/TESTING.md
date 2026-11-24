@@ -75,15 +75,11 @@ Contract formats and broker tests complement one another. A schema-valid event c
 
 ## Deepening migration
 
-When moving behavior behind a deeper interface:
+Follow [DEEPENING.md](DEEPENING.md) Steps 5–6 for the migration sequence (including single-change deletion when every caller is internal and no persisted data, queues, caches, or rolling deploys still read the old shape). For test retirement on either path:
 
-1. capture current observable behavior and known defects;
-2. add tests at the target interface before moving all callers;
-3. keep focused internal tests for complex logic until replacement evidence is proven;
-4. move callers incrementally and compare old and new outcomes where practical;
-5. run adapter and integration evidence at changed boundaries;
-6. retire redundant tests only after behavior and risk coverage are mapped;
-7. remove the old path after callers, telemetry, and rollback criteria agree.
+- capture characterization evidence before moving the seam;
+- keep focused internal tests for complex logic until replacement coverage at the target interface proves the same or greater risk;
+- retire redundant tests only after behavior and risk coverage are mapped.
 
 “Replace, do not layer” is an end state, not permission to delete evidence early.
 
@@ -96,10 +92,3 @@ When moving behavior behind a deeper interface:
 - Are time, failure, duplicates, ordering, and compatibility exercised at remote edges?
 - Does the portfolio fail when a meaningful guarantee breaks?
 - Can obsolete tests be retired without reducing evidence?
-
-## Sources
-
-- [Feathers, Working Effectively with Legacy Code](https://www.pearson.com/en-us/subject-catalog/p/working-effectively-with-legacy-code/P200000008984)
-- [Fowler, Mocks Aren't Stubs](https://martinfowler.com/articles/mocksArentStubs.html)
-- [Fowler, Test Pyramid](https://martinfowler.com/bliki/TestPyramid.html)
-- [Pact documentation](https://docs.pact.io/)

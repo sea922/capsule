@@ -52,6 +52,40 @@ class CheckHtmlTests(unittest.TestCase):
         }
         self.assertTrue(expected <= codes)
 
+    def test_remote_esm_import_and_fetch_are_network_dependencies(self):
+        html = GOOD.replace(
+            "</body>",
+            '<script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";</script></body>',
+        )
+        codes = {item.code for item in self.inspect_text(html)}
+        self.assertIn("network", codes)
+
+    def test_unscoped_th_is_reported_even_when_another_th_has_scope(self):
+        html = GOOD.replace(
+            "</main>",
+            '<table><tr><th scope="col">A</th><th>B</th></tr><tr><td>1</td><td>2</td></tr></table></main>',
+        )
+        codes = {item.code for item in self.inspect_text(html)}
+        self.assertIn("table-scope", codes)
+
+    def test_code_snippets_do_not_trigger_placeholder_or_motion(self):
+        html = GOOD.replace(
+            "</main>",
+            '<p>Note: transition: done.</p><pre><code>${{ github.sha }}</code></pre></main>',
+        )
+        codes = {item.code for item in self.inspect_text(html)}
+        self.assertNotIn("placeholder", codes)
+        self.assertNotIn("reduced-motion", codes)
+
+    def test_mermaid_block_checks_fences_and_a11y(self):
+        html = GOOD.replace(
+            "</main>",
+            '<pre class="mermaid">```mermaid\nflowchart LR\nA --> B\n```</pre></main>',
+        )
+        codes = {item.code for item in self.inspect_text(html)}
+        self.assertIn("mermaid-fence", codes)
+        self.assertIn("mermaid-a11y", codes)
+
 
 if __name__ == "__main__":
     unittest.main()

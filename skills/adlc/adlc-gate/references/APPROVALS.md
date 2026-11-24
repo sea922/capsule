@@ -5,18 +5,14 @@ or starting/resuming delivery. A status label alone never authorizes a transitio
 
 ## Compute the reviewed revision
 
-From the **target project's Git working directory**, run the bundled helper using
-the installed `adlc-gate` directory, not a guessed project-relative skill path:
+Run the bundled helpers using the installed `adlc-gate` directory, not a guessed project-relative skill path:
 
 ```text
 node "<adlc-gate directory>/scripts/content-hash.mjs" "<artifact path>"
+node "<adlc-gate directory>/scripts/verify-chain.mjs" "<work-item directory>"
 ```
 
-Requires Node.js 18+ and Git. It is read-only and prints the full Git blob hash
-using that repository's object format. An error or unavailable runtime means
-freshness is unverified; never substitute a guessed hash or fall back to the old
-shell snippets. It does not authenticate a human, parse approval decisions, or
-enforce permissions.
+Requires Node.js 18+ and Git. `content-hash.mjs` derives the Git object format (SHA-1 or SHA-256) from the artifact's directory and prints the full Git blob hash; `verify-chain.mjs` checks `intent.md`, `spec.md`, `plan.md`, and `progress.md` together. Both are read-only. An error or unavailable runtime means freshness is unverified; never substitute a guessed hash or fall back to old shell snippets. Neither authenticates a human, parses prose decisions, or enforces permissions.
 
 The byte contract normalizes CRLF to LF and removes an optional UTF-8 BOM,
 excludes only the top-level `status:` line inside the opening YAML frontmatter,
@@ -73,15 +69,17 @@ artifact lacks the section or needs formatting repairs, disclose those edits
 before asking the human to review it.
 An explicit earlier human decision in the current conversation remains valid
 when it unambiguously names that presented revision and scope. Do not ask again
-solely because the turn changed. A later material edit, ambiguous referent, or
-new scope needs a new review. A sole-approver declaration supplies identity only;
-it never supplies the decision or extends its scope.
+solely because the turn changed. A later material edit, ambiguous referent, or new scope needs a new review.
+
+Metadata conventions:
+
+- **Sole approver:** declare `sole_approver: <Name> (<role>)` in `intent.md` frontmatter or in the intent gate's `Conditions / reasons` cell (`sole approver: <Name> (<role>)`). It supplies identity only, never approval by default or expanded scope.
+- **Supersession:** when a new artifact replaces an older one, set `status: superseded` and `superseded_by: <replacement path>` in the old artifact's frontmatter.
 
 Immediately before recording, recompute the hash and compare it with the one
 shown to the human. If it changed, present the new revision; do not attach the
-old decision to it. Append the row, change only frontmatter status, then verify
-the hash again. Store conditions and reasons in the table with literal pipes
-escaped so they cannot split its columns. For a slice decision, bind the record
+old decision to it. Append the row with literal pipes escaped (`\|`), change only frontmatter status, then verify
+the hash again. For a slice decision, bind the record
 to the current approved plan hash, decision ID, exact code revision or captured
 measurement, and conditions. A mutable filename or PR URL alone is insufficient.
 
@@ -89,4 +87,4 @@ Human approval does not turn a failed criterion into a pass. Keep failed
 self-checks visible, record the specific accepted exception or deferred condition,
 and preserve any non-waivable project policy. Artifact approval, permission to
 implement, permission to delegate, and permission to merge/deploy are separate;
-reuse existing explicit authorization only within its stated scope.
+reuse existing explicit authorization only within its stated scope. Git authorship shows only who ran the commit; this advisory workflow does not authenticate identities or install enforcement hooks.

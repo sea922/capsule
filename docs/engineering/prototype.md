@@ -21,3 +21,5 @@ An observable state experiment should settle the restart behavior and identify c
 An existing failure routes to `diagnosing-bugs`. A product preference remains a human decision. Already-authorized production work resumes through `implement` using the observation as evidence.
 
 The [preferred-source research](../research/preferred-skill-repositories-workflow-gap-research.md) records all six sources. Matt Pocock and pstack contribute the empirical detour; Ponytail informs the smallest sufficient experiment. The skill avoids automatic branches or artifact deletion.
+
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) adds writing down the decision each result would lead to before building, so an experiment that cannot change the decision is skipped. Cursor pstack's `principle-explain-the-number` and gstack's `eval-plan` both require this.

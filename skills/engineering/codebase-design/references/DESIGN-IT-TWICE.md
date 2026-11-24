@@ -85,6 +85,7 @@ Score with evidence rather than numeric theater:
 | Migration            | Is there an incremental path, compatibility period, and rollback?         |
 | Cost                 | What total cognitive, implementation, navigation, and operational machinery is added, and which current evidence pays for it? |
 | Reversibility        | Which choice preserves optionality when variation assumptions fail?        |
+| Agent-proof fit      | Free of split ownership, two ways to do one task, importable internals, and hand-synced lists? |
 
 ## Recommend
 
@@ -98,7 +99,3 @@ Choose the simplest design that protects current invariants and satisfies eviden
 - the first reversible implementation step.
 
 **Complete when:** the recommendation is opinionated, the loser is represented fairly, and future reversal has a concrete evidence trigger.
-
-## Source
-
-- [Ousterhout, A Philosophy of Software Design](https://web.stanford.edu/~ouster/cgi-bin/book.php)

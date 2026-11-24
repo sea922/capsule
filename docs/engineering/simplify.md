@@ -19,3 +19,5 @@ Useful adapters, security guards, and explanatory helpers stay when they reduce 
 It is available for normal skill discovery as well as explicit invocation. It does not add an automatic cleanup phase to every task or authorize commits, publication, or dependency installation.
 
 See the [workflow map](../workflow.md), [source comparison and validation](../research/simplify-skill-research.md), and [skill instructions](../../skills/engineering/simplify/SKILL.md).
+
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) adds splitting by job rather than line count (Ponytail's `ponytail-review`), protected proof tests, and hollow tests and redundant comments as cleanup candidates (EveryInc's `ce-simplify-code`).

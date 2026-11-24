@@ -89,9 +89,7 @@ only place a critical rule appears.
 ## Pointer lines
 
 Most of an instruction file's value is its pointers. Each one is a context
-pointer in the sense `SKILL.md` defines, and it gets the same treatment:
-front-load the leading word, carry one trigger per branch, and cut identity the
-target document already holds.
+pointer following the rules in [`SKILL.md`](../SKILL.md#context-pointers).
 
 Write every pointer in this shape:
 
@@ -121,14 +119,7 @@ left side could complete the sentence "I am currently...".
 ## Reviewing an existing file
 
 Instruction files accumulate **sediment**, because adding feels safe and removing
-feels risky. Review with a bias toward deletion.
-
-1. Delete every line the environment already answers.
-2. Delete every line the model obeys by default.
-3. Check every remaining factual claim against the repository as it is now, not
-   as it was. Commands rename, directories move, conventions get abandoned.
-4. Collapse restatements into a single leading word used consistently.
-5. Convert vague standing advice into a conditional on something observable.
+feels risky. Review with a bias toward deletion: apply [Pruning](../SKILL.md#pruning) against the repository *as it is now* (commands rename, directories move, conventions get abandoned), and convert vague standing advice into conditionals on observable predicates.
 
 A shorter file is not the goal on its own. A file where every line changes
 behaviour is.

@@ -33,11 +33,16 @@ Separate baseline failures from cleanup regressions. Investigate an unknown fail
 
 For each candidate, name the reader or maintenance burden it removes. First consider leaving it alone or reusing an existing cohesive owner. Then consider language, standard-library, or native facilities and already-installed dependencies, checking semantic compatibility rather than assuming it. Introduce a new helper or abstraction only when it lowers the total burden.
 
-Prefer explicit control flow, meaningful names, and consolidation of the same domain knowledge. Matching syntax alone does not justify shared ownership. Preserve helpers and thin adapters that name a concept, isolate a real dependency, or protect a trust, failure, or migration boundary—even with one implementation.
+Prefer explicit control flow, meaningful names, and consolidation of the same domain knowledge. Matching syntax alone does not justify shared ownership. Split a function or class by job, when it does several unrelated things that make it hard to read or test, never by line count, and never into helpers that exist only to make a function shorter. Preserve helpers and thin adapters that name a concept, isolate a real dependency, or protect a trust, failure, or migration boundary—even with one implementation.
 
 Make a small change and rerun its contract checks. Review semantic edges specific to that transformation: for example, truthiness versus null checks, object versus map results, synchronous throws versus rejected promises, and awaiting work before a `finally` cleanup. Compact syntax is not evidence of equivalence.
 
-Keep existing behavioral assertions. Tests coupled to internal structure may be adapted when that structure changes, but preserve or replace their observable coverage. If a candidate changes the contract, discard that candidate or separate the behavior change for the user's direction. Undo only this pass's edits when a candidate fails to earn its complexity cost.
+Preserve tests and revert counterproductive edits cleanly:
+
+- Keep existing behavioral assertions; adapt structure-coupled tests only while preserving or replacing their observable coverage.
+- **Protected workflow proof tests:** when running inside another workflow, the tests that workflow relied on to show its change works stay exactly as they are — do not delete, weaken, rename, merge, or rewrite them. If one of those proof tests looks hollow, flag it to the caller/user rather than editing it.
+- **Hollow tests & redundant comments:** outside protected proof tests, a test in scope that still passes with its behavior removed and a comment that merely repeats the code are cleanup candidates too; keep comments that record constraints the code cannot express.
+- If a candidate changes the contract, discard it or separate the behavior change for user direction. Undo only this pass's edits when a candidate fails to earn its complexity cost — never run a file-level reset (such as `git checkout -- <file>`) that wipes pre-existing edits in the same file.
 
 **Complete when:** each retained change has a concrete clarity benefit and passing relevant checks; unsupported or counterproductive candidates are left unchanged.
 

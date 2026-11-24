@@ -70,15 +70,80 @@
     {
       "id": 6,
       "prompt": "Edit this Teams message to the person who approves our pipeline stages. They will read it in Teams, and I will send it as HTML. Keep every fact exact. Draft: 'Hi Priya, could you please approve \"Deployment Guardrails eu1\" on billing-api run 5974587? This run has the fix from PR #196. Since the .NET 10 upgrade, every health check logs a \"StatusCode cannot be set\" error. On eu4 the fix is live; it had about 2,000 errors per hour before the flip and none since. On eu1 the new version is staged and the functional tests passed, so your approval lets it flip. We need staging on this version for the partner integration testing. Thanks!'",
-      "expected_output": "A message laid out for scanning: the greeting on its own line, the approval ask in its own paragraph, the reason and the three status facts as a short list, the staging need in its own paragraph, and the sign-off on its own line, delivered as HTML paragraphs and a list with every fact unchanged.",
+      "expected_output": "A message laid out for scanning: the greeting on its own line with Priya's plain name and a note that a real mention needs her ID, the approval ask as one bold sentence directly followed by its context lines, the three status facts as a short list with bold labels, the staging need in its own paragraph, and no sign-off, delivered as HTML paragraphs and a list with every fact unchanged.",
       "files": [],
       "expectations": [
-        "The greeting and the sign-off each stand on their own line rather than merging into a sentence.",
-        "The approval ask is its own paragraph directly after the greeting, and the stage to approve is easy to identify.",
+        "The greeting stands on its own line, and the message ends on the staging need with no sign-off, signature, name, or closing pleasantry such as 'Thanks!'.",
+        "The approval ask is one bold sentence on its own line directly after the greeting, and its context is not run into the same sentence or line.",
         "The status facts appear as a short list, with at least the eu4 result and the eu1 staged state as separate items, rather than one dense paragraph.",
+        "Each list item opens with a bold label naming its subject, such as the environment.",
         "No paragraph is longer than three sentences.",
         "Deployment Guardrails eu1, billing-api run 5974587, PR #196, .NET 10, the StatusCode cannot be set error, eu4, about 2,000 errors per hour, none since, the passed functional tests, staging, and the partner integration testing remain exact.",
-        "The message is delivered as HTML with <p> paragraphs and a <ul><li> list, and adds no facts, urgency, or emojis."
+        "The message is delivered as HTML with separate <p> paragraphs, an empty <p>&nbsp;</p> after the greeting, the ask in <strong> with <br> only between it and its context lines inside one <p>, and a <ul><li> list, and adds no facts, urgency, or emojis.",
+        "No Teams user ID was supplied, so the greeting uses Priya's plain name, with no <at> element, mentions entry, or invented ID, and the response says a real mention needs her ID."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Edit this email to our finance contact so it is easy to scan. It goes out as plain text. Keep every fact exact. Draft: 'Hi Marta, I need the Q3 vendor accruals by Friday 31 October so we can close the books on Monday. Last quarter the accruals arrived late and the close slipped two days. The template is the same as last time and is in the shared Finance folder. Please flag any vendor over EUR 50,000 separately because audit asked for those. Kind regards, Joe'",
+      "expected_output": "A plain-text email with the greeting on its own line, the request and deadline first, one idea per short paragraph separated by blank lines, and the sign-off kept on its own lines.",
+      "files": [],
+      "expectations": [
+        "The greeting and the 'Kind regards, Joe' sign-off are kept, each on its own line, because this is an email rather than a chat message.",
+        "The Q3 vendor accruals request and the Friday 31 October deadline come first.",
+        "Paragraphs are separated by a blank line, and each holds one idea in one to three sentences.",
+        "Related sentences are not split into a run of one-line paragraphs; the late-arrival reason stays with the slipped close.",
+        "Q3, Friday 31 October, Monday, two days, the shared Finance folder, EUR 50,000, and the audit reason remain exact.",
+        "The request stands alone on its own line with no asterisks, underscores, or other markup for bold, because plain-text email has no bold."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Write a Slack message to Dev, whose Slack user ID is U04ABCD1234, asking them to review the rollback plan for checkout-service before the 15:00 UTC change window today. The plan is in the #release-ops canvas, the rollback takes about 10 minutes, and Sam already approved the forward change.",
+      "expected_output": "A Slack message that greets Dev with the <@U04ABCD1234> mention and a blank line, gives the review ask as one bold sentence in Slack's single-asterisk syntax with its context lines directly under it, and ends with no sign-off, keeping every fact exact.",
+      "files": [],
+      "expectations": [
+        "The greeting mentions Dev as <@U04ABCD1234>, with no invented metadata, and is followed by a blank line.",
+        "The review ask is one sentence bolded with single asterisks (*text*), not double asterisks or HTML.",
+        "The context, such as the 15:00 UTC window, the #release-ops canvas, the 10-minute rollback, and Sam's approval, sits on separate lines directly under the ask rather than in the ask's sentence.",
+        "The message ends on the ask or the last fact, with no sign-off, signature, name, or closing pleasantry.",
+        "checkout-service, 15:00 UTC, today, the #release-ops canvas, about 10 minutes, and Sam's approval of the forward change remain exact, and no facts, urgency, or emojis are added."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Draft an email to Lena Fischer (lena.fischer@contoso.com) asking her to approve purchase order PO-88213 for 40 laptop docks by Thursday 20 November. The budget code is IT-2026-17 and the supplier quote expires on Friday. I will paste it into Outlook as HTML. Sign it from Joe.",
+      "expected_output": "An HTML email that greets @Lena Fischer as plain text and tells the author to retype the mention in Outlook, sets the bold approval ask in one <p> with its context lines after <br>, writes explicit empty paragraphs after the greeting and before the sign-off, and keeps the sign-off from Joe.",
+      "files": [],
+      "expectations": [
+        "The greeting writes @Lena Fischer as plain text, with no mailto anchor and no Teams <at> element.",
+        "The response tells the author to retype the mention in Outlook by typing @ and picking Lena, which also adds her to the To line.",
+        "The approval ask is in <strong>, and the deadline, budget code, and quote expiry follow it as <br>-separated lines inside the same <p>.",
+        "A <p>&nbsp;</p> follows the greeting and another precedes the sign-off, and no other spacer paragraphs are added.",
+        "The sign-off from Joe is kept on its own line.",
+        "PO-88213, 40 laptop docks, Thursday 20 November, IT-2026-17, and the Friday quote expiry remain exact, and no facts or urgency are added."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Edit the draft in evals/fixtures/incident-draft.md into a crisp operational update for engineering leadership. Run scripts/check_preservation.py to confirm every protected token survived intact, and do not modify the fixture file itself.",
+      "expected_output": "Returns a tight, status-first operational update with every timestamp, percentage, version (v4.8.2), command, file path, bare URL, full URL, count, and unproved-cause qualification preserved, verified with scripts/check_preservation.py.",
+      "files": ["evals/fixtures/incident-draft.md"],
+      "expectations": [
+        "Preserves 14:30 UTC, 2026-11-20, 17.5%, eu-west-1, v4.8.2, `queue inspect --failed`, `/srv/checkout/config.yml`, status.example.com/incidents/482, https://metrics.example.com/d/chk-482, 14:47 UTC, 0.8%, 14:52 UTC, and 42 delayed orders verbatim.",
+        "Keeps the retry-loop cause explicitly unconfirmed.",
+        "Runs scripts/check_preservation.py against the draft and edited text (or reports its exact result) without mutating evals/fixtures/incident-draft.md."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Tighten this short Slack status note for teammates who were out yesterday, without inventing any missing context: 'Quick update on the Horizon Pivot: it broke them during the cutover, so we rolled that back and are waiting on the green light from the other side before trying again.'",
+      "expected_output": "Flags the opaque coined label ('Horizon Pivot') and unresolved referents ('it', 'them', 'the other side') rather than guessing what they mean, and offers a tightened version or specific replacements once the author supplies the missing referents.",
+      "files": [],
+      "expectations": [
+        "Identifies the unclear referents ('it', 'them', 'the other side') and opaque coined label ('Horizon Pivot') that make the update unactionable for returning teammates.",
+        "Does not invent concrete system names, teams, or causes to fill the gaps.",
+        "Either asks for the missing concrete facts or provides a clear template/tightened draft with explicit author-fill placeholders."
       ]
     }
   ]

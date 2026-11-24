@@ -302,3 +302,68 @@ test('squash merge leaves feature ancestry separate and worktree removal keeps b
   assert.equal(git(sandbox, repository, ['branch', '--show-current']), 'main');
   assert.equal(git(sandbox, repository, ['status', '--porcelain']), '');
 });
+
+test('a multi-commit squash merge is patch-equivalent only as a synthetic squash', (t) => {
+  const sandbox = sandboxForTest(t);
+  const repository = path.join(sandbox.root, 'repo');
+  initRepository(sandbox, repository);
+  writeRepositoryFile(repository, 'README.md', 'base\n');
+  commitAll(sandbox, repository, 'seed repository');
+
+  git(sandbox, repository, ['switch', '--create', 'feature']);
+  writeRepositoryFile(repository, 'one.txt', 'first\n');
+  commitAll(sandbox, repository, 'feature one');
+  writeRepositoryFile(repository, 'two.txt', 'second\n');
+  const featureTip = commitAll(sandbox, repository, 'feature two');
+
+  git(sandbox, repository, ['switch', 'main']);
+  git(sandbox, repository, ['merge', '--squash', 'feature']);
+  commitAll(sandbox, repository, 'squash feature');
+
+  assert.equal(git(sandbox, repository, ['cherry', 'main', 'feature']), [
+    '+ ' + git(sandbox, repository, ['rev-parse', 'feature~1']),
+    '+ ' + featureTip,
+  ].join('\n'));
+
+  const mergeBase = git(sandbox, repository, ['merge-base', 'main', 'feature']);
+  const syntheticSquash = git(sandbox, repository,
+    ['commit-tree', 'feature^{tree}', '-p', mergeBase, '-m', 'synthetic squash']);
+  assert.equal(git(sandbox, repository, ['cherry', 'main', syntheticSquash]), `- ${syntheticSquash}`);
+  assert.equal(git(sandbox, repository, ['rev-parse', 'feature']), featureTip);
+  assert.equal(git(sandbox, repository, ['status', '--porcelain']), '');
+});
+
+test('merge-tree residual shows what a landed branch would reintroduce', (t) => {
+  const sandbox = sandboxForTest(t);
+  const [major, minor] = git(sandbox, sandbox.root, ['--version']).match(/(\d+)\.(\d+)/).slice(1).map(Number);
+  if (major < 2 || (major === 2 && minor < 38)) {
+    t.skip('git merge-tree --write-tree needs Git 2.38 or later');
+    return;
+  }
+  const repository = path.join(sandbox.root, 'repo');
+  initRepository(sandbox, repository);
+  writeRepositoryFile(repository, 'README.md', 'base\n');
+  commitAll(sandbox, repository, 'seed repository');
+
+  git(sandbox, repository, ['switch', '--create', 'feature']);
+  writeRepositoryFile(repository, 'feature.txt', 'feature work\n');
+  writeRepositoryFile(repository, '.changeset/feature.md', 'release note\n');
+  const featureTip = commitAll(sandbox, repository, 'feature with changeset');
+
+  git(sandbox, repository, ['switch', 'main']);
+  git(sandbox, repository, ['merge', '--squash', 'feature']);
+  commitAll(sandbox, repository, 'squash feature');
+
+  const residual = () => {
+    const merged = git(sandbox, repository, ['merge-tree', '--write-tree', 'main', 'feature']);
+    return git(sandbox, repository, ['diff', '--name-status', 'main', merged]);
+  };
+  assert.equal(residual(), '');
+
+  git(sandbox, repository, ['rm', '--quiet', '.changeset/feature.md']);
+  git(sandbox, repository, ['commit', '--message', 'consume changeset']);
+
+  assert.equal(residual(), 'A\t.changeset/feature.md');
+  assert.equal(git(sandbox, repository, ['rev-parse', 'feature']), featureTip);
+  assert.equal(git(sandbox, repository, ['status', '--porcelain']), '');
+});

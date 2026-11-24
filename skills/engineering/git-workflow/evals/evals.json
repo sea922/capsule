@@ -5,43 +5,130 @@
       "id": 1,
       "prompt": "You were authorized to rewrite your feature branch. An explicit force-with-lease push failed. A background fetch ran, and the remote branch now has a collaborator commit you have not reviewed. What do you do next? Propose actions only.",
       "expected_output": "Inspects remote divergence and collaborator intent; preserves remote work; does not refresh the lease and retry blindly. Establishes expected remote SHA and coordinates any justified rewrite.",
-      "files": []
+      "files": [],
+      "expectations": [
+        "Inspects the remote branch divergence and the collaborator's commit before taking any push action.",
+        "Does not refresh the lease and retry --force-with-lease blindly.",
+        "Preserves the collaborator's work and coordinates any rewrite against an explicitly verified remote SHA."
+      ]
     },
     {
       "id": 2,
       "prompt": "Parent branch P was squash-merged to develop. Child C contains two more commits based on old P tip abc123, recorded before merge. The child PR still targets P. You may update the stack. Explain the safe sequence and validation, without executing commands.",
       "expected_output": "Preserves old boundary and head, verifies child-only range, transplants unique commits onto current develop with rebase --onto or equivalent, retargets PR, verifies resulting diff and fresh checks, and coordinates publication.",
-      "files": []
+      "files": [],
+      "expectations": [
+        "Records the old boundary (abc123) and child head before rewriting and verifies the two child-only commits.",
+        "Transplants only the child commits onto current develop using rebase --onto (or equivalent).",
+        "Retargets the child PR to develop, verifies the resulting diff and fresh checks, and coordinates publication."
+      ]
     },
     {
       "id": 3,
       "prompt": "Commit my fix to src/retry.ts. Another task's migration file is already staged in this checkout, and the repository uses Conventional Commits. Describe actions; do not execute tools.",
       "expected_output": "Inspects staged and unstaged state, commits only the task path (e.g. git commit --only or equivalent) with a Conventional Commit message, and verifies the staged migration remains staged and out of the new commit. Commit message has no agent Co-Authored-By trailer or generated-by line. Does not stage everything or push.",
-      "files": []
+      "files": [],
+      "expectations": [
+        "Inspects staged and unstaged state and commits only src/retry.ts (e.g., git commit --only) without staging unrelated paths.",
+        "Uses a Conventional Commit subject with no agent Co-Authored-By trailer or generated-by footer.",
+        "Verifies after committing that the migration file remains staged and excluded from the commit, and does not push."
+      ]
     },
     {
       "id": 4,
       "prompt": "My PR #412 is open; CI is failing on a lint job and a reviewer left three comments. Keep it moving until it's green and approved.",
       "expected_output": "Routes ongoing CI repair and review follow-up to babysit-pr, handing off the PR identity and current head; does not treat the request as a one-off git-workflow endpoint.",
-      "files": []
+      "files": [],
+      "expectations": [
+        "Routes ongoing CI repair and review follow-up to babysit-pr with the PR identity and current head.",
+        "Does not treat the continuous babysit request as a one-off git-workflow commit or push."
+      ]
     },
     {
       "id": 5,
       "prompt": "Rewrite the description on PR #88 so it matches what the branch does now.",
       "expected_output": "Routes the request to pr-description; does not treat it as a commit or branch operation.",
-      "files": []
+      "files": [],
+      "expectations": [
+        "Routes the PR description rewrite to pr-description.",
+        "Does not perform or propose unrelated commit or branch mutations."
+      ]
     },
     {
       "id": 6,
       "prompt": "Spin up a separate worktree so I can review PR #90 without disturbing my current changes.",
       "expected_output": "Routes checkout creation and setup to git-worktrees while keeping the current checkout's changes untouched.",
-      "files": []
+      "files": [],
+      "expectations": [
+        "Routes isolated checkout creation to git-worktrees.",
+        "Leaves the current checkout's working changes untouched."
+      ]
     },
     {
       "id": 7,
       "prompt": "Explain why a rainbow has colors in two sentences.",
       "expected_output": "Answers the science question directly; does not invoke Git workflow or inspect repository state.",
-      "files": []
+      "files": [],
+      "expectations": [
+        "Answers the physics question concisely in two sentences.",
+        "Does not inspect repository state or invoke git-workflow steps."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Check the branch and make sure it is up to date, pull latest changes if needed, and see if these changes/fixes are in a PR that came in. Facts: you are on feat/retry with one local commit; git branch -vv shows its upstream as [gone]; origin/main is 2 commits ahead, one of them is 'feat: retry with backoff (#59)' and the other a release commit that deleted .changeset/retry.md. Propose actions only.",
+      "expected_output": "Fetches and records base, head, merge base and upstream state; treats [gone] as a hint, not proof; confirms via the forge or patch equivalence (synthetic squash if needed) and the merge-tree residual that the work landed through #59; recognizes the only residual (.changeset/retry.md) as a reintroduction, so the verdict is LANDED; does not rebase, push, or open a PR on feat/retry; updates local main instead and offers to switch and to retire the branch, without deleting it unasked; reports verdict first with the PR link.",
+      "files": [],
+      "expectations": [
+        "Treats [gone] as a hint only and verifies via forge/patch equivalence and merge-tree residual.",
+        "Classifies .changeset/retry.md as a reintroduction and leads with the LANDED verdict citing PR #59.",
+        "Does not rebase, push, or open a PR on feat/retry; updates local main and offers to switch/retire without deleting unasked."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Rebase PR #301 from a teammate onto main and get it current; it is four months old. Since it was opened, main merged #350, which fixes the same timeout bug with a different approach in another module. Propose actions only.",
+      "expected_output": "Establishes the PR's intent and what changed on main before rebasing; identifies #350 as covering the same goal even without line overlap; gives a SUPERSEDED verdict with evidence; does not spend effort rebasing or force-push the teammate's branch; does not close the PR without permission; recommends closing or folding remaining value into a follow-up and leaves the decision to the user.",
+      "files": [],
+      "expectations": [
+        "Compares goals rather than only overlapping lines and identifies PR #350 as covering the same timeout bug.",
+        "Gives a SUPERSEDED verdict with evidence before attempting any rebase or force-push.",
+        "Does not close PR #301 or rewrite the teammate's branch without explicit permission."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Bring my branch feat/export up to date with main. Three of its five commits were cherry-picked to main last week in a hotfix PR; the other two add a CSV option nobody else has built. Propose actions only.",
+      "expected_output": "Detects the three landed commits via git cherry or equivalent and gives a PARTIAL verdict; rebases so patch-equivalent commits drop out; verifies with range-diff and the final diff that only the two CSV commits remain; reruns affected checks; publishes any rewrite with an explicit lease against the observed remote head; reports which commits landed where.",
+      "files": [],
+      "expectations": [
+        "Identifies the three landed commits via git cherry or equivalent and gives a PARTIAL verdict.",
+        "Checks rewrite/lease authority before rebasing, drops patch-equivalent commits, and verifies with git range-diff that only the two CSV commits remain.",
+        "Reruns affected checks and uses an explicit lease against the observed remote head if publishing a rewrite."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "My PR feat/orders-v2 adds a new orders service, migrates existing rows to the new table, and drops the old orders table in the same change. Split this one-way-door PR so we can test most of it in production first. Propose actions only.",
+      "expected_output": "Classifies the table drop and destructive migration as one-way. Proposes an expand PR from the base with the new service behind the repository's flag (default off), additive schema, and data the old path can still read, verified with the flag off and on and revertible. Proposes a stacked contract PR targeting the expand branch that removes the flag, old path, and old table, checks its tree against the original head, and waits for the expand PR to be observed in production. Routes PR text to pr-description and merging to babysit-pr; records the original head before rewriting.",
+      "files": [],
+      "expectations": [
+        "Classifies the destructive migration and table drop as one-way and records the original head before rewriting.",
+        "Designs a reversible expand PR (additive schema, feature flag default off, old path intact, tested flag off and on).",
+        "Designs a stacked contract PR targeting the expand branch that removes the old table/flag only after production observation, verifying tree equivalence against the original head.",
+        "Routes PR text to pr-description and merge follow-up to babysit-pr."
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "I ran `git init` in a new repo, added README.md and src/index.ts, and want to make the initial commit for src/index.ts only while leaving a draft notes.txt untracked. Describe how you inspect state and commit without failing on unborn HEAD.",
+      "expected_output": "Recognizes an unborn branch (no HEAD commit yet), inspects status without assuming HEAD exists, stages and commits only src/index.ts with a clean commit message (no agent trailers), leaves notes.txt untracked, and re-reads git status and git log to confirm the new HEAD.",
+      "files": [],
+      "expectations": [
+        "Handles unborn HEAD cleanly without assuming a parent commit exists.",
+        "Stages and commits only src/index.ts while preserving notes.txt untracked.",
+        "Re-reads the resulting commit and status to verify the new branch state and excludes agent attribution trailers."
+      ]
     }
   ]
 }

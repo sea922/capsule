@@ -36,12 +36,7 @@ repeating them. A timeout can leave the original operation completed remotely.
 
 Jobs need explicit success, retry, and terminal-failure handling. Follow the
 queue's acknowledgment and delivery semantics. Verify that interrupted or
-duplicate delivery cannot silently lose or repeat a required effect.
-
-Example: a transfer handler must authorize the source account, validate the
-amount, keep debit and credit consistent, and recognize duplicate submissions.
-Wrapping the entire handler in a generic retry loop does not establish those
-properties.
+duplicate delivery cannot silently lose or repeat a required effect. Never wrap a non-idempotent multi-step handler in a generic retry loop to mask partial failure.
 
 ## Caches, limits, and dependencies
 

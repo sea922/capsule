@@ -21,7 +21,7 @@ description: <identity, then trigger branches, then boundary>
   no spaces, no special characters. It must match the skill's directory name, or
   the skill will not load.
 - **`description`** is the skill's top-level context pointer, and every pointer
-  rule in `SKILL.md` applies to it in full.
+  rule in `SKILL.md` applies to it in full. Wrap `description` in quotes whenever it contains `: ` or YAML-special characters so strict installer parsers accept it.
 
 Optional fields exist per the [Agent Skills
 specification](https://agentskills.io/specification); reach for them only when
@@ -171,11 +171,11 @@ cloud-deploy/
 
 Name the skill and mark whether it is required.
 
-- `**REQUIRED BACKGROUND:** you must understand superpowers:test-driven-development`
+- `**REQUIRED BACKGROUND:** you must understand tdd`
 - `See writing-for-humans for the prose layer` for an optional pointer.
 
 Avoid `@`-prefixed paths to other skills. That syntax force-loads the file
-immediately, spending context before you know you need it.
+immediately, spending context before you know you need it. Also never list a directory path (such as `scripts/lib/`) as if it were a support file in `SKILL.md`; some skill installers and scanners reject folder entries as missing files.
 
 ## Anti-patterns
 

@@ -38,6 +38,39 @@
         "With guidance, uses the shared baseline and neither domain reference.",
         "Clearly distinguishes proposed inspection from performed checks."
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Review this handler in packages/api/src/orders.ts: the root CODING_STANDARDS.md says 'use plain string IDs', while packages/api/CODING_STANDARDS.md says 'use branded OrderId validated at the HTTP boundary'. The handler currently writes `const id = req.params.id as OrderId;`. Do not edit files.",
+      "expected_output": "Applies the nearer nested directory rule (packages/api/CODING_STANDARDS.md) over the root rule, and flags `as OrderId` as an unchecked type cast instead of boundary validation.",
+      "files": [],
+      "expectations": [
+        "Resolves rule precedence in favor of the nearer packages/api/CODING_STANDARDS.md over the root CODING_STANDARDS.md.",
+        "Flags `req.params.id as OrderId` as an unchecked cast rather than a boundary-validated branded type.",
+        "Proposes validating/parsing the input at the HTTP boundary before branding and does not edit files."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Review this full-stack PR snippet that adds a POST /api/exports backend route (no idempotency check, writes to DB then queues job without outbox/error recovery) and a React ExportButton component (fires duplicate POSTs on double-click and ignores loading/error states). Do not edit or claim checks ran.",
+      "expected_output": "Loads both BACKEND.md and FRONTEND.md, flags backend idempotency/partial-failure issues and frontend duplicate-submit/state-handling issues concisely, and makes no edits.",
+      "files": [],
+      "expectations": [
+        "Loads both BACKEND.md and FRONTEND.md because the change spans backend and frontend boundaries.",
+        "Flags the backend idempotency and dual-write/partial-failure gap.",
+        "Flags the frontend double-submit race and missing explicit loading/error states without editing files or claiming checks ran."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Help me write a CODING_STANDARDS.md for our TypeScript repo. We already enforce Prettier and ESLint (semicolons, import sorting, unused vars) in CI. Draft what should go in CODING_STANDARDS.md without editing files.",
+      "expected_output": "Focuses CODING_STANDARDS.md on project-specific architectural, boundary, error, and domain conventions that linters cannot enforce, explicitly omitting formatting and ESLint rules already owned by CI tooling.",
+      "files": [],
+      "expectations": [
+        "Excludes formatting and lint rules already enforced by Prettier and ESLint (semicolons, import order, unused vars).",
+        "Focuses the standard on judgement-level project rules (boundaries, validation, error contracts, concurrency, or domain conventions).",
+        "Remains read-only and does not edit repository files."
+      ]
     }
   ]
 }

@@ -46,7 +46,7 @@ Required seams and their pressures:
 Process or transaction boundaries:
 ```
 
-Prefer capability-oriented operations over exposing internal steps. Keep internal seams private unless clients must choose behavior.
+Prefer capability-oriented operations over exposing internal steps. Keep internal seams private unless clients must choose behavior. When the target interface or ownership shape is non-obvious, run Stage 3 (`Design it twice`) against at least one materially different shape before migrating.
 
 ## 4. Profile dependencies
 
@@ -90,13 +90,4 @@ Record what was removed and which complexity disappeared versus which complexity
 
 ## Deepening report
 
-Lead with the recommendation, then show:
-
-1. current cluster and evidence;
-2. target responsibility, invariant, and interfaces;
-3. source and runtime dependency changes;
-4. seam justifications and adapter choices;
-5. migration order and rollback;
-6. old-to-new test evidence map;
-7. enforcement and production proof;
-8. explicit deletions and unresolved risks.
+Use the six-section **Handoff shape** in `../SKILL.md`, ensuring it explicitly records the old-to-new test evidence map, explicit deletions (what complexity disappeared vs moved), and unresolved risks.

@@ -49,6 +49,17 @@
         "The report recommends deleting or trimming it and quotes the e2e/setup.ts comment as evidence.",
         "Every in-scope lesson receives exactly one outcome in the report."
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Document in docs/lessons/ that agents should always run `npm test` before committing and write clear commit messages. Also include the fact that our payment sandbox returns HTTP 200 with `{ \"status\": \"DECLINED\" }` instead of a 4xx on expired cards, which broke our error handler for three hours.",
+      "expected_output": "Captures only the non-recoverable payment-sandbox quirk as a durable lesson in docs/lessons/ with a retirement condition, and rejects storing generic agent-workflow rules (`npm test`, clear commit messages) in the lessons store (routing repo-specific agent rules to AGENTS.md / writing-for-agents instead).",
+      "files": [],
+      "expectations": [
+        "Captures the undocumented payment-sandbox HTTP 200 declined-card quirk as a durable lesson with a retirement condition.",
+        "Refuses to put generic agent-workflow advice (`npm test`, clear commit messages) into docs/lessons/.",
+        "Explains that repository agent-workflow instructions belong in AGENTS.md / writing-for-agents (if project-specific) rather than the lessons store."
+      ]
     }
   ]
 }

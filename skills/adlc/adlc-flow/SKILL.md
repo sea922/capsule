@@ -21,7 +21,7 @@ During delivery, the living `progress.md` beside the plan records slice state, e
 
 Read the repository instructions, then find the work item's artifacts. Prefer an existing spec, plan, or tracker convention; the ADLC fallback is `docs/adlc/<slug>/{intent,spec,plan}.md`. When several work items exist and the user named none, list them with their stages and ask which one.
 
-Read [the approval contract](../adlc-gate/references/APPROVALS.md) and verify the full intent → spec → plan chain with its bundled hash helper. Status, latest decision, current content, and upstream source must all agree. Treat stale or missing approval evidence as unresolved; never change files while routing.
+Read [the approval contract](../adlc-gate/references/APPROVALS.md) and verify the full intent → spec → plan chain with [verify-chain.mjs](../adlc-gate/scripts/verify-chain.mjs) (or manually per the contract if Node is unavailable). Status, latest decision, current content, and upstream source must all agree. Treat stale or missing approval evidence as unresolved; never change files while routing.
 
 When delivery has started, read [the progress contract](../adlc-plan/references/PROGRESS.md). Compare its recorded plan hash, per-slice code revisions, review/test receipts, carried items, and delivery endpoint with the actual branch, PR, and CI. Reconstruct the highest state whose prerequisites all have current evidence, rather than decrementing an unsupported label by one. A relevant code or test change invalidates affected review and verification; unavailable evidence is unknown, not a pass.
 
@@ -34,26 +34,30 @@ Take the first unresolved row:
 | Evidenced state | Next |
 | --- | --- |
 | No intent, or only a fuzzy idea | `/adlc-intent` |
-| Superseded artifact | Follow its recorded replacement; if absent or ambiguous, request that path |
-| Intent is draft, rejected, or stale | `/adlc-gate intent`, or revise with `/adlc-intent` when rejected |
+| Superseded artifact | Follow its `superseded_by` path; if absent or ambiguous, request that path |
+| Intent is `rejected` | `/adlc-intent` to revise with the rejection reasons |
+| Intent is `draft` or stale | `/adlc-gate intent` |
 | Intent approved, no spec | `/adlc-spec` |
 | Intent current, spec source names an older intent | `/adlc-spec` to reconcile, then its gate |
-| Spec is draft, rejected, or stale | `/adlc-gate spec`, or revise with `/adlc-spec` when rejected |
+| Spec is `rejected` | `/adlc-spec` to revise with the rejection reasons |
+| Spec is `draft` or stale | `/adlc-gate spec` |
 | Spec approved, no plan | `/adlc-plan` |
 | Spec current, plan source names an older spec | `/adlc-plan` to reconcile, then its gate |
-| Plan is draft, rejected, or stale | `/adlc-gate plan`, or revise with `/adlc-plan` when rejected |
+| Plan is `rejected` | `/adlc-plan` to revise with the rejection reasons |
+| Plan is `draft` or stale | `/adlc-gate plan` |
 | Plan approved, progress missing or bound to an older plan | `/adlc-plan` to reconcile the progress record without editing the approved plan |
 | A human decision or required sign-off blocks the selected slice | `/adlc-gate slice <id>`; name the decision ID |
-| Slice blocked by a dependency, failed check, or unavailable environment | Route the actual prerequisite to `implement` or `diagnosing-bugs`, or report the named external blocker |
-| A slice is `implemented` | `code-review`; add `security-review` when the spec's constraints or risk call for it |
-| A slice is `reviewed` | `verification-before-completion` |
-| A slice is `verified`, endpoint not yet reached | `ship-it` for the declared PR, merge, or deployment endpoint within existing authorization |
-| Slices `ready` or `in-progress` | `implement`, or `orchestrate` for independent slices |
-| Every slice reached its endpoint, combined acceptance lacks evidence | `verification-before-completion` for the combined outcome |
+| Selected slice is `implemented` | `code-review`; add `security-review` when the spec's constraints or risk call for it |
+| Selected slice is `reviewed` | `verification-before-completion` |
+| An actionable slice is `in-progress` or `ready` (including remaining slices in a shared PR group) | `implement`, or `orchestrate` for independent slices |
+| All remaining slices are `blocked` by a dependency, failed check, or unavailable environment | Route the prerequisite to `implement` or `diagnosing-bugs`, or report the named external blocker |
+| Every slice in the current PR/delivery group is `verified`, combined acceptance lacks evidence (when shipping together) | `verification-before-completion` for the combined outcome |
+| The delivery unit's slices are `verified` (and combined-checked for the final group), endpoint not yet reached | `ship-it` for the declared PR, merge, or deployment endpoint within existing authorization |
+| Delivered diff (against the plan's baseline/merge-base, excluding unrelated pre-existing dirty files) contains changes no slice covers | Name the unapproved scope and route to `/adlc-plan` or a new `/adlc-intent` |
 | Every slice `done`, and an incident or new need appears | A new `/adlc-intent` |
 | Combined acceptance and declared endpoint evidenced | Report completion at that endpoint; name any pending outcome observation |
 
-Evaluate the artifact chain first, then select a slice from the dependency frontier and use its row. A blocked slice does not stop unrelated authorized slices. On an incident or changed user outcome, route to a new intent before reporting completion; never silently expand the approved work.
+Evaluate the artifact chain first, then select a slice from the dependency frontier (prefer an actionable `in-progress`/`implemented`/`reviewed` slice over starting a new `ready` one; skip a `blocked` slice while another slice is actionable). For a single-PR delivery shape, build and verify all slices in the PR group before routing to `ship-it`. On an incident or changed user outcome, route to a new intent before reporting completion; never silently expand the approved work.
 
 **Complete when:** one row is selected from evidence rather than from labels or memory.
 

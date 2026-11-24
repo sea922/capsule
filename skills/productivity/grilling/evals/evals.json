@@ -41,6 +41,17 @@
         "The output does not claim shared understanding or confirmation.",
         "No final implementation plan or downstream action is produced."
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "We already finished the first two rounds of grilling on our webhook retry policy. Here are my final answers: (1) retries run for 24h max, (2) dead-lettered events require manual replay by support, (3) we will not build a self-serve customer replay UI in v1. Close out the grilling interview without writing any code or files.",
+      "expected_output": "Synthesizes a concise shared-understanding summary capturing the decided policy, explicit non-goals, remaining assumptions or verification needs, and asks for explicit confirmation before handing off to planning or implementation, with no file or repo changes.",
+      "files": [],
+      "expectations": [
+        "Avoids asking redundant or leading yes-polarity questions once all consequential branches are settled.",
+        "Produces a concise shared-understanding summary stating decisions (24h cap, manual support replay), non-goals (no self-serve UI in v1), and open assumptions.",
+        "Asks for explicit user confirmation of the summary before any downstream handoff and changes no files."
+      ]
     }
   ]
 }

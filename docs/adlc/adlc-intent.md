@@ -28,3 +28,5 @@ line endings without changing `.gitattributes`. Save locally and commit within
 existing authorization. The draft ends at `/adlc-gate intent`.
 
 See the [2026-09-28 review](../research/2026-09-28-adlc-review.md).
+
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) adds a restatement of the problem, the people affected, and the outcome before the first question, so the human corrects the shape first. Superpowers' rebuilt `brainstorming` and Cursor pstack's `in-your-own-words` both open this way.

@@ -103,11 +103,3 @@ Removal condition:
 ```
 
 The removal condition prevents speculative abstractions from becoming permanent sediment.
-
-## Primary and current sources
-
-- [Martin, Dependency Inversion Principle](https://objectmentor.com/resources/articles/dip.pdf)
-- [Martin, Granularity and package cycles](https://objectmentor.com/resources/articles/granularity.pdf)
-- [Cockburn, Hexagonal Architecture](https://alistair.cockburn.us/hexagonal-architecture)
-- [Matt Pocock Skills issue 458](https://github.com/mattpocock/skills/issues/458)
-- [Matt Pocock Skills issue 877](https://github.com/mattpocock/skills/issues/877)

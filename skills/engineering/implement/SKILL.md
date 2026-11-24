@@ -1,6 +1,6 @@
 ---
 name: implement
-description: Execute authorized software changes from direct requests, issues, specifications, or plans. Use when asked to build, change, refactor, or fix known-cause behavior. Diagnosis, explicit test-first work, review-only work, planning-only work, and research have dedicated workflows.
+description: Execute authorized software changes from direct requests, issues, specifications, or plans. Use when asked to build, change, or fix known-cause behavior. Route unknown-cause diagnosis to diagnosing-bugs, explicit test-first work to tdd, behavior-preserving cleanup to simplify, architecture refactoring to codebase-design, review-only work to code-review, planning-only work to planning-and-task-breakdown, and external investigation to research.
 ---
 
 # Implement
@@ -21,6 +21,8 @@ Preserve work already present. Never discard, overwrite, reset, clean, or hide a
 
 Read the repository instructions, relevant source, nearby tests, and supplied intent. State the observable outcome, acceptance conditions, explicit exclusions, and any constraint that changes the implementation approach.
 
+When the user passes an issue or ticket reference, fetch it and state its title as the tracker gives it before starting. If the reference could name more than one item, ask which.
+
 Inspect the current branch, HEAD, staged and unstaged changes, and untracked files before editing. Ask only when a missing decision would materially change behavior, architecture, external state, cost, or risk. Otherwise make the smallest reasonable assumption and record it.
 
 **Complete when:** the intended outcome, working-tree baseline, governing rules, and material decision gates are known.
@@ -34,20 +36,17 @@ Use the narrowest workflow that fits the evidence:
 | Cause of a reported failure is unknown | Run `diagnosing-bugs`, then resume with its confirmed cause or honest uncertainty |
 | Observable behavior is changing and an executable harness is practical | Run `tdd` for each coherent behavior slice |
 | Working code needs a requested behavior-preserving cleanup | Use `simplify` for the scoped pass, then resume final verification |
+| Conventions or domain standards govern the touched code | Apply `coding-standards` for the affected backend/frontend/shared domain |
 | Documentation, metadata, generated output, or a mechanical change has no useful behavioral test | Edit directly and define artifact-specific checks |
-| The same mechanical change repeats across many sites | Write a codemod or script, apply it, and keep it in the diff so a reviewer can rerun it; the rerunnable script is the evidence |
+| The same mechanical change repeats across many sites | Write a codemod or script and apply it; commit it only when reviewers or the repo expect a rerunnable migration script, otherwise record the command in the handoff and remove temporary scratch files |
 | A module boundary or ownership decision blocks safe progress | Use `codebase-design` for that decision, then resume |
 | A large clear outcome lacks verifiable slices or a dependency order | Use `planning-and-task-breakdown`, then execute its ready frontier within the existing authorization |
+| Independent parallel slices or specialist subagents materially help | Use `orchestrate` for bounded native delegation while retaining root integration ownership |
+| Isolation from a dirty checkout or concurrent branch is needed | Use `git-worktrees` to select, verify, and prepare an isolated checkout |
 | An external API or version-dependent claim is uncertain | Use `research` for the needed evidence, then resume |
 | A design choice needs an observable experiment | Use `prototype` for the question when building the experiment is within scope, then resume |
 | Security or privacy risk requires a dedicated audit or repository gate | Use `security-review` alongside any required repository checks and preserve its independent evidence |
 | User requested review without changes | Stop and use `code-review` |
-
-Parallel work is an explicit optimization, not the default. Use it only for genuinely independent seams, when agent delegation is available and authorized, and when integration ownership is clear. Do not place parallel workers on overlapping files, shared schemas, or an unresolved design decision.
-
-Give each delegated unit one accountable owner, acceptance checks, and a required return artifact. Await and inspect that artifact before marking the unit complete; a status promise or re-delegation is pending work. Integrate compact evidence receipts instead of entire worker transcripts.
-
-Use a worktree only when isolation is useful and the user or repository workflow permits it. Before work begins, verify its base commit and whether ignored fixtures, local databases, credentials, generated assets, or other local-only material are required. A worktree that cannot run the decisive check is not a valid execution environment.
 
 **Complete when:** the implementation method and its verification path fit this change rather than a generic ceremony.
 
@@ -61,11 +60,17 @@ For each slice:
 4. Run the smallest useful check while the slice is still easy to reason about.
 5. Re-read the diff for accidental scope growth before starting another slice.
 
-**Build what was asked.** Add a mechanism nobody requested, such as a guard, retry, fallback, validation layer, option, mode, or abstraction, only when an existing contract requires it, when leaving it out lets harm land before anything notices, or when adding it later would be expensive because it concerns stored data, a public or shared interface, money, or security. When you cannot tell, build it. Name what you considered and did not build in the handoff. Never narrow requested behavior to fit a safeguard by gating, capping, delaying, or skipping part of it; a safeguard that truly conflicts with the request is a decision gate. When a change replaces a function, type, or module whose callers are all in this repository, move those callers and delete the old version in the same change rather than leaving a wrapper or alias an agent would copy.
+**Build what was asked:**
+
+- Add an unrequested mechanism (guard, retry, fallback, validation layer, option, mode, or abstraction) only when an existing contract requires it, leaving it out lets silent harm land, or adding it later is costly because it governs stored data, money, security, or a public/shared interface. When uncertain and consequence is high (data, money, security, public contract), build or ask; otherwise omit it and name what you considered and did not build in the handoff.
+- Never narrow requested behavior to fit a safeguard by gating, capping, delaying, or skipping part of it; a safeguard that truly conflicts with the request is a decision gate.
+- When replacing an in-repo function, type, or module whose callers are all in this repository — and no persisted data, queued messages, or rolling deploy still reads the old shape — move all callers and delete the old version in the same change rather than leaving a wrapper or alias. When fixing a root-cause mistake, check for sibling sites repeating that same mistake and include them in the minimal fix (leaving divergent or user-dirty sites untouched and reported as residuals).
 
 Do not mix opportunistic cleanup into the change. If new evidence invalidates the requested approach, reaches outside the authorized scope, or exposes a consequential product or architecture decision, stop at that gate and present the evidence and options.
 
-When a check exposes an unrelated pre-existing failure, separate it from change-caused failures. Do not repair it unless the user expands scope.
+When a check exposes an unrelated pre-existing failure, separate it from change-caused failures and do not repair it unless the user expands scope. A failure is pre-existing only when it was already failing before your first edit (verified on the baseline before editing or confirmed on an untouched copy/commit). If you first run a check *after* editing and it fails, never assume it is pre-existing without baseline verification; a changed file breaking a test you did not touch is your defect.
+
+Keep going until every in-scope slice is done. A progress update does not end the run; stop earlier only at a named blocker or decision gate.
 
 **Complete when:** every accepted behavior is represented by a coherent change and no known task-owned inconsistency remains between code, tests, docs, and configuration.
 
@@ -89,11 +94,13 @@ Run `verification-before-completion` against the acceptance conditions after the
 
 If verification fails, return to the smallest responsible slice. If verification is unavailable, partial, destructive, costly, or needs new authority, preserve that boundary and report the corresponding honest terminal state instead of saying the work is done.
 
-When review finds a defect within the authorized scope, fix it and rerun the affected checks. If the same concern survives two correction attempts, name the assumption both attempts relied on and switch to diagnosis with it and the failed attempts as evidence. Continue when new evidence changes the approach; report the concrete blocker when the remaining step needs unavailable input or authority. Do not rerun an unchanged review loop or end authorized work merely because the retry bound was reached.
+When verification or review finds a defect within the authorized scope, fix it and rerun the affected checks. If the same concern survives two correction attempts, name the assumption both attempts relied on and switch to `diagnosing-bugs` with that assumption and the failed attempts as evidence. Continue when new evidence changes the approach; report the concrete blocker when the remaining step needs unavailable input or authority. Do not rerun an unchanged loop or end authorized work merely because the retry bound was reached.
 
 For long or resumable work, update the existing issue, plan, cycle record, or repository artifact with the base commit, pre-existing dirty paths, completed slices, evidence, and material decisions. Use a task-scoped scratch ledger only when no canonical artifact exists, and do not publish it without authorization.
 
 At a pause, pickup, or transfer to another session, harness, directory, or person, use `handoff` for the continuation record. Ordinary final delivery uses the summary below.
+
+**Complete when:** `verification-before-completion` has produced an honest verdict against the final diff and every acceptance condition is either verified or explicitly reported with its exact gap or blocker.
 
 ## Handoff
 

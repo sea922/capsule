@@ -7,6 +7,8 @@ Adapt headings to an existing project convention; keep every section's meaning.
 adlc: intent
 slug: <slug>
 status: draft
+# Optional: sole_approver: <Name> (<role>)
+# When replaced: status: superseded and superseded_by: <replacement path>
 ---
 
 # <Outcome-oriented title>
@@ -42,11 +44,11 @@ criterion, quantitative only when meaningful>. Observe by: <method>; owner:
 
 ## Assumptions
 
-- <assumption> — owner: <who confirms it> — decide by: <spec | plan>
+- <assumption> — owner: <who confirms it> — decide by: <spec | plan> (or "none")
 
 ## Open questions
 
-- <question> — owner: <who answers it> — decide by: <spec | plan>
+- <question> — owner: <who answers it> — decide by: <spec | plan> (or "none")
 
 ## Source material
 

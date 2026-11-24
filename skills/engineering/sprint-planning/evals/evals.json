@@ -1,0 +1,50 @@
+{
+  "skill_name": "sprint-planning",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Plan our next two-week sprint. Team: 4 devs, one on leave for 3 days. Last three sprints completed 34, 29, and 31 points. Anchors: 1 = copy change, 3 = new CRUD endpoint with tests, 5 = new settings page wired to an existing API, 8 = third-party webhook integration. Backlog in priority order: (a) bulk CSV export of invoices, (b) add AI-generated invoice summaries using an LLM we have not evaluated yet, (c) rename the customerRef field across API, DB, and UI, (d) SSO via the customer's Okta tenant. Save the plan locally; do not touch our Jira.",
+      "expected_output": "A saved sprint plan with a one-sentence goal, capacity derived from the three-sprint mean scaled for availability, anchor-based Fibonacci points with rationales, the unevaluated LLM work as a timeboxed spike, agent-fit tags, a review-load check, and no tracker writes.",
+      "files": [],
+      "expectations": [
+        "Capacity starts from the mean of 34, 29, and 31 and is reduced for the 3 days of leave and any spike timebox.",
+        "The AI-summary item becomes a spike with a question, timebox, and exit artifact, and carries no story points.",
+        "Every story's point value names its nearest anchor and the done-cost driver that moved it, and no selected story is 13.",
+        "The field rename is tagged mechanical, and review load is considered for its cross-layer diff.",
+        "The plan is written to a local file and no Jira ticket is created or changed."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Point these five stories for tomorrow's planning: password reset email, audit log export, dark mode toggle, rate limiting on the public API, and migrating the reports job to the new queue. We don't have reference stories written down anywhere.",
+      "expected_output": "The agent proposes anchors from completed work for the user to confirm before assigning any point values, instead of inventing numbers.",
+      "files": [],
+      "expectations": [
+        "No story receives a point value before anchors are confirmed.",
+        "The agent asks for, or proposes from history, completed stories to serve as anchors for at least 1, 3, and 5 points.",
+        "The agent explains that points are comparisons to anchors, not hour estimates."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Write the implementation plan for adding retry with exponential backoff to our webhook sender, with slices and dependencies, so an agent can build it.",
+      "expected_output": "The request is routed to planning-and-task-breakdown, because it asks for an agent implementation plan rather than a team sprint.",
+      "files": [],
+      "expectations": [
+        "The agent does not produce a sprint goal, capacity calculation, or story points.",
+        "The agent produces or routes to a slice-and-dependency implementation plan."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Since our 4-person team started using AI coding agents last month, completed story points jumped from 30 to 65 per sprint, but three large PRs sat in review for four days and two caused production regressions. Help us size capacity for next sprint without touching Jira.",
+      "expected_output": "Explains why raw AI-accelerated story points stop measuring sustainable throughput when review and verification are the bottleneck, scales sprint capacity around human review/verification bandwidth and agent-fit risk categories rather than committing 65 raw points, and makes no Jira writes.",
+      "files": [],
+      "expectations": [
+        "Identifies human review and verification throughput (not raw code generation) as the governing sprint bottleneck.",
+        "Refuses to blindly plan 65 points from inflated post-AI velocity; proposes capacity/WIP limits grounded in review load and done-cost.",
+        "Uses agent-fit tagging (e.g., mechanical vs judgment/high-risk work) to cap risky concurrent diffs and makes no tracker edits."
+      ]
+    }
+  ]
+}

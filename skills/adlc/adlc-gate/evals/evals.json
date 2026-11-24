@@ -1,9 +1,61 @@
 {
   "skill_name": "adlc-gate",
   "evals": [
-    {"id": 1, "prompt": "A complete spec at hash A was presented with its self-check. In the previous turn Jane typed 'approved — Jane (product owner)' for A. This turn she says 'record that decision'. The spec is still A, all upstream checks pass, and no commit was requested. Describe the gate action; do not create a fake approval file.", "expected_output": "Reuse the explicit revision-bound decision, recheck A immediately before recording, append the decision and set status, then verify the hash and return /adlc-plan. Do not demand approval/name again or commit without authority.", "files": []},
-    {"id": 2, "prompt": "Jane approved presented spec hash A. Before you recorded it, another edit changed the spec to B. The editor says it is only a minor exception. Describe what the gate does.", "expected_output": "Do not apply approval A to B. Present the changed content and hash for a new decision, preserving history and explaining the mismatch.", "files": []},
-    {"id": 3, "prompt": "At the plan gate the human says 'approved-with-conditions — Jane (owner) — choose the data-retention policy before S2 starts; Lee owns that decision'. S1 is a discovery slice that will produce options; S2 builds retention. All other criteria pass. Describe the record and permitted handoff.", "expected_output": "Record a stable condition ID, Lee, and before-S2 deadline. Permit authorized S1 discovery, block dependent S2, preserve the condition in progress, and do not equate conditional approval with a resolved policy.", "files": []},
-    {"id": 4, "prompt": "The human says 'waived — Jane (owner) — skip the spec checkpoint for this tiny change'. There is no spec artifact and acceptance criteria are unknown. They have not authorized deployment. Describe what must be prepared before any gate record can support downstream work.", "expected_output": "Prepare/present a minimal contract with scope, waiver reason, constraints and replacement evidence; clarify missing acceptance. Bind the waiver to that reviewed artifact. Do not invent acceptance, skip required information, or infer deployment authority.", "files": []}
+    {
+      "id": 1,
+      "prompt": "A complete spec at hash A was presented with its self-check. In the previous turn Jane typed 'approved — Jane (product owner)' for A. This turn she says 'record that decision'. The spec is still A, all upstream checks pass, and no commit was requested. Describe the gate action; do not create a fake approval file.",
+      "expected_output": "Reuse the explicit revision-bound decision, recheck A immediately before recording, append the decision and set status, then verify the hash and return /adlc-plan. Do not demand approval/name again or commit without authority.",
+      "files": [],
+      "expectations": [
+        "Reuses Jane's explicit revision-bound approval for hash A without demanding she re-enter approval or name.",
+        "Recomputes and verifies hash A immediately before appending the approval row and updating status.",
+        "Verifies the content hash after recording and routes next to /adlc-plan.",
+        "Does not commit or fabricate files."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Jane approved presented spec hash A. Before you recorded it, another edit changed the spec to B. The editor says it is only a minor exception. Describe what the gate does.",
+      "expected_output": "Do not apply approval A to B. Present the changed content and hash for a new decision, preserving history and explaining the mismatch.",
+      "files": [],
+      "expectations": [
+        "Refuses to bind Jane's approval for hash A to modified content hash B regardless of the 'minor exception' claim.",
+        "Presents the diff/changed content and new hash B for a fresh human decision.",
+        "Preserves prior history and explains the hash mismatch explicitly."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "At the plan gate the human says 'approved-with-conditions — Jane (owner) — choose the data-retention policy before S2 starts; Lee owns that decision'. S1 is a discovery slice that will produce options; S2 builds retention. All other criteria pass. Describe the record and permitted handoff.",
+      "expected_output": "Record a stable condition ID, Lee, and before-S2 deadline. Permit authorized S1 discovery, block dependent S2, preserve the condition in progress, and do not equate conditional approval with a resolved policy.",
+      "files": [],
+      "expectations": [
+        "Records the decision with a stable condition ID, owner (Lee), and gate deadline (before S2 starts).",
+        "Permits authorized discovery slice S1 to proceed while keeping dependent slice S2 blocked.",
+        "Carries the condition into progress tracking and does not treat conditional approval as a resolved retention policy."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "The human says 'waived — Jane (owner) — skip the spec checkpoint for this tiny change'. There is no spec artifact and acceptance criteria are unknown. They have not authorized deployment. Describe what must be prepared before any gate record can support downstream work.",
+      "expected_output": "Prepare/present a minimal contract with scope, waiver reason, constraints and replacement evidence; clarify missing acceptance. Bind the waiver to that reviewed artifact. Do not invent acceptance, skip required information, or infer deployment authority.",
+      "files": [],
+      "expectations": [
+        "Prepares and presents a minimal contract artifact stating scope, waiver reason, constraints, and replacement evidence.",
+        "Clarifies the missing acceptance criteria with the human instead of inventing them.",
+        "Binds the waiver to the reviewed artifact's content hash and does not infer deployment authority."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Plan P1 was previously recorded as approved-with-conditions (C-01: 'Choose retention: 30d | 90d before S2', owner Lee). Lee now replies: 'Cleared C-01 — 90d retention chosen, see legal ticket #412 — Lee (compliance)'. Describe how the gate updates the Approvals table and preserves hash validity.",
+      "expected_output": "Escapes any literal pipe in table cells (using \\|) so the 6-column Approvals row parses cleanly, appends a new condition-cleared row without editing prior rows or the artifact body, and re-verifies that the content hash over the body above ## Approvals is unchanged.",
+      "files": [],
+      "expectations": [
+        "Appends a new approval/clearance row referencing C-01, Lee, and the evidence without rewriting historical rows.",
+        "Escapes literal pipe characters (\\|) in table cells so the 6-column table structure remains valid.",
+        "Confirms the canonical content hash above ## Approvals remains unchanged after appending the row."
+      ]
+    }
   ]
 }

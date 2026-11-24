@@ -96,3 +96,27 @@ test('CLI runs through the directory links used by local skill installations', (
   assert.equal(result.status, 0, result.stderr);
   assert.equal(result.stdout.trim(), contentHash(draft));
 });
+
+test('enforces six unescaped columns and allows escaped pipes in decision rows', () => {
+  const hash = contentHash(draft);
+  const valid = draft + table + `| intent | approved | Jane (owner) | 2026-09-28 | ${hash} | a \\| b |\n`;
+  assert.equal(contentHash(valid), hash);
+  const wrongCols = draft + table + `| intent | approved | Jane (owner) | 2026-09-28 | ${hash} | a | b |\n`;
+  assert.throws(() => reviewedContent(wrongCols), /six columns/);
+});
+
+test('CLI derives Git object format from the artifact directory rather than caller cwd', (t) => {
+  const root = mkdtempSync(join(tmpdir(), 'adlc-cwd-'));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const repo = join(root, 'sha256-repo');
+  const outside = join(root, 'outside');
+  assert.equal(spawnSync('git', ['init', '--object-format=sha256', repo], { encoding: 'utf8' }).status, 0);
+  const file = join(repo, 'intent.md');
+  writeFileSync(file, draft);
+  const script = fileURLToPath(new URL('./content-hash.mjs', import.meta.url));
+  const result = spawnSync(process.execPath, [script, file], { cwd: root, encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(result.stdout.trim().length, 64);
+  assert.equal(result.stdout.trim(), contentHash(draft, repo));
+  assert.ok(outside);
+});

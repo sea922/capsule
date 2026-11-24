@@ -19,12 +19,15 @@ Establish that it is free from host task/attachment status, repository status,
 and known processes using the checkout. Unresolved ownership means retain it and
 choose another checkout; a clean Git status alone is insufficient.
 
-Prefer the host's managed worktree tools. Use Git directly when those tools are
-unavailable or the user asks for it. With Git, inspect `git worktree list
---porcelain` and repository metadata; a `.git` file alone also occurs in submodules
-and is insufficient to identify a linked worktree. For a new checkout, resolve
-the start point and path explicitly; base and branch choice follow `git-workflow`.
-Check that a repository-local worktree path is ignored before populating it.
+Prefer the host's managed worktree tools. After creating a host-managed
+worktree, verify its actual start ref (default branch versus local `HEAD`) and
+whether needed ignored files (such as `.worktreeinclude` entries) were
+transferred. Use Git directly when those tools are unavailable or the user asks
+for it. With Git, inspect `git worktree list --porcelain` and repository
+metadata; a `.git` file alone also occurs in submodules and is insufficient to
+identify a linked worktree. For a new checkout, resolve the start point and path
+explicitly; base and branch choice follow `git-workflow`. Check that a
+repository-local worktree path is ignored before populating it.
 
 Worktree creation normally excludes uncommitted changes. If the task requires
 them, use a supported transfer mechanism and verify its contents, including
@@ -39,13 +42,10 @@ Before setup or concurrent builds/tests, read [environments](references/environm
 for dependencies, configuration, and shared-resource ownership.
 
 Run all edits and checks against the selected absolute directory. Verify branch
-or detached HEAD and base before work begins. Establish dependencies, required
-environment files, fixtures, and an appropriate baseline check in that checkout.
-Record existing failures separately from regressions.
-
-Worktrees separate working files and indexes while sharing repository state.
-Assign separate ports, databases, and other writable external resources when
-concurrent tasks could collide. Track which task owns each checkout and process.
+or detached HEAD and base before work begins, establish dependencies and a
+baseline check per [environments](references/environments.md), and record
+existing failures separately from regressions. Track which task owns each
+checkout and any external ports, databases, or writable resources it uses.
 
 **Complete when:** the decisive build/test can run in the checkout with known
 resource ownership, or a concrete unavailable dependency is reported.
@@ -56,6 +56,10 @@ A merged PR is a lifecycle checkpoint, not an automatic deletion instruction.
 Retain checkouts needed by review, follow-up work, running processes, or the user.
 Before retirement inspect the exact target, changes, unpushed commits, untracked
 files, and needed ignored assets. Preserve pinned, shared, or in-use worktrees.
+A worktree that Git reports as `locked` stays until its owner releases it, even
+under a force option. When removing a directory, inspect every checkout and
+submodule nested inside it, not only the top one, and repeat the inspection
+immediately before deletion: work can land while a confirmation waits.
 
 Use managed archival when supported; verify its snapshot and exclusions. Preserve
 needed ignored assets separately if archival omits them: use a durable location

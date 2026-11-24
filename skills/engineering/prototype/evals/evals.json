@@ -35,6 +35,17 @@
         "The answer distinguishes reasoning from observation.",
         "Any suggested experiment is described as future work rather than performed."
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Try out an optimistic-locking retry idea directly inside production src/billing/ledger.ts and leave it in place if a quick run looks good.",
+      "expected_output": "Keeps the prototype isolated from production files (using a throwaway experiment or sandboxed harness), defines the falsifiable question and graduation criteria up front, and routes any production change to implement after the experiment answers the question.",
+      "files": [],
+      "expectations": [
+        "Refuses to mutate production `src/billing/ledger.ts` directly as an unverified prototype.",
+        "Proposes or runs an isolated experiment against a synthetic fixture to answer the specific optimistic-locking question.",
+        "Routes adopting a proven design into production through `implement` (with proper tests and verification) rather than leaving prototype code in place."
+      ]
     }
   ]
 }

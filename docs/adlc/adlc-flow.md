@@ -41,3 +41,5 @@ starts a new intent. Delivery returns to the router at slice boundaries.
 See the [ADLC research](../research/2026-09-26-adlc.md) for sources and design decisions.
 The [2026-09-28 review](../research/2026-09-28-adlc-review.md) strengthens chain
 freshness, evidence, and terminal routing.
+
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) adds a scope check before completion: a delivered change that no slice covers is routed back to planning or a new intent. It follows ECC's `change-impact` post-implementation alignment.

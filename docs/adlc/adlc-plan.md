@@ -36,3 +36,5 @@ When planning finds a fact that contradicts the spec, the skill stops and routes
 The [2026-09-27 source sweep](../research/2026-09-27-source-repos-sweep.md) adds interfaces, review focus, and the proportion check from Superpowers' `writing-plans`.
 The [2026-09-28 review](../research/2026-09-28-adlc-review.md) adds approval-chain
 verification, evidence freshness, and explicit delivery and observation boundaries.
+
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) carries the delivery shape that `planning-and-task-breakdown` now chooses (one pull request unless a named reason splits it) into the handoff.

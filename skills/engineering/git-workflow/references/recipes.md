@@ -86,3 +86,37 @@ descendants in dependency order, preserving each old boundary before rewriting i
 **Done:** each PR shows only its intended change against its current parent,
 checks cover the new heads, and dependency links are accurate. See the
 [rebase manual](https://git-scm.com/docs/git-rebase).
+
+## Split a one-way-door change (expand/contract)
+
+**Preconditions:** the original branch's head and base recorded; splitting it
+into stacked PRs authorized.
+
+A one-way door is a step that a revert cannot undo: a migration that drops or
+rewrites data, a removed column, field, endpoint, or public API, a changed
+persisted or wire format, or an external side effect. Classify every part of
+the diff as reversible or one-way. If nothing is one-way, keep one PR.
+
+1. **Expand PR (two-way door)**, branched from the base. It ships all the new
+   code alongside the old path. Use the repository's existing feature-flag
+   mechanism, with a default that keeps current behavior; ask before
+   introducing a new flag system. Schema changes are additive only. Data the
+   new path writes stays readable by the old path (dual-write or compatible
+   reads). Verify checks pass with the flag both off and on, and that switching
+   the flag off, or reverting the PR, restores prior behavior even for data
+   written while it was on.
+2. **Contract PR (one-way door)**, branched from the expand head and targeting
+   the expand branch. It contains only the irreversible steps: make the new path
+   unconditional, then remove the flag, the old path, and the compatibility
+   shims, and run the destructive migration. Restore the original intent with
+   `git checkout ORIGINAL_HEAD -- PATH...` where the paths line up, then confirm
+   `git diff ORIGINAL_HEAD CONTRACT_HEAD` is empty or contains only explained
+   differences.
+3. Publish both through `pr-description`. The contract PR states that it waits
+   until the expand PR is deployed and observed in production, and names the
+   signal that clears it. Keep the pair current with
+   [Maintain a stack](#maintain-a-stack); merging stays with `babysit-pr`.
+
+**Done:** the expand diff contains no one-way step and is verified with the flag
+off and on; the contract diff against expand holds only the one-way steps; the
+combined result matches the original head or the differences are reported.

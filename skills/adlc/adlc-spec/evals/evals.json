@@ -1,7 +1,38 @@
 {
   "skill_name": "adlc-spec",
   "evals": [
-    {"id": 1, "prompt": "Approved intent: authenticated users export only their own currently filtered rows through GET /exports. Existing defect: another tenant's row appears when a filter spans a page boundary. Draft the observable acceptance portion without choosing implementation files.", "expected_output": "Include the route as contract vocabulary, a failing cross-tenant/page-boundary example, expected filtered output, forbidden leakage, verification method/environment, and traceability to the intent outcome. Do not ban observable paths as implementation details or pick files.", "files": []},
-    {"id": 2, "prompt": "AC-003 requires retries never duplicate a charge. Implementation currently duplicates one in ten. The developer asks you to change AC-003 to 'usually no duplicates' and reuse retired AC-004 for another feature so CI passes. What do you do?", "expected_output": "Preserve IDs and reject silent weakening. Surface the violated guarantee and route an explicit scoped contract change for human review and downstream reconciliation, or retain the criterion and fix implementation. Do not invent permission or erase retired history.", "files": []}
+    {
+      "id": 1,
+      "prompt": "Approved intent: authenticated users export only their own currently filtered rows through GET /exports. Existing defect: another tenant's row appears when a filter spans a page boundary. Draft the observable acceptance portion without choosing implementation files.",
+      "expected_output": "Include the route as contract vocabulary, a failing cross-tenant/page-boundary example, expected filtered output, forbidden leakage, verification method/environment, and traceability to the intent outcome. Do not ban observable paths as implementation details or pick files.",
+      "files": [],
+      "expectations": [
+        "Uses GET /exports as observable contract vocabulary without prescribing internal files, classes, or queries.",
+        "Specifies a concrete cross-tenant, page-boundary filter example showing expected rows and forbidden cross-tenant leakage.",
+        "Names the verification method/environment and traces the acceptance criterion back to the approved intent."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "AC-003 requires retries never duplicate a charge. Implementation currently duplicates one in ten. The developer asks you to change AC-003 to 'usually no duplicates' and reuse retired AC-004 for another feature so CI passes. What do you do?",
+      "expected_output": "Preserve IDs and reject silent weakening. Surface the violated guarantee and route an explicit scoped contract change for human review and downstream reconciliation, or retain the criterion and fix implementation. Do not invent permission or erase retired history.",
+      "files": [],
+      "expectations": [
+        "Refuses to silently weaken AC-003 to 'usually no duplicates' to make CI pass.",
+        "Refuses to reuse retired identifier AC-004 or erase retired history.",
+        "Presents the choice explicitly: fix the implementation against AC-003 or route a formal spec change through human approval and downstream reconciliation."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Approved intent: webhook deliveries survive transient 5xx responses without charging customers twice or dropping failed deliveries silently. Draft the behavioral failure and recovery requirements in the spec without choosing a queue library or database schema.",
+      "expected_output": "Specifies observable retry exhaustion, idempotency/deduplication scope, terminal failure visibility, and verification method without selecting a queue library or schema tables.",
+      "files": [],
+      "expectations": [
+        "Specifies observable behavior for transient 5xx retries, bounded exhaustion, deduplication/idempotency scope, and terminal failure visibility.",
+        "Includes concrete verifiable acceptance criteria for both recovery and duplicate-suppression cases.",
+        "Does not prescribe a specific queue vendor, library, or internal database table schema."
+      ]
+    }
   ]
 }

@@ -26,7 +26,7 @@ REFERENCE_LINK_RE = re.compile(
     (?:[ \t]+(?:"[^"\n]*"|'[^'\n]*'|\([^\n)]*\)))?[ \t]*$""",
     re.MULTILINE | re.VERBOSE,
 )
-BARE_URL_RE = re.compile(r"https?://[^\s<>\]]*[A-Za-z0-9/#]")
+BARE_URL_RE = re.compile(r"https?://[^\s<>\]]*[A-Za-z0-9/#=_-]")
 PATH_RE = re.compile(
     r"(?<![\w@])(?:"
     r"(?:[A-Za-z]:\\|\\\\[^\\\s]+\\[^\\\s]+\\|/|\./|\.\./)"
@@ -50,15 +50,16 @@ DATE_RE = re.compile(
     re.IGNORECASE,
 )
 TIME_RE = re.compile(
-    r"\b(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?"
-    r"(?:[ \t]*(?:UTC|GMT|[APap]\.?[Mm]\.?)\b)?"
+    r"\b(?:[01]?\d|2[0-3]):[0-5]\d(?::[0-5]\d)?"
+    r"(?:[ \t]*(?:UTC|GMT|[APap]\.?[Mm]\.?)(?!\w))?"
 )
 VERSION_RE = re.compile(
-    r"\bv?\d+(?:\.\d+){2,}(?:[-+][0-9A-Za-z.-]+)?\b", re.IGNORECASE
+    r"\b(?:v\d+(?:\.\d+)+|\d+(?:\.\d+){2,})(?:[-+][0-9A-Za-z.-]+)?\b",
+    re.IGNORECASE,
 )
 NUMBER_RE = re.compile(
     r"(?<![\w.])(?:[$€£]|R[ \t]*)?[+\-−]?(?:\d[\d,]*(?:\.\d+)?|\.\d+)"
-    r"(?:%|[A-Za-z]{1,4})?(?![\w.-])"
+    r"(?:%|[A-Za-z]{1,4})?(?!\w|\.\d)"
 )
 HEADING_RE = re.compile(r"^#{1,6}[ \t]+\S.*$", re.MULTILINE)
 TABLE_ROW_RE = re.compile(r"^[ \t]*\|.*\|[ \t]*$", re.MULTILINE)
@@ -80,7 +81,7 @@ def _normalise(text: str) -> str:
 
 def _preview(value: str, limit: int = 120) -> str:
     compact = re.sub(r"\s+", " ", value).strip()
-    return compact if len(compact) <= limit else compact[: limit - 1] + "…"
+    return compact if len(compact) <= limit else compact[: limit - 3] + "..."
 
 
 def _fingerprint(value: str) -> str:

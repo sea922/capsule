@@ -29,16 +29,7 @@ Compare the implementation with every available source of intent. Quote the exac
 
 ### Standards and architecture pass
 
-Apply the instructions governing each changed file and the repository's established local contracts. Inspect architecture only where it creates a concrete regression:
-
-- responsibility, invariant, policy, and state ownership;
-- static dependency direction versus runtime control and data flow;
-- public interface behavior, effects, errors, time, and compatibility;
-- boundary failure, retries, idempotency, duplicates, ordering, and consistency;
-- caller knowledge, cycles, hidden coupling, and bypassable seams;
-- tests located at the seam where the changed assumption crosses.
-
-Use KISS, YAGNI, DRY, SOLID, and smell names to investigate evidence, never as self-sufficient findings.
+Apply the instructions governing each changed file, the repository's established local contracts, and the architecture lenses in `SKILL.md` (ownership, invariants, dependency direction vs runtime flow, caller knowledge, boundary failure semantics, and seam-aligned tests). Check only for concrete regressions — never report abstraction shape, SOLID labels, or smells by themselves.
 
 ### Optional second opinion
 
@@ -56,13 +47,9 @@ Record commands and outcomes that materially affect the findings. Do not turn de
 
 ## 4. Validate the candidate pool
 
-Combine the independent candidate lists, deduplicate them, then challenge every item:
+Combine the independent candidate lists, deduplicate them, then challenge every item against the finding gate in `SKILL.md`: re-read the cited lines and surrounding code, search for guards, callers, contracts, tests, or history that could invalidate it, and verify the changed cause, trigger, impact, and severity.
 
-1. Identify the exact changed cause and concrete trigger.
-2. Re-read the cited lines and enough surrounding code to test the claim.
-3. Search for guards, callers, contracts, tests, or history that could invalidate it.
-4. Confirm that impact and severity match the scenario.
-5. Reject pre-existing, intentional, speculative, style-only, tool-owned, or non-actionable items.
+When a command can settle a candidate, such as a failing test or a short reproduction, prefer that proof: rerun it and keep the candidate only when the output shows the failure. Give validation the candidate and the code, not the pass's reasoning, so the framing that produced it cannot carry over.
 
 Validation confirms or drops. A candidate that survived a review pass but that validation cannot confirm does not become a hedged finding; drop it, and carry it into residual risks only when the unresolved uncertainty is itself material. Agreement between passes is not confirmation — the same missing context can mislead every reviewer.
 

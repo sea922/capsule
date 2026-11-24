@@ -461,6 +461,15 @@ export function main(argv = process.argv.slice(2), io = {}) {
   }
 }
 
-if (import.meta.main) {
+function isMain() {
+  if (!process.argv[1]) return false;
+  try {
+    return realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url));
+  } catch {
+    return false;
+  }
+}
+
+if (isMain()) {
   process.exitCode = main();
 }

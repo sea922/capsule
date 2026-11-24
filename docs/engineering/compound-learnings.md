@@ -33,3 +33,5 @@ The [source-repository sweep](../research/2026-09-27-source-repos-sweep.md) iden
 Mechanisms are ranked from the [2026-10 source sweep](../research/2026-10-06-source-repos-sweep.md): a design that removes the wrong way, then a type, a lint or check whose error names the fix, a behavior test, and prose last, with each mechanism shown to fail on the original mistake. A repeat despite a written rule calls for a mechanism. This follows Cursor pstack's `correct`.
 
 See the [skill instructions](../../skills/engineering/compound-learnings/SKILL.md).
+
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) adds three rules: a capture candidate usually comes from verified work that corrected a wrong belief (EveryInc's `ce-compound`), refresh decides drift from commit ancestry with "can't tell" never read as current (Addy Osmani's `documentation-and-adrs`), and lessons record the commit they were verified at (Matt Pocock's `chief-of-staff` wiki).

@@ -35,6 +35,17 @@
         "Suggestions preserve the authorization and asynchronous cleanup contract.",
         "The response does not claim tests passed or behavioral equivalence was demonstrated."
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Simplify our backend by splitting the monolith into three microservices (auth, billing, notifications) with a Kafka bus between them.",
+      "expected_output": "Recognizes that decomposing a monolith into distributed microservices is a consequential architecture redesign rather than behavior-preserving local simplification, and routes the request to codebase-design without editing files.",
+      "files": [],
+      "expectations": [
+        "Identifies that splitting a monolith into microservices with Kafka is an architecture boundary decision outside simplify's behavior-preserving cleanup scope.",
+        "Routes the decision to codebase-design rather than starting local cleanup edits.",
+        "Makes no repository edits."
+      ]
     }
   ]
 }

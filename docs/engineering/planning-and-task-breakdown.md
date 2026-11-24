@@ -19,3 +19,5 @@ The plan should name the dependencies, show which slices are ready, and specify 
 ## Design basis
 
 The [preferred-source research](../research/preferred-skill-repositories-workflow-gap-research.md) records all six repositories and revisions. Matt Pocock contributes dependency-aware tickets; Superpowers contributes execution checkpoints; Addy Osmani contributes vertical slicing and canonical plan ownership. The local wording preserves direct implementation and existing authority. The [2026-09-27 source sweep](../research/2026-09-27-source-repos-sweep.md) adds interfaces, review focus, and the proportion check from Superpowers' `writing-plans`.
+
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) adds an evidence test for plan items with a **Deferred** list and reopen triggers (testdouble/han's YAGNI rule, Addy Osmani's V1 scoping) and a one-pull-request default with named split reasons (EveryInc's `ce-plan`).

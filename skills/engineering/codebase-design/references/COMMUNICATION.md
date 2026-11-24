@@ -90,12 +90,3 @@ Order --publishes OrderRejected--> Order subscribers
 ```
 
 Every result arrives before the action it justifies: Order can only compensate the reservation because the rejection returned to it, and the published fact reports the outcome that actually happened. Dropping the `AuthorizePayment` arrow would leave a result with no request and silently move payment ownership.
-
-## Primary sources and specifications
-
-- [Waldo et al., A Note on Distributed Computing](https://scholar.harvard.edu/files/waldo/files/waldo-94.pdf)
-- [Hohpe and Woolf, Enterprise Integration Patterns chapter 3](https://www.enterpriseintegrationpatterns.com/docs/EnterpriseIntegrationPatterns_HohpeWoolf_ch03.pdf)
-- [Fowler, What do you mean by Event-Driven?](https://martinfowler.com/articles/201701-event-driven.html)
-- [OpenAPI specification](https://spec.openapis.org/oas/latest.html)
-- [AsyncAPI specification](https://github.com/asyncapi/spec/blob/master/spec/asyncapi.md)
-- [CloudEvents specification](https://github.com/cloudevents/spec/blob/main/cloudevents/spec.md)

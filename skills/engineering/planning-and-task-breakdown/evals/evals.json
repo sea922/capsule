@@ -35,6 +35,17 @@
         "Undecided retention behavior is not invented; dependent work is blocked while independent planning proceeds.",
         "Migration and compatibility have concrete checks and recovery considerations."
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Break down our new audit-log export feature into slices. Three backend storage and streaming slices are clear, but we still haven't decided whether Free tier users get exports or whether exports expire after 7 or 30 days. Do not write code.",
+      "expected_output": "Separates the clear engineering slices from the unresolved product decisions, isolates the Free-tier and expiry questions as explicit decision gates (recommending grilling if product trade-offs need alignment) blocking only dependent slices, and leaves production code untouched.",
+      "files": [],
+      "expectations": [
+        "Plans the unblocked backend storage and streaming slices with dependencies and verification paths.",
+        "Does not invent answers for Free-tier access or 7-vs-30-day expiry; isolates them as explicit decision gates blocking only dependent slices.",
+        "Suggests grilling (or explicit user confirmation) for unresolved product trade-offs and changes no production files."
+      ]
     }
   ]
 }

@@ -33,3 +33,5 @@ own and `orchestrate` can reach it for parallel work; the
 boundary. Superpowers informed native worktree reuse and ownership, as recorded
 in the [git-workflow research](../research/2026-09-26-git-workflow.md) and
 [preferred-source audit](../research/2026-09-26-git-workflow-preferred-sources.md).
+
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) keeps locked worktrees and checks nested checkouts again right before deletion, after gstack's uninstall fixes for nested and locked worktrees.

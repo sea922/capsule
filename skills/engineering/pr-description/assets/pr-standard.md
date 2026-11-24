@@ -22,9 +22,7 @@ starting point. Explain what the diff cannot establish on its own.>
 
 ## Related work
 
-<Optional: verified issue links, parent PR, or known follow-on work. Use a
-closing keyword (`Fixes #N`) only when this PR delivers the whole issue and that
-was verified; otherwise link it (`Refs #N`) and name what remains.>
+<Optional: verified issue links (`Fixes #N` or `Refs #N`), parent PR, or known follow-on work.>
 
 ## Merge danger
 

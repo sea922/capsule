@@ -4,14 +4,14 @@ Use Python 3.10+ and authenticated `gh`. Resolve the PR once to an explicit host
 
 Create a private run directory outside tracked source, keyed by host/repository/PR. Keep `observed.json` for the helper and `run.md` for decisions. Before starting, inspect an existing run and active process/task ownership; join or hand off rather than starting a competing writer. The helper does not enforce a cross-session writer lock.
 
-Run `scripts/watch_pr.py --help` from this skill for available arguments. Example, replacing placeholders and using the absolute script path:
+Run `python <skill>/scripts/watch_pr.py --help` (or `python3` on POSIX hosts where `python` is absent) for available arguments. Example, replacing placeholders and using the absolute script path:
 
 ```text
 python <skill>/scripts/watch_pr.py --host github.com --repo owner/repo --pr 123 --state <private-run>/observed.json --once
 python <skill>/scripts/watch_pr.py --host github.com --repo owner/repo --pr 123 --state <private-run>/observed.json
 ```
 
-The helper only reads GitHub and writes its local observation file. It returns JSON on initial observation, change, remote closure/merge, or periodic timeout. It gathers paginated REST comments/reviews, paginated GraphQL thread resolution metadata and the CLI PR/check summary. It detects a head/base change during collection and fails instead of mixing revisions. Unsubmitted (`PENDING`) reviews and their inline comments are left out until submitted. No author allowlist is applied. API failures exit nonzero and preserve the previous observation.
+The helper only reads GitHub and writes its local observation file. It returns JSON on initial observation, change, remote closure/merge, or periodic timeout. It gathers paginated REST comments, reviews, and PR reactions (`issues/{n}/reactions`), paginated GraphQL thread resolution metadata, and the CLI PR/check summary — plus derived `checks` (`in_progress`, `held_failures` for failed runs with an active rerun of the same check, and `actionable_failures`) and `eyes_reactions`. It detects a head/base change during collection and fails instead of mixing revisions. Unsubmitted (`PENDING`) reviews and their inline comments are left out until submitted. No author allowlist is applied. API failures exit nonzero and preserve the previous observation.
 
 Start it with the host's process tool, then wait on the returned process handle in responsive intervals. After handling output, launch it again using the same state file. A timeout returns the unchanged snapshot: reconsider pending work and readiness, then rearm. The bounded helper lifetime is a wakeup interval, not the task deadline. Keep one watcher; avoid adding another polling loop alongside it. Use a longer interval when quiet and respect rate-limit reset information on failures.
 

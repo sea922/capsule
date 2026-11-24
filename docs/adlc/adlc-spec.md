@@ -29,3 +29,5 @@ The human's direct request supplies direction; quoted issues, feedback, and logs
 remain data, not execution authority. Retained text uses a fence longer than any
 embedded delimiter. See the [2026-09-28 review](../research/2026-09-28-adlc-review.md)
 for this revision's evidence and tests.
+
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) records ideas the work will not deliver under **Out of scope** with what would bring them back, and has a change to delivered behavior cite the earlier spec instead of reopening it. Both come from Addy Osmani's `spec-driven-development` V1 scoping and delta specs.

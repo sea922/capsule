@@ -1,8 +1,51 @@
 {
   "skill_name": "adlc-plan",
   "evals": [
-    {"id": 1, "prompt": "Use symbolic hashes as verified facts. Spec S1 is unchanged and approved, but its source points to I1; intent has changed and is now approved at I2. Please plan the build from S1.", "expected_output": "Verify the entire upstream chain and return /adlc-spec for reconciliation before planning. A matching spec approval alone is insufficient.", "files": []},
-    {"id": 2, "prompt": "Plan P2 and its upstream chain are current and approved. Progress still binds P1: S1 is verified with receipts, S2 ready. P2 retains S1 and its ACs unchanged and changes S2's behavior. Reconcile progress only. No commit or external action was requested.", "expected_output": "Leave P2 unchanged, preserve history and S1 receipts after checking relevance, invalidate/reassess affected S2 evidence, bind P2, carry conditions, and return /adlc-flow. Do not reset everything or just replace the hash.", "files": []},
-    {"id": 3, "prompt": "Draft a plan for an approved data migration spec. Discovery S1 must establish whether rollback can restore deleted data; implementation S2 depends on that answer. The user authorized planning only and wants an eventual PR, not deployment. Explain assignment, frontier, evidence and handoff requirements.", "expected_output": "S1 may be ready to answer the rollback question while S2 is blocked. Name recovery owner and stop condition, separate implementer/verifier, AC and combined checks, PR endpoint and authority limits. Current status belongs in progress, not approved plan headings. Do not implement or delegate merely from a role assignment.", "files": []}
+    {
+      "id": 1,
+      "prompt": "Use symbolic hashes as verified facts. Spec S1 is unchanged and approved, but its source points to I1; intent has changed and is now approved at I2. Please plan the build from S1.",
+      "expected_output": "Verify the entire upstream chain and return /adlc-spec for reconciliation before planning. A matching spec approval alone is insufficient.",
+      "files": [],
+      "expectations": [
+        "Verifies the full upstream chain rather than stopping at Spec S1's approval.",
+        "Detects that S1's source binding (I1) is stale against approved Intent I2.",
+        "Refuses to plan from stale S1 and routes back to /adlc-spec for reconciliation."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Plan P2 and its upstream chain are current and approved. Progress still binds P1: S1 is verified with receipts, S2 ready. P2 retains S1 and its ACs unchanged and changes S2's behavior. Reconcile progress only. No commit or external action was requested.",
+      "expected_output": "Leave P2 unchanged, preserve history and S1 receipts after checking relevance, invalidate/reassess affected S2 evidence, bind P2, carry conditions, and return /adlc-flow. Do not reset everything or just replace the hash.",
+      "files": [],
+      "expectations": [
+        "Leaves approved plan P2 untouched.",
+        "Preserves progress history and retains S1's verified receipts after confirming S1 and its ACs are unchanged.",
+        "Invalidates or reassesses S2's status/evidence because P2 changed S2's behavior, binds progress to P2, and carries any open conditions.",
+        "Routes next to /adlc-flow without committing or resetting unrelated history."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Draft a plan for an approved data migration spec. Discovery S1 must establish whether rollback can restore deleted data; implementation S2 depends on that answer. The user authorized planning only and wants an eventual PR, not deployment. Explain assignment, frontier, evidence and handoff requirements.",
+      "expected_output": "S1 may be ready to answer the rollback question while S2 is blocked. Name recovery owner and stop condition, separate implementer/verifier, AC and combined checks, PR endpoint and authority limits. Current status belongs in progress, not approved plan headings. Do not implement or delegate merely from a role assignment.",
+      "files": [],
+      "expectations": [
+        "Places discovery slice S1 in the ready frontier while keeping dependent implementation slice S2 blocked on S1's rollback finding.",
+        "Names recovery owner, stop condition, separate implementer/verifier roles, per-AC checks, and combined acceptance checks.",
+        "Records the PR endpoint and explicit non-deployment authority limit.",
+        "Keeps live slice status in progress.md rather than mutating approved plan headings, and does not implement or spawn agents."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Approved Spec S2 adds a shared audit-event contract consumed by both Billing (S1) and Exports (S2). Draft the dependency graph and slice interfaces in the plan without editing production code.",
+      "expected_output": "Orders the shared audit-event contract (or its owning slice) ahead of dependent consumers, names explicit slice interfaces and combined integration checks, and stays read-only on production code.",
+      "files": [],
+      "expectations": [
+        "Makes the shared audit-event contract an explicit dependency ahead of both dependent slices rather than assuming parallel independent writes.",
+        "Defines concrete slice interfaces and a combined acceptance check covering both consumers.",
+        "Leaves production code untouched."
+      ]
+    }
   ]
 }

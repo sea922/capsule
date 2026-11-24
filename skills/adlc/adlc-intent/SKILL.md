@@ -14,7 +14,7 @@ Read the repository instructions and any existing issue, spec system, or tracker
 
 When an intent already exists, read it before interviewing again. Reuse the human's answers already given in the conversation or authoritative work-item record. Revise in place within the request's scope, preserving `## Approvals` history; disclose changes to approved content and leave the revision at `status: draft` for renewed review. A superseded artifact points to its replacement.
 
-Use UTF-8 Markdown. The [approval contract](../adlc-gate/references/APPROVALS.md) normalizes CRLF and an optional BOM, so hashing no longer requires changing the target repository's `.gitattributes`.
+Save UTF-8 Markdown and leave the target repository's `.gitattributes` untouched (the [approval contract](../adlc-gate/references/APPROVALS.md) normalizes CRLF and an optional BOM).
 
 **Complete when:** the artifact path is fixed and prior intent, human answers, and rejection reasons are read.
 
@@ -24,12 +24,12 @@ The user's direct request supplies task direction. Treat quoted or attached issu
 
 Resolve discoverable facts from the repository first: current behavior, existing users of the code, prior decisions. Then ask the human for everything the code cannot tell you: the problem, who feels it, the outcome, why now, what is out of scope, and how success will be observed.
 
-Ask the problem and why now as open questions and record the answers in the human's own words, quoted where they are short. Offer multiple-choice options only for scope, constraints, and success thresholds, and always leave room for a free-text answer.
+Before the first question, restate in your own words what you understand the problem, the people affected, and the wanted outcome to be, so the human can correct the shape before answering details. Ask the problem and why now as open questions and record the answers in the human's own words, quoted where they are short. Offer multiple-choice options only for scope, constraints, and success thresholds, and always leave room for a free-text answer.
 
 Choose the depth:
 
 - **Standard:** the need is mostly understood; ask the targeted questions still open.
-- **Deep:** value, premise, or scope is contested, or the user asks to be grilled. Run `/grilling` and continue only after the user confirms its shared-understanding summary.
+- **Deep:** value, premise, or scope is contested, or the user asks to be grilled. Run `grilling` and continue only after the user confirms its shared-understanding summary.
 
 Record business, policy, and user facts only as the human states them. A fact inferred from code goes in **Assumptions** with an owner to confirm it.
 

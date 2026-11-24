@@ -1,0 +1,8 @@
+[
+  {
+    "id": "GHSA-fc5q-39xc-vjpf",
+    "package": "picomatch",
+    "reason": "ReDoS needs an attacker-supplied glob. picomatch runs only inside the @changesets/cli dev tooling on this repository's own config, and no patched release exists (4.0.7 is the latest and is affected). Remove once a fixed picomatch ships and the lockfile is updated.",
+    "expires": "2026-12-31"
+  }
+]

@@ -9,8 +9,8 @@ Keep each component's responsibility and public inputs clear. Put feature logic
 with its owning feature; extract shared components when callers share a stable
 contract. Follow the existing design system for presentation.
 
-Use semantic controls with accessible names, keyboard operation, and visible
-focus. Associate labels and validation feedback with form fields. Preserve
+Use semantic controls with accessible names, keyboard operation, visible
+focus, and WCAG 2.2 AA touch targets (at least 24×24 CSS px where applicable). Associate persistent visible `<label>` elements (not placeholder-only text) and validation feedback with form fields. Preserve
 focus through dialogs and dynamic updates using the framework or component
 library's established behavior. Check the changed interaction with a keyboard.
 
@@ -24,15 +24,11 @@ Keep one owner for each fact. Derive values from existing state when possible;
 introduce shared state when multiple consumers need the same authoritative fact.
 Separate server data lifecycle from temporary UI state using existing facilities.
 
-Ensure an older request cannot overwrite the current query's result. Use the
-project's data library or an explicit cancellation/stale-result guard. Handle
+Ensure an older request cannot overwrite the current query's result. Reuse the
+project's installed data/query library before creating another fetching
+abstraction, or use an explicit cancellation/stale-result guard and test out-of-order responses. Handle
 errors and cleanup, and bind loading state to the active operation rather than
 whichever request finishes first.
-
-Example: a search for `cat` followed by `car` must retain `car` results even if
-the `cat` request finishes last. Test that ordering, not just one successful
-response. Reuse an installed query library before creating another fetching
-abstraction.
 
 ## Rendering and framework behavior
 

@@ -18,11 +18,20 @@ source: <intent path>@<content hash>
 
 The observable behavior, from the user's or calling system's side.
 
+*(When modifying behavior from a previously delivered ADLC spec, add:)*
+- Prior spec: `<path>` (left unchanged)
+- Current behavior: <what the delivered spec establishes>
+- New behavior: <what changes>
+- Must not change: <preserved guarantees>
+
+*(Note any intent assumptions/conditions due by `spec` settled here, or "none".)*
+
 ## Acceptance criteria
 
 - **AC-001** — Given <scenario>, when <action>, then <observable result>.
   Outcome: <intent outcome>. Must not: <prohibited side effect, when meaningful>.
   Verify by: <test, check, or demonstration with representative inputs and environment>.
+- **AC-004** *(retired)* — <reason for retirement; never reuse this ID>.
 
 Include relevant failure and boundary cases. For a fix, name the current failing
 example. For uncertain quality/performance, identify the baseline and acceptance
@@ -40,7 +49,9 @@ Security, privacy, compliance, performance, and compatibility requirements that 
 
 ## Out of scope
 
-Carried from the intent's non-goals, plus anything excluded while specifying.
+Carried from the intent's non-goals, plus anything excluded while specifying:
+
+- <excluded item> — revisit if: <condition that would bring it back> (or "none")
 
 ## Areas of concern
 

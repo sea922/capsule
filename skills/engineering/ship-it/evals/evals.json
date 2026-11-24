@@ -21,6 +21,28 @@
       "expected_output": "State the default merge-ready PR endpoint, review if needed, publish, and follow remote gates to readiness. Do not collapse ready-for-review into merge-ready or infer deployment authority.",
       "files": [],
       "expectations": ["Selects merge-ready PR explicitly", "Requires applicable remote readiness gates before stopping successfully", "Does not select merge or deployment by default"]
+    },
+    {
+      "id": 4,
+      "prompt": "Ship the auth fix to a merge-ready PR. Before review you notice `git status` shows two extra modified files outside the auth fix: a stray `console.log` you accidentally left in `src/health.ts` during this task, and an unrelated staged `src/billing.ts` the user already had staged before the task started. How do you handle both?",
+      "expected_output": "Reverts the accidental stray task edit in `src/health.ts`, excludes and preserves the user's unrelated staged `src/billing.ts` with its staging state intact, and never ships either silently or discards user work.",
+      "files": [],
+      "expectations": [
+        "Reverts the accidental stray edit made by this task in `src/health.ts` so it is not shipped.",
+        "Preserves the user's unrelated staged `src/billing.ts` (including its staging state) and excludes it from the delivery commit and PR.",
+        "Never discards user work or ships out-of-scope files silently."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Ship this fix and deploy it to staging once merged. PR #88 is already merged to main, and the repo has a staging deploy workflow. You have not yet been told whether to run a database seed step that resets staging data.",
+      "expected_output": "Loads references/DEPLOYMENT.md, verifies the merged revision on main, separates confirmed staging deploy authority from the destructive staging data reset, asks before running the destructive seed step, and requires post-deploy verification before calling the release deployed.",
+      "files": [],
+      "expectations": [
+        "Loads and follows the deployment reference rather than stopping at PR merge.",
+        "Does not run the destructive staging data reset without explicit authority.",
+        "Requires post-deploy health/verification evidence on the deployed revision before reporting deployed."
+      ]
     }
   ]
 }

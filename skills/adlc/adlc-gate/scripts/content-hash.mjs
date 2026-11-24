@@ -2,7 +2,19 @@
 // One byte contract for every ADLC stage; no writes or approval decisions.
 import { readFileSync, realpathSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
+import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+function countUnescapedPipes(line) {
+  let count = 0;
+  for (let i = 0; i < line.length; i++) {
+    if (line[i] !== '|') continue;
+    let slashes = 0;
+    for (let j = i - 1; j >= 0 && line[j] === '\\'; j--) slashes++;
+    if (slashes % 2 === 0) count++;
+  }
+  return count;
+}
 
 export function reviewedContent(input) {
   const text = input.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
@@ -33,10 +45,19 @@ export function reviewedContent(input) {
     // Never silently hide a requirements section appended after the ledger.
     const ledger = lines.slice(approvals + 1).filter((line) => line.trim());
     const header = '| Stage | Decision | Approver | Date | Reviewed revision | Conditions / reasons |';
-    if (ledger.length && (ledger.length < 2 || ledger[0].trim() !== header ||
-        !/^\|(?:\s*:?-{3,}:?\s*\|){6}$/.test(ledger[1].trim()) ||
-        ledger.slice(2).some((line) => !/^\|.*\|$/.test(line.trim())))) {
-      throw new Error('Approvals must be the final section and contain only the six-column decision table. Move substantive content before it.');
+    if (ledger.length) {
+      if (ledger.length < 2 || ledger[0].trim() !== header || !/^\|(?:\s*:?-{3,}:?\s*\|){6}$/.test(ledger[1].trim())) {
+        throw new Error(`Approvals must be the final section with the six-column header "${header}" and separator row. Move substantive content before it.`);
+      }
+      for (const row of ledger.slice(2)) {
+        const trimmed = row.trim();
+        if (!/^\|.*\|$/.test(trimmed)) {
+          throw new Error('Approvals must be the final section and contain only the six-column decision table. Move substantive content before it.');
+        }
+        if (countUnescapedPipes(trimmed) !== 7) {
+          throw new Error('Each Approvals decision row must have exactly six columns (escape literal pipes as \\|).');
+        }
+      }
     }
   }
   const content = approvals === -1 ? lines : lines.slice(0, approvals);
@@ -55,9 +76,10 @@ export function contentHash(input, cwd = process.cwd()) {
 
 if (process.argv[1] && realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url))) {
   try {
-    if (process.argv.length !== 3) throw new Error('Usage: node content-hash.mjs <artifact.md> (run in the target Git repository)');
-    const input = readFileSync(process.argv[2], 'utf8');
-    process.stdout.write(`${contentHash(input)}\n`);
+    if (process.argv.length !== 3) throw new Error('Usage: node content-hash.mjs <artifact.md>');
+    const filePath = resolve(process.argv[2]);
+    const input = readFileSync(filePath, 'utf8');
+    process.stdout.write(`${contentHash(input, dirname(filePath))}\n`);
   } catch (error) {
     console.error(`ADLC content hash: ${error.message}`);
     process.exitCode = 1;

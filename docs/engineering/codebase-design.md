@@ -108,3 +108,5 @@ Recent practitioner evidence was used only to prioritize enforcement, refactorab
 This skill adapts the MIT-licensed [`codebase-design`](https://github.com/mattpocock/skills/tree/main/skills/engineering/codebase-design) vocabulary by Matt Pocock. The repository license retains the upstream copyright notice.
 
 The agent-proof design rule (split ownership, two ways to do one task, importable internals, hand-synced lists) comes from Cursor pstack's `architect` design red flags in the [2026-10 source sweep](../research/2026-10-06-source-repos-sweep.md).
+
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) adds the simpler-version rule (a function over a class, one concrete type over a one-implementation interface, a literal over configuration) from testdouble/han's evidence-based YAGNI rule.

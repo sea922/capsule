@@ -14,6 +14,7 @@ Choose the sections matching the actual trust boundaries. These questions guide 
 - Trace who controls filenames, paths, command arguments, tool responses, and model output. Check canonical path containment, symlinks, argument handling, and effective execution privileges where these can reach a sensitive operation.
 - For agents and external content, trace whether untrusted text can select tools, recipients, files, or permissions. Evaluate controls at the application or tool boundary; an instruction asking the model to ignore malicious text is not an access-control mechanism.
 - For secrets, inspect how values are sourced, scoped, rotated, and exposed. Record the affected location or secret type without printing the secret.
+- For fuzzing-campaign crashes or sanitizer failures, confirm input reachability across a real trust boundary, deduplicate by root cause, and separate exploitable memory/parser failures from benign crashes on trusted internal fixtures.
 
 ## State and availability
 

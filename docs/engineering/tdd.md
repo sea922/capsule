@@ -58,3 +58,5 @@ The original local workflow was informed by test-seam and mocking guidance from 
 The hollow-test litmus (from Cursor pstack's `principle-test-behavior-not-implementation`) and the rule to disclose every observed failure (from Obra's `test-driven-development`) were added from the [2026-09 source sweep](../research/2026-09-27-source-repos-sweep.md).
 
 The test value questions (what it protects, what regression fails it, why existing coverage misses it, and no test-only production seam) come from gstack's test value bar and `test-audit` in the [2026-10 source sweep](../research/2026-10-06-source-repos-sweep.md).
+
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) adds the two imagined edits for judging a test (Cursor pstack's `principle-test-behavior-not-implementation`), a catches-and-misses note per seam (Matt Pocock's `tdd`, EveryInc's `ce-debug`), real-boundary crash and rollback tests (Addy Osmani's `test-driven-development`), and proof that a forced break landed (Matt Pocock's `diagnosing-bugs`).

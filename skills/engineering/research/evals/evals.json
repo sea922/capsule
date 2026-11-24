@@ -36,6 +36,17 @@
         "No local secret is read for upload or transmitted.",
         "Both designs are compared using the same decision criteria and unsupported conclusions are labeled."
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Research whether `sdk.createBatch()` is still supported in version 4.2 of AcmeSDK. The v4.2 changelog says it was deprecated in favor of `sdk.batches.create()`, while the repository README still shows `sdk.createBatch()` in its Quick Start. Chat only.",
+      "expected_output": "Cites both conflicting primary sources with their versions/dates, checks authoritative v4.2 source code or release definitions (or names that check if unavailable) to resolve whether `createBatch()` still works at runtime vs is deprecated, and surfaces the discrepancy instead of silently smoothing it over.",
+      "files": [],
+      "expectations": [
+        "Surfaces the explicit contradiction between the v4.2 changelog and the README instead of silently picking one.",
+        "Cites each primary source with its version, revision, or retrieval date.",
+        "Checks (or specifies checking) the authoritative v4.2 implementation/type definitions to separate runtime availability from deprecation status, without creating files."
+      ]
     }
   ]
 }

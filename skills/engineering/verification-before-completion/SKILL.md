@@ -1,6 +1,6 @@
 ---
 name: verification-before-completion
-description: Verify completion claims with fresh, claim-specific evidence and honest terminal states. Use before saying work is done, fixed, passing, ready, deployed, or compliant; when asked to verify, prove, double-check, or show that something works; or when another implementation, TDD, debugging, review, documentation, configuration, visual, or external-state workflow needs a final evidence gate. Do not replace implementation, product acceptance, deployment authorization, or code review.
+description: Verify completion claims with fresh, claim-specific evidence and honest terminal states. Use before saying work is done, fixed, passing, ready, deployed, or compliant; when asked to verify, prove, double-check, or show that something works; or when another implementation, TDD, debugging, review, performance, benchmark, eval, documentation, configuration, visual, or external-state workflow needs a final evidence gate. Do not replace implementation, product acceptance, deployment authorization, or code review.
 ---
 
 # Verification Before Completion
@@ -47,9 +47,14 @@ An exit code is not sufficient when a command can skip the decisive test, omit u
 
 For a fix claim, the decisive check is **side-blind** baseline-versus-patched evidence:
 
-- it fails on the unpatched revision and passes on the patched one, under the same command and inputs;
+- it fails on the unpatched revision and passes on the patched one, under the same command and inputs (fresh `tdd` red evidence from the same session can satisfy the baseline arm when nothing else changed in between);
 - it cannot tell which revision it runs against, so it asserts behavior rather than detecting the fix;
-- its output proves the relevant code path was reached, such as a marker the path emits, so a failure from setup or an early exit cannot pose as reproduction.
+- its output proves the relevant code path was reached, such as a marker the path emits, so a failure from setup or an early exit cannot pose as reproduction;
+- when the patched revision carries other changes, it fails again with only the fix reverted, which shows the fix, not something else in the range, made it pass; when the protected property rests on multiple guards, break each guard alone and confirm the check fails each time.
+
+Run unpatched, revert, and multi-guard arms in an **isolated worktree or temporary copy** — never stash, reset, or revert the user's working tree to preserve the read-only boundary. If an isolated copy is unavailable, disclose the missing arm rather than claiming full fix proof.
+
+For a fix to a class of inputs rather than one, use at least two distinct failing inputs and one valid input that passes on both revisions.
 
 Choose the smallest evidence set that covers every material claim. Do not run broad suites by ritual when focused evidence is decisive, and do not use a focused unit test to support a broader integration or deployment claim.
 
@@ -70,11 +75,12 @@ Run checks after the last relevant edit against the actual final files, revision
 Guard against **hollow green**, a pass signal no real check produced:
 
 - Read the underlying checker's own exit status and output. A wrapper script, pipeline, parser, or `grep` count can exit 0 while the checker failed, crashed, or never ran.
+- **Truncated or cut-off output** (buffer limits, paging cutoffs, or clipped logs) cannot support a clean verdict; rerun without truncation or mark `INCONCLUSIVE`.
 - Report each check as PASS, FAIL, SKIPPED (not run, such as a missing tool), or ERROR (ran but its result could not be captured). SKIPPED and ERROR are neither pass nor fail.
 - State coverage as checked versus unavailable. Present no composite score or "all clean" from partial coverage.
 - Compare against earlier runs only when the check set is identical; otherwise report that coverage changed and the results are not comparable.
 
-If another agent or CI reported green, label that evidence **reported-green** until reproduced. When independent reproduction is impractical, preserve its provenance and narrow the claim.
+If another agent or CI reported green, label that evidence **reported-green** until reproduced. If a reused CI run passed only after rerunning failed jobs, mark it **rerun/flaky** rather than a clean first-attempt pass. When independent reproduction is impractical, preserve its provenance and narrow the claim.
 
 Do not rerun a failing check unchanged merely to obtain a lucky pass. Investigate inconsistent results or classify them as inconclusive.
 
@@ -103,7 +109,21 @@ A check the change itself made easier is not evidence. When the work touched cod
 - an assertion loosened: exact value to truthiness, or specific error to any error;
 - a stub posing as an implementation: a hard-coded return, empty catch, placeholder throw, or special case for the test input.
 
-A red flag without a stated, in-scope reason makes the affected claim NOT VERIFIED. A red flag with one is reported under Gaps so the reader can judge it. "The old threshold was arbitrary" and "that test was flaky anyway" are reasons to raise with the user, not to apply silently.
+A red flag without a stated, in-scope reason makes the affected claim NOT VERIFIED. A red flag with one is reported under Gaps so the reader can judge it.
+
+### Common rationalizations
+
+| Excuse | Reality |
+| --- | --- |
+| "Tests passed right before my small edit" | Any edit invalidates prior runs; rerun after the final edit. |
+| "Build/typecheck compiled cleanly" | Compilation proves syntax/types, not runtime behavior. |
+| "The other agent / CI already ran it" | Label it `reported-green` until reproduced here (and flag reruns as flaky). |
+| "The script exited 0" | Confirm the underlying checker actually executed and was not truncated. |
+| "That test was flaky / threshold was arbitrary" | Raise it with the user; weakening a check invalidates the claim. |
+
+Red flags: claiming "done" from memory, reusing pre-edit logs, trusting wrapper exit 0 without output, or hiding skipped/unavailable checks — stop and gather fresh evidence or downgrade the verdict.
+
+**Complete when:** every claim's evidence has been challenged for freshness, scope, truncation, and weakened checks.
 
 ## 5. Assign an honest verdict
 
@@ -126,7 +146,7 @@ Report:
 1. **Verdict and scope** - the exact claim and terminal state.
 2. **Fresh evidence** - commands or inspections with decisive outcomes.
 3. **Provenance** - independently verified versus reported-green evidence.
-4. **Gaps** - skipped or errored checks, weakened-check flags, untested boundaries, unavailable environments, or stale results.
+4. **Gaps** - skipped or errored checks, weakened-check flags, untested boundaries, unavailable environments, or stale results. Write "none" only when every row of the claim matrix has fresh direct evidence.
 5. **Next action** - the smallest action needed when the verdict is not VERIFIED.
 
 Use positive completion language only when the verdict and scope support those exact words.

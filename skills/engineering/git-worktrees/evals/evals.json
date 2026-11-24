@@ -5,19 +5,46 @@
       "id": 1,
       "prompt": "Set up a checkout for an independent task. Primary checkout has unrelated staged changes. A managed worktree is free with its prior changes preserved, but has an old task name. Remote default is develop. Describe actions; do not execute tools.",
       "expected_output": "Inspect and reuse suitable free managed checkout, verify correct base/branch, preserve primary staging, establish environment and baseline in selected absolute path. Does not replace a worktree for its name or assume main.",
-      "files": []
+      "files": [],
+      "expectations": [
+        "Inspects worktree and host status and reuses the free managed checkout instead of replacing it solely for its old name.",
+        "Verifies the actual remote default branch (develop) rather than assuming main.",
+        "Preserves the primary checkout's unrelated staged changes.",
+        "Establishes dependencies and a baseline check inside the selected absolute path."
+      ]
     },
     {
       "id": 2,
       "prompt": "The PR was squash-merged. Clean up its managed worktree. It contains an ignored test database needed for reproductions and a running dev server owned by another active task. Describe actions; do not execute tools.",
       "expected_output": "Retains the in-use worktree and identifies active ownership as blocking retirement. Accounts for ignored data separately from archive coverage and distinguishes branch deletion from worktree retirement. Does not infer deletion safety from squash-merged status.",
-      "files": []
+      "files": [],
+      "expectations": [
+        "Retains the worktree because an active dev server owned by another task blocks retirement.",
+        "Treats squash-merged PR status as a checkpoint rather than automatic deletion authority.",
+        "Accounts for preserving the ignored test database outside archival coverage and treats branch deletion as a separate decision."
+      ]
     },
     {
       "id": 3,
       "prompt": "I want two agents working on separate features of this repo at the same time without stepping on each other. Set that up. Describe actions; do not execute tools.",
       "expected_output": "Inspects the worktree inventory, creates or reuses one checkout per task at verified bases, assigns separate ports and writable resources, establishes a baseline in each absolute path, and records ownership.",
-      "files": []
+      "files": [],
+      "expectations": [
+        "Inspects existing worktrees first and assigns one dedicated checkout per task at verified bases.",
+        "Assigns separate ports, databases, or other writable external resources so concurrent runs do not collide.",
+        "Establishes dependencies and baseline checks in each absolute path and records task ownership."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "My IDE just created a host-managed worktree for a feature that builds on an unpushed commit from my current branch and needs an ignored .env.local listed in .worktreeinclude. What do you verify before starting implementation? Describe actions; do not execute tools.",
+      "expected_output": "Verifies the host-managed worktree's actual start ref (checking whether it branched from the default branch instead of local HEAD with the unpushed commit) and confirms whether .env.local was transferred and matches expectations before running checks or edits.",
+      "files": [],
+      "expectations": [
+        "Checks the managed worktree's actual start ref to verify whether the unpushed commit from local HEAD is present.",
+        "Verifies whether ignored files such as .env.local (.worktreeinclude) were transferred into the new worktree.",
+        "Confirms branch/base and baseline checks inside the worktree's absolute path before editing."
+      ]
     }
   ]
 }

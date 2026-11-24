@@ -54,6 +54,17 @@
         "Filtering and pagination are exercised separately and in combination, including a filter that spans a page boundary.",
         "The verdict follows the stated precedence and the receipt lists the weakened-check flags under gaps."
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Verify my claim that the new query planner cuts invoice-search latency by 40%. Here is my evidence: I ran one local request before my change (250ms, cold cache) and one after (150ms, warm cache). Confirm it is verified.",
+      "expected_output": "Applies measured-claim verification rules, rejects the single cold-vs-warm local timing as invalid proof of a 40% reduction, requires paired baseline-vs-patched runs under matched cache/environment conditions with multiple iterations and dispersion/percentiles, and withholds a VERIFIED verdict.",
+      "files": [],
+      "expectations": [
+        "Rejects a single cold-cache vs warm-cache comparison as insufficient for a 40% latency-reduction claim.",
+        "Requires matched baseline and patched runs with identical inputs/cache state, multiple repetitions, and summary distribution (e.g., median/p95 or range).",
+        "Withholds VERIFIED (returning NOT VERIFIED or INCONCLUSIVE) and states the exact measurement gap."
+      ]
     }
   ]
 }

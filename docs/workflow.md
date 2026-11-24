@@ -5,20 +5,32 @@ Start from the question or outcome you have. Most skills can be selected by the 
 | Your request | Entry point | Result |
 | --- | --- | --- |
 | Build a clear, bounded change | [implement](engineering/implement.md) | A coherent change with fresh verification |
+| Drive a behavior change test-first | [tdd](engineering/tdd.md) | Red, green, and refactor evidence with behavioral coverage |
+| Prove a completion, fix, or benchmark claim | [verification-before-completion](engineering/verification-before-completion.md) | Fresh, scope-matched evidence and an honest verdict |
 | Route independent work among native agents and models | [orchestrate](engineering/orchestrate.md) | Bounded assignments, reconciled ownership, and verified integration |
 | Find why something is failing | [diagnosing-bugs](engineering/diagnosing-bugs.md) | Cause, evidence, and remaining uncertainty |
 | Plan dependent work across sessions | [planning-and-task-breakdown](engineering/planning-and-task-breakdown.md) | Verifiable slices, dependencies, and ready frontier |
+| Plan a team sprint, backlog points, or tickets | [sprint-planning](engineering/sprint-planning.md) | Sprint goal, capacity, stories and spikes, and reference-anchored points |
 | Research an API, approach, or current practice | [research](engineering/research.md) | Cited findings and evidence limits |
 | Stress-test a consequential decision | [grilling](productivity/grilling.md) | Confirmed understanding and owned unknowns |
 | Test invariants across many generated inputs | [property-based-testing](engineering/property-based-testing.md) | Strong properties, generators, and triaged counterexamples |
 | Record or prune a lesson worth keeping | [compound-learnings](engineering/compound-learnings.md) | One durable lesson, or a refreshed lesson store |
+| Improve a skill from what went wrong in a session | [skill-evolve](authoring/skill-evolve.md) | Candidate edits tested against the current skill, applied after approval |
 | Try an uncertain design or feasibility idea | [prototype](engineering/prototype.md) | A reproducible experiment and observation |
 | Design a module or responsibility boundary | [codebase-design](engineering/codebase-design.md) | An explicit interface and ownership decision |
 | Simplify working code | [simplify](engineering/simplify.md) | Lower complexity with behavior-preservation evidence |
 | Review changes | [code-review](engineering/code-review.md) | Evidence-backed findings at the requested depth |
+| Commit, branch, rebase, stack, or recover Git state | [git-workflow](engineering/git-workflow.md) | Clean history, verified freshness, and safe recovery |
+| Create, prepare, or retire an isolated checkout | [git-worktrees](engineering/git-worktrees.md) | Isolated worktree without displacing another task's work |
+| Open or update a pull request title and body | [pr-description](engineering/pr-description.md) | Diff-grounded PR description with evidence and merge-danger notes |
+| Capture, privacy-check, and attach PR/issue images | [pr-images](engineering/pr-images.md) | Clean before/after screenshots uploaded and refreshed on head changes |
+| Carry an open PR through CI, review, and merge | [babysit-pr](engineering/babysit-pr.md) | Resolved feedback, green checks, and verified readiness or merge |
 | Ship finished changes | [ship-it](engineering/ship-it.md) | A verified PR, merge, or deployment endpoint |
 | Apply or define coding conventions | [coding-standards](engineering/coding-standards.md) | Project-first rules for the affected code domain |
 | Run a dedicated security audit | [security-review](engineering/security-review.md) | Scoped threat model, findings, and closing checks |
+| Write or revise skills, `AGENTS.md`, or `CLAUDE.md` | [writing-for-agents](authoring/writing-for-agents.md) | Predictable agent instructions and eval coverage |
+| Draft or edit human-facing prose | [writing-for-humans](authoring/writing-for-humans.md) | Clear, natural, meaning-preserved prose in the right genre |
+| Build a standalone visual HTML write-up | [html-writeup](authoring/html-writeup.md) | Self-contained HTML document with browser verification |
 | Pause, resume, or move work | [handoff](productivity/handoff.md) | Current state and the next executable check |
 | Take work from intent to an approved plan with human gates | [adlc-flow](adlc/adlc-flow.md) | The next explicit ADLC command or authorized delivery handoff |
 
@@ -51,7 +63,7 @@ flowchart TD
 
 `implement` selects `tdd` for useful behavioral checks and `codebase-design` for material module decisions. Uncertain external facts go to `research`; a needed experiment goes to `prototype`. Their results return to the current task. A review or planning request alone finishes with its requested artifact. A request to plan and build proceeds through both within the existing authorization.
 
-When native delegation is useful, `orchestrate` selects agents and models for ready slices while the root retains integration ownership. It composes the workflow doing the work: `implement` still owns implementation discipline and `verification-before-completion` owns completion evidence. Claude Code uses Claude-native agents; Codex uses Codex-native agents. Small localized work stays with its current owner.
+When native delegation is useful, `orchestrate` selects agents and models for ready slices while the root retains integration ownership. It composes the workflow doing the work: `implement` still owns implementation discipline and `verification-before-completion` owns completion evidence. Claude Code uses Claude-native agents, Codex uses Codex-native agents, and other harnesses with native subagent tools use their own native delegation primitives. Small localized work stays with its current owner.
 
 During planning and design, consider whether an existing owner or suitable native facility already solves the problem. This applies Ponytail's reuse-first guidance before new complexity is introduced.
 
@@ -70,7 +82,8 @@ For finished work, `ship-it` coordinates delivery using `code-review`,
 Bare "ship it" targets a merge-ready PR; an explicit publication, merge or deployment
 request sets that endpoint instead. Local implementation remains owned by `implement`,
 Git transitions by `git-workflow`, isolated checkouts by `git-worktrees`, PR text by
-`pr-description`, and the remote repair loop and PR merge by `babysit-pr`.
+`pr-description`, screenshots on PRs and issues by `pr-images`, and the remote repair
+loop and PR merge by `babysit-pr`.
 
 ## Agentic development lifecycle
 
@@ -86,6 +99,6 @@ observation that is not yet possible stays pending; a new need returns to intent
 
 ## Authoring and design basis
 
-Use [writing-for-agents](authoring/writing-for-agents.md) for skills and agent instructions, [writing-for-humans](authoring/writing-for-humans.md) for prose, and [html-writeup](authoring/html-writeup.md) for a visual HTML document.
+Use [writing-for-agents](authoring/writing-for-agents.md) for skills and agent instructions, [skill-evolve](authoring/skill-evolve.md) to improve a skill from session evidence, [writing-for-humans](authoring/writing-for-humans.md) for prose, and [html-writeup](authoring/html-writeup.md) for a visual HTML document.
 
 The [preferred-source research](research/preferred-skill-repositories-workflow-gap-research.md) records the six inspected repositories, revisions, influences, and decisions behind these additions. The [2026-09-27 sweep](research/2026-09-27-source-repos-sweep.md) covers all thirteen preferred repositories and adds `compound-learnings` and `property-based-testing`.

@@ -46,3 +46,5 @@ The repeatable scenarios are in `skills/engineering/ship-it/evals/evals.json`.
 The [evaluation record](../research/2026-09-26-ship-it-validation.md) distinguishes
 paired text-scenario results from structural validation. Text simulations do not
 prove real Git preservation, CI monitoring, merges or deployment behavior.
+
+The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) adds a scope comparison before review and treats an unexercised changed behavior as a gap even when checks pass, from ECC's `change-impact` and gstack's `verify`.

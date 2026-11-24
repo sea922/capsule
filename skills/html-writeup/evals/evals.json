@@ -41,6 +41,18 @@
         "The page works without external scripts, styles, fonts, or images.",
         "The final response reports browser verification and the absolute artifact path."
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "Create a self-contained offline HTML migration brief with a Mermaid state diagram (showing Draft -> Pending -> Active -> Archived) and a code snippet showing `// TODO: rotate API key after cutover`. Keep the file local.",
+      "expected_output": "Produces one standalone offline HTML file with zero remote imports or fetches, accessible Mermaid diagram metadata (`accTitle`/`accDescr`) or offline-rendered SVG, the literal code-block `TODO` preserved inside `<pre><code>` without prose placeholders, passing `scripts/check_html.py` with zero errors, and reporting browser verification plus the absolute path.",
+      "files": [],
+      "expectations": [
+        "Creates one standalone local HTML file with no external `<script>`, `<link>`, ESM `import`, or `fetch` network dependencies.",
+        "Includes accessible diagram semantics (`accTitle`/`accDescr` for Mermaid or accessible SVG description) and scoped table/heading structure.",
+        "Keeps `// TODO: rotate API key after cutover` inside `<pre><code>` with zero prose placeholders and passes `scripts/check_html.py` with zero errors.",
+        "Reports browser verification and the absolute artifact path."
+      ]
     }
   ]
 }
