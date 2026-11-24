@@ -41,3 +41,13 @@ To link repository skills into local agent harnesses, run
 `scripts/link-skills.sh`.
 
 The optional status line lives in `statusline/`, with its installer and tests. It reads only the JSON Claude Code passes it and `git status`.
+
+Each skill's `evals/evals.json` is the source for its evals. To run them with
+Claude Code's eval runner, generate cases into the git-ignored
+`evals-generated/` and run them with and without the plugin:
+
+```bash
+npm run evals:build -- <skill> [<skill>...]
+claude plugin eval . --eval-dir evals-generated --runs 2 --no-publish
+```
+
