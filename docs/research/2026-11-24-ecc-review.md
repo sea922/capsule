@@ -49,7 +49,7 @@ read with it.
 
 ## 2. Agents
 
-All read-only. Capsule keeps an agent beside the skill that owns it.
+All read-only. Each agent is its own file in the top-level `agents/` folder and names the skill that uses it.
 
 | Capsule use | ECC source | Owner skill |
 | --- | --- | --- |

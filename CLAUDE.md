@@ -4,6 +4,10 @@ Every skill must contain a `SKILL.md` whose `name` matches its directory name.
 Keep skill instructions, supporting references, scripts, and assets together in
 the skill directory.
 
+Agents live under `agents/`, one file each, listed under `agents` in
+`.claude-plugin/plugin.json` and in `agents/README.md`. The `orchestrate-*` roles
+stay with their skill.
+
 Store all research in `docs/research/`. Before researching a skill, read
 `docs/source-repos.md`. Consult every relevant preferred repository and record
 its influence, or why it was not applicable, in the research report. Treat the
