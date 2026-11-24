@@ -31,6 +31,10 @@ Compare the implementation with every available source of intent. Quote the exac
 
 Apply the instructions governing each changed file, the repository's established local contracts, and the architecture lenses in `SKILL.md` (ownership, invariants, dependency direction vs runtime flow, caller knowledge, boundary failure semantics, and seam-aligned tests). Check only for concrete regressions — never report abstraction shape, SOLID labels, or smells by themselves.
 
+### Specialist passes
+
+When the change touches their area and capsule's agents are available, add these read-only passes with the same packet: `code-review-silent-failures` for error handling, fallbacks, retries, and async work; `code-review-type-design` for types, schemas, and serialized shapes; `code-review-comments` for comments and docs beside changed code; `code-review-tests` for the tests offered as evidence. Without subagents, apply the same checks in the defects pass. Their candidates join the pool and face the same validation; none is a finding until validated.
+
 ### Optional second opinion
 
 When a reviewer on a different model or harness is available, such as another vendor's CLI, and sending the code to that provider is permitted, give it the same packet as one extra read-only pass. It is optional: when it is unavailable, fails, or times out, continue and note its absence in the review scope. Its candidates join the pool and face the same validation as every other pass.

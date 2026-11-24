@@ -111,6 +111,26 @@ compose.
 | [html-writeup](docs/authoring/html-writeup.md) | Build a self-contained HTML document with diagrams, tables, and code, verified in a real browser. |
 | [skill-evolve](docs/authoring/skill-evolve.md) | Turn real-session evidence into skill edits, keeping only those that beat the current version. |
 
+## 🧩 Agents and hooks
+
+capsule also ships read-only agents that its skills hand work to, and two hooks.
+
+| Agent | Used by | What it checks |
+| --- | --- | --- |
+| `code-review-silent-failures` | `code-review` deep | Errors a change swallows, hides behind fallbacks, or loses |
+| `code-review-type-design` | `code-review` deep | Whether changed types still enforce their invariants |
+| `code-review-comments` | `code-review` deep | Comments and docs that no longer match the code |
+| `code-review-tests` | `code-review` deep | Whether the tests would catch the change breaking |
+| `adlc-spec-miner` | `adlc-spec` | Current behavior of existing code, as evidence-backed requirements and invariants |
+| `orchestrate-*` | `orchestrate` | Bounded explorer, researcher, worker, tester, and reviewer roles |
+
+| Hook | Blocks | Turn off |
+| --- | --- | --- |
+| `block-no-verify` | `--no-verify`, `commit -n`, `core.hooksPath` overrides, and `HUSKY=0` on git commands | `CAPSULE_HOOKS_DISABLED=block-no-verify` |
+| `config-protection` | Edits to existing lint and format configs (ESLint, Prettier, Biome, Stylelint, Ruff, and others) | `CAPSULE_HOOKS_DISABLED=config-protection` |
+
+The hooks need Node.js. They stop an agent from casually skipping checks; they are not a security boundary. List several ids with commas to turn off more than one.
+
 ## 📁 Repository structure
 
 | Path | Contents |
@@ -118,6 +138,7 @@ compose.
 | `skills/` | The skills, grouped into bucket folders |
 | `docs/` | Human-facing skill pages under `adlc/`, `engineering/`, `productivity/`, and `authoring/`, with source research under `research/` |
 | `scripts/` | Maintainer helpers: validation, versioning, audit, packaging, traffic |
+| `hooks/` | The plugin's hooks and their tests |
 | `.claude-plugin/` | Claude Code plugin and marketplace metadata |
 | `.changeset/` | Versioning metadata |
 | `.github/workflows/` | CI, release, and traffic automation |

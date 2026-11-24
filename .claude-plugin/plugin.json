@@ -25,7 +25,12 @@
     "./skills/engineering/orchestrate/assets/claude-agents/orchestrate-researcher.md",
     "./skills/engineering/orchestrate/assets/claude-agents/orchestrate-worker.md",
     "./skills/engineering/orchestrate/assets/claude-agents/orchestrate-tester.md",
-    "./skills/engineering/orchestrate/assets/claude-agents/orchestrate-reviewer.md"
+    "./skills/engineering/orchestrate/assets/claude-agents/orchestrate-reviewer.md",
+    "./skills/engineering/code-review/assets/claude-agents/code-review-silent-failures.md",
+    "./skills/engineering/code-review/assets/claude-agents/code-review-type-design.md",
+    "./skills/engineering/code-review/assets/claude-agents/code-review-comments.md",
+    "./skills/engineering/code-review/assets/claude-agents/code-review-tests.md",
+    "./skills/adlc/adlc-spec/assets/claude-agents/adlc-spec-miner.md"
   ],
   "skills": [
     "./skills/adlc/adlc-flow",
