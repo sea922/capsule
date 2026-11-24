@@ -13,6 +13,7 @@ Match the depth to the unresolved question before starting the diagnostic steps:
 
 - If the user asks for a quick explanation and the available error or code already supports one, answer it directly. State what the evidence shows and what remains uncertain. A hypothetical reproduction adds no evidence.
 - If the cause is already established and the user wants a change, use `implement`. A known-cause fix does not need a new diagnosis.
+- If the build, compiler, or type checker is failing and the messages name the locations, follow [references/BUILD-ERRORS.md](references/BUILD-ERRORS.md) instead of the full workflow.
 - If the cause remains uncertain or the user asks for an investigation, follow the workflow below. Use the smallest faithful check that can distinguish causes; increase depth only when that check leaves uncertainty.
 
 **Complete when:** the request has a direct answer, a known-cause implementation route, or a specific unresolved causal question for diagnosis.
@@ -102,7 +103,7 @@ A proposed patch that suppresses the symptom is not confirmation by itself. When
 
 Ask whether the state that triggered the symptom is legitimate. If the system may be in that state, the code that broke on it is the root cause, and handling the state there is the fix. If the state should never exist, a check where it broke hides the bug; trace back to what produced the state. Guards, retries, swallowed errors, clamped values, and discarded state are the usual ways a symptom fix hides a cause.
 
-If the deciding fact took a deep dig because the existing logs, metrics, and errors did not show it, propose the cheap always-on signal that would have shown it at first look: a log field, a metric, or an assertion. Report it as a proposal; adding it is a change for `implement`.
+If the deciding fact took a deep dig because the existing logs, metrics, and errors did not show it, propose the cheap always-on signal that would have shown it at first look: a log field, a metric, or an assertion. Report it as a proposal; adding it is a change for `implement`. Use `observability` when the gap is wider than one signal.
 
 If no fix within the current design corrects the mechanism that produced the bug, only this occurrence of it, say so. That holds when the cause is a wrong responsibility or interface, the requirement itself is wrong, or every candidate fix works around an assumption that no longer holds. Route that finding to `codebase-design` or back to the user instead of handing `implement` a workaround. Size alone is not a design problem.
 

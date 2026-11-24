@@ -23,6 +23,8 @@ Agent(subagent_type: "capsule:code-review-tests", prompt: "...")
 | code-review-comments | Comments and docs that contradict the code | Deep review |
 | code-review-tests | Tests that would not catch a regression | Deep review |
 | java-reviewer | Defects in Java, Spring Boot, and Quarkus changes | Java changes |
+| code-review-stack | Stack-idiom defects in Python, Go, TypeScript, React, and C# changes | Changes in those stacks |
+| code-review-security | Reachable security weaknesses in a change | Changes touching input, authentication, authorization, secrets, files, network, or dependencies |
 | database-migrations-reviewer | Unsafe schema, migration, and query changes | Database changes |
 | performance-reviewer | Performance risk, as potential impact | Hot paths and large data |
 | benchmark-auditor | Whether a measurement supports its claim | Reported speedups or regressions |

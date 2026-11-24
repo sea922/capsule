@@ -11,14 +11,19 @@ never work around it, and never disable it without the user's agreement.
 
 ## capsule's Hooks
 
-The capsule plugin ships two PreToolUse guards:
+The capsule plugin ships four PreToolUse guards:
 
 - **block-no-verify**: refuses git commands that skip the repository's hooks
   (`--no-verify`, `commit -n`, `core.hooksPath` overrides, `HUSKY=0`)
 - **config-protection**: refuses edits to existing lint and format
   configuration, so the code is fixed instead of the check
+- **block-destructive**: refuses a short list of commands that destroy more
+  than a task needs, such as deleting the home directory, force-pushing to
+  `main`, dropping a database, or destroying infrastructure
+- **block-secret-commit**: refuses a commit whose added lines hold a private
+  key or a vendor-format token
 
-The user can turn either off with `CAPSULE_HOOKS_DISABLED=<id>`. Do not set it
+The user can turn any of them off with `CAPSULE_HOOKS_DISABLED=<id>`. Do not set it
 yourself.
 
 ## Auto-Accept Permissions

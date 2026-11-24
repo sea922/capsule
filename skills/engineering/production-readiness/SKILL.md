@@ -1,6 +1,6 @@
 ---
 name: production-readiness
-description: Decide whether a system or release is ready for real users, read-only, with a ship, ship-with-caveats, or block verdict. Use for launch reviews, go/no-go calls, pre-release or pre-launch audits, "what will break in production?" questions, and reviewing a rollout or rollback plan. Building one belongs to containers-and-deploys; delivering the change to ship-it; a dedicated security audit to security-review.
+description: Decide whether a system or release is ready for real users, read-only, with a ship, ship-with-caveats, or block verdict. Use for launch reviews, go/no-go calls, pre-release or pre-launch audits, "what will break in production?" questions, and reviewing a rollout or rollback plan. Building one belongs to containers-and-deploys; delivering the change to ship-it; a dedicated security audit to security-review. Adding the logs, metrics, traces, and alerts a launch needs belongs to observability.
 ---
 
 # Production readiness
@@ -21,7 +21,7 @@ Read what exists rather than assuming it does: CI results for this revision, tes
 
 ## 3. Assess each risk area
 
-- **Security and access:** authentication and authorization enforced on the server; public, user, and admin routes separated; secrets absent from client bundles, logs, and committed files; rate limits, CORS, CSRF, and upload validation where the product needs them. Use `security-review` when this needs depth.
+- **Security and access:** authentication and authorization enforced on the server; public, user, and admin routes separated; secrets absent from client bundles, logs, and committed files; rate limits, CORS, CSRF, and upload validation where the product needs them. Use `security-review` when this needs depth; its perimeter reference covers passive checks of what the deployed site's public edge exposes.
 - **Data integrity:** migrations run forward and have a stated recovery path; destructive changes and backfills are staged; retries are idempotent for writes, jobs, and webhooks; tenant boundaries match the data model. Use `database-migrations` for the migrations themselves.
 - **Payments and external callbacks:** webhook signatures verified before trusting a payload; duplicate, replayed, and out-of-order deliveries handled; test and live credentials separate.
 - **Operations:** the service starts from a clean checkout with documented steps; required configuration fails fast when missing; a health check proves dependencies are reachable; alerts exist for errors and latency; someone owns the first hours after release.

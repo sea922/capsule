@@ -1,10 +1,14 @@
 {
-  "description": "capsule guards: refuse git hook bypasses and edits to existing lint or format configs. Disable one with CAPSULE_HOOKS_DISABLED=<id>.",
+  "description": "capsule guards: refuse git hook bypasses, a short list of destructive commands, commits that add a credential, and edits to existing lint or format configs. Disable one with CAPSULE_HOOKS_DISABLED=<id>.",
   "hooks": {
     "PreToolUse": [
       {
         "matcher": "Bash",
-        "hooks": [{ "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/block-no-verify.mjs\"", "timeout": 10 }]
+        "hooks": [
+          { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/block-no-verify.mjs\"", "timeout": 10 },
+          { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/block-destructive.mjs\"", "timeout": 10 },
+          { "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/block-secret-commit.mjs\"", "timeout": 15 }
+        ]
       },
       {
         "matcher": "Edit|Write|MultiEdit",

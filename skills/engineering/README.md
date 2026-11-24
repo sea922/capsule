@@ -26,7 +26,9 @@ See the [workflow map](../../docs/workflow.md) for entry points and handoffs.
 - [git-workflow](../../docs/engineering/git-workflow.md) - make focused commits, manage branches and integration, check whether a branch already landed, and recover interrupted Git state.
 - [git-worktrees](../../docs/engineering/git-worktrees.md) - select, prepare, retire, and recover isolated checkouts.
 - [interface-polish](../../docs/engineering/interface-polish.md) - audit design tokens, find visual drift, and apply concrete polish details to an existing interface.
+- [issue-triage](../../docs/engineering/issue-triage.md) - classify, verify, and de-duplicate an incoming GitHub or GitLab issue, then draft labels and a reply for approval.
 - [llm-features](../../docs/engineering/llm-features.md) - build, evaluate, and tune product features that call a language model, keeping or reverting each change on the project's own evals.
+- [observability](../../docs/engineering/observability.md) - instrument a service with logs, metrics, traces, alerts, and dashboards that answer an operator's questions, verified with a real event.
 - [orchestrate](../../docs/engineering/orchestrate.md) - select native agents and models, coordinate bounded assignments, and verify integrated results.
 - [planning-and-task-breakdown](../../docs/engineering/planning-and-task-breakdown.md) - plan verifiable slices, dependencies, and the ready frontier.
 - [performance](../../docs/engineering/performance.md) - make software measurably faster or lighter, or review code for performance risk, with numbers that hold up.

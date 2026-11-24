@@ -6,6 +6,7 @@ Load the matching skill before starting the work, not after.
 | --- | --- |
 | Build, change, or fix something with a known cause | `implement` |
 | Find why something fails or got slower | `diagnosing-bugs` |
+| Triage an incoming issue or bug report | `issue-triage` |
 | Test-first development or a regression test | `tdd` |
 | Review a change | `code-review`; security or privacy: `security-review` |
 | Clean up working code without changing behavior | `simplify` |
@@ -22,6 +23,7 @@ Load the matching skill before starting the work, not after.
 | Write or fix end-to-end tests | `e2e-testing` |
 | Build a container image, pipeline, or infrastructure definition | `containers-and-deploys` |
 | Build a feature that calls a language model | `llm-features` |
+| Add logging, metrics, tracing, alerts, or a dashboard | `observability` |
 | Make something faster, or check a speed claim | `performance`, `benchmark` |
 | Audit or fix accessibility | `accessibility` |
 | Polish an interface or audit its design tokens | `interface-polish` |

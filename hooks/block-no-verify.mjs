@@ -1,6 +1,7 @@
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runHook } from './hook-input.mjs';
+import { segments, tokens } from './shell-words.mjs';
 
 const HOOKED_COMMANDS = new Set(['commit', 'push', 'merge', 'rebase', 'am']);
 const GIT_VALUE_OPTIONS = new Set(['-C', '-c', '--git-dir', '--work-tree', '--namespace', '--exec-path']);
@@ -15,37 +16,6 @@ const VALUE_OPTIONS = {
 };
 // commit's short options that take a value end a cluster such as `-am`.
 const COMMIT_SHORT_WITH_VALUE = new Set(['m', 'F', 'c', 'C', 't', 'u', 'S']);
-
-function segments(command) {
-  const parts = [];
-  let current = '';
-  let quote = null;
-  for (let index = 0; index < command.length; index += 1) {
-    const character = command[index];
-    if (quote) {
-      if (character === quote) quote = null;
-      else if (character === '\\' && quote === '"') { current += character + (command[index + 1] ?? ''); index += 1; continue; }
-      current += character;
-    } else if (character === '"' || character === "'") {
-      quote = character;
-      current += character;
-    } else if (';|&\n'.includes(character)) {
-      parts.push(current);
-      current = '';
-    } else {
-      current += character;
-    }
-  }
-  parts.push(current);
-  return parts;
-}
-
-function tokens(segment) {
-  const words = [];
-  const pattern = /"((?:\\.|[^"\\])*)"|'([^']*)'|(\S+)/g;
-  for (const match of segment.matchAll(pattern)) words.push(match[1] ?? match[2] ?? match[3]);
-  return words;
-}
 
 const isNoVerify = (token) => token.length >= '--no-v'.length && '--no-verify'.startsWith(token);
 const hooksPathKey = (setting) => setting.split('=')[0].toLowerCase() === 'core.hookspath';

@@ -23,7 +23,7 @@ Map the root choice and the consequential choices that depend on it. Keep facts 
 - ask the user for judgement, preference, authority, intent, or information only they possess;
 - return external evidence gaps to the caller's `research` workflow and empirical uncertainty to its `prototype` workflow; the caller owns any artifact creation and then returns the observation to the interview.
 
-When the subject is whether a product, feature, or idea is worth building, add the branches in [`references/PRODUCT.md`](references/PRODUCT.md).
+When the subject is whether a product, feature, or idea is worth building, add the branches in [`references/PRODUCT.md`](references/PRODUCT.md). When a branch has several credible paths and the conversation already leans one way, or the user asks for opposing views, gather independent voices with [`references/DISSENT.md`](references/DISSENT.md) before settling it.
 
 The **frontier** is every unresolved question whose prerequisites are already settled.
 

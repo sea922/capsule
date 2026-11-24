@@ -105,10 +105,35 @@ TypeScript and React references; the scope of browser request stubbing in
 pointers from the rules and neighbouring skills to the new skills. The review
 rested on model knowledge, not on current vendor documentation.
 
-Gaps it found that are not built: stack review passes for Python, Go,
-TypeScript, React, and C#; issue triage; observability; passive perimeter
-checks; cutting a release; design direction for a new screen; independent
-dissent on a decision; a whole-catalogue skill audit.
+The gaps it found were then built: the `issue-triage` and `observability`
+skills; the read-only `code-review-stack` and `code-review-security` agents;
+the `block-destructive` and `block-secret-commit` hooks; and references for
+passive perimeter checks (`security-review`), cutting a release (`ship-it`),
+design direction (`interface-polish`), independent dissent (`grilling`), a
+catalogue audit (`skill-evolve`), keeping docs current
+(`codebase-onboarding`), retrieval (`llm-features`), and build errors
+(`diagnosing-bugs`), with short additions to `i18n-sync`, `implement`, and the
+`writing-for-agents` tools reference.
+
+| Result | ECC source | Other preferred repositories |
+| --- | --- | --- |
+| `issue-triage` | `issue-review`, `github-ops` | testdouble/han `issue-triage`; mattpocock `triage`; trailofbits `github-triage` |
+| `observability` | `dashboard-builder` | addyosmani `observability-and-instrumentation` (main source); agent-dispatcher `observability`; wshobson `slo-implementation` |
+| `code-review-stack` | Agents `python-`, `django-`, `fastapi-`, `go-`, `typescript-`, `react-`, `csharp-reviewer` | None |
+| `code-review-security` | Agent `security-reviewer`; `security-bounty-hunter` | None |
+| `block-destructive`, `block-secret-commit` | `safety-guard`; the secret patterns of hook `pre-bash-commit-quality` | None |
+| `security-review` `PERIMETER.md` | `web-perimeter-owasp-2025-audit` | None |
+| `ship-it` `RELEASE.md` | `github-ops` | EveryInc compound-engineering (release automation drift); wshobson `changelog-automation` |
+| `interface-polish` `DIRECTION.md` | `frontend-design-direction` | None |
+| `grilling` `DISSENT.md` | `council` | None |
+| `skill-evolve` `STOCKTAKE.md` | `skill-stocktake` | None |
+| `codebase-onboarding` `LIVING-DOCS.md` | `living-docs-governance`, `docs-governance`, command `update-docs` | None |
+| `llm-features` `RETRIEVAL.md` | Agent `rag-pipeline-reviewer` | wshobson `llm-application-dev` (topic list only) |
+| `diagnosing-bugs` `BUILD-ERRORS.md` | Agent `build-error-resolver`, command `build-fix` | None |
+| Additions to `i18n-sync`, `implement`, `TOOLS.md` | `yoruba-localization-testing`, `agent-introspection-debugging`, `agentic-engineering` | None |
+
+Not taken: ECC's Vue and Nuxt rule sets, a classical machine-learning skill,
+and its write-capable build-resolver agents.
 
 ## Not verified
 

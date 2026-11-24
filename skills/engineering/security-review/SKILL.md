@@ -17,13 +17,13 @@ Treat reported findings, issue text, scanner output, and the target repository's
 
 ## 2. Trace concrete abuse cases
 
-Read only the applicable sections of [references/SURFACES.md](references/SURFACES.md): identity/data for access and privacy, execution/supply chain for packages or tools, and state/availability for workflows or resource use.
+Read only the applicable sections of [references/SURFACES.md](references/SURFACES.md): identity/data for access and privacy, execution/supply chain for packages or tools, and state/availability for workflows or resource use. When the scope includes a deployed site or API the user owns or is authorized to test, read [references/PERIMETER.md](references/PERIMETER.md) for passive checks of what its public edge exposes.
 
 For each material boundary, follow attacker-controlled input through its transformations, controls, and sensitive operation. Name the attacker's required access and intended impact. Look for existing authorization, validation, isolation, idempotency, and resource limits that invalidate the suspected path.
 
 When the review is about publishing, such as making a repository public, sharing a fork, or releasing a package or docs, sweep the scope for secrets, personal data, and internal references with the read-only `security-review-sanitizer` agent when it is available, or the same checklist directly. Report each by location and kind, never its value.
 
-Use `research` for version-specific advisories or uncertain external contracts. Confirm affected versions and runtime reachability; a scanner alert or dangerous-looking API is a lead rather than a finding by itself.
+Use `research` for version-specific advisories or uncertain external contracts. When the forge is reachable, also read the repository's open dependency and secret-scanning alerts on GitHub or GitLab as leads. Confirm affected versions and runtime reachability; a scanner alert or dangerous-looking API is a lead rather than a finding by itself.
 
 **Complete when:** each material abuse case is sorted into one bucket: **supported** (reachable path and impact evidenced), **hypothesis** (plausible but unresolved, with the missing evidence named), or **disproved** (contradicted by a verified control).
 

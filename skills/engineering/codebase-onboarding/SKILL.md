@@ -45,6 +45,6 @@ List the commands to install, run, test, lint, and build, taken from the manifes
 
 Keep it short enough to read in a few minutes, in this order: what the system is, the stack, the architecture with the traced path, key directories, conventions, how to run and test, where to start, and open questions. Use a diagram when the structure has more than a few parts.
 
-Offer to save it as a file when the user wants a lasting guide, and follow `writing-for-agents` if they also want an agent instruction file. Do not overwrite existing docs: propose changes to them.
+Offer to save it as a file when the user wants a lasting guide, and follow `writing-for-agents` if they also want an agent instruction file. Do not overwrite existing docs: propose changes to them. When the request is to keep existing documentation in step with the code instead of mapping the repository once, follow [LIVING-DOCS.md](references/LIVING-DOCS.md).
 
 **Complete when:** the reader has the map, its unconfirmed points are marked, and nothing was written without being asked.

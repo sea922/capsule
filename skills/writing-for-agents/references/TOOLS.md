@@ -52,6 +52,18 @@ permission, or the tool to call first. Separate errors worth retrying, such as
 a timeout, from those that are not, such as a bad argument, and never return a
 success shape for a failed call.
 
+## Read a result in order
+
+An agent that calls tools, and any code that wraps them, should read a result
+in three steps before comparing data. First, did the call itself fail or end
+with an unknown outcome? Second, did the operation succeed by that tool's own
+documented status? A delivered response or a present payload does not show
+that it did, and a missing status stays unknown. Only then is the payload
+validated and compared. A failed read is not evidence of a mismatch, and must
+not trigger a write that "repairs" it. When a write times out or its outcome is
+unknown, read the state back before any retry, so the write is not applied
+twice. Design results so these three levels are distinguishable.
+
 ## Prove it
 
 Test the set the way it will be used: give an agent realistic tasks and read

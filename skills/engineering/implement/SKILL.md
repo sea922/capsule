@@ -98,6 +98,8 @@ If verification fails, return to the smallest responsible slice. If verification
 
 When verification or review finds a defect within the authorized scope, fix it and rerun the affected checks. If the same concern survives two correction attempts, name the assumption both attempts relied on and switch to `diagnosing-bugs` with that assumption and the failed attempts as evidence. Continue when new evidence changes the approach; report the concrete blocker when the remaining step needs unavailable input or authority. Do not rerun an unchanged loop or end authorized work merely because the retry bound was reached.
 
+When you notice yourself repeating a command, an edit, or a line of reasoning without a new result, stop and treat it as a loop. Write down what was tried and what was actually observed each time, then name the assumption every attempt shared: the cause, the file or branch being edited, the environment, or the goal itself. Check the real state instead of memory (working directory, branch, file contents, running process), shrink the problem to one failing command or test, and change one thing. After a small fixed number of attempts with no new evidence, stop and report the attempts, the observations, and the blocker instead of trying variations.
+
 For long or resumable work, update the existing issue, plan, cycle record, or repository artifact with the base commit, pre-existing dirty paths, completed slices, evidence, and material decisions. Use a task-scoped scratch ledger only when no canonical artifact exists, and do not publish it without authorization.
 
 At a pause, pickup, or transfer to another session, harness, directory, or person, use `handoff` for the continuation record. Ordinary final delivery uses the summary below.

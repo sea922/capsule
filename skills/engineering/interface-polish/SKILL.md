@@ -1,6 +1,6 @@
 ---
 name: interface-polish
-description: Audit and tighten the visual consistency and finish of an existing interface by extracting its design tokens, finding drift from them, and applying concrete, checkable details such as radius, alignment, shadows, motion, states, and hit areas. Use when a UI feels off, flat, generic, cramped, or unfinished, when auditing styling before a redesign, when asked to extract or document design tokens, or when polishing a component or screen. WCAG conformance belongs to accessibility, speed to performance, and component structure to coding-standards.
+description: Audit and tighten the visual consistency and finish of an existing interface by extracting its design tokens, finding drift from them, and applying concrete, checkable details such as radius, alignment, shadows, motion, states, and hit areas. Use when a UI feels off, flat, generic, cramped, or unfinished, when auditing styling before a redesign, when asked to extract or document design tokens, when polishing a component or screen, or when setting the visual direction for a new or redesigned screen. WCAG conformance belongs to accessibility, speed to performance, and component structure to coding-standards.
 ---
 
 # Interface polish
@@ -11,7 +11,7 @@ An interface feels finished when its values agree with each other and its small 
 
 Locate where visual values are meant to live: a theme file, CSS custom properties, a Tailwind or similar config, a token file, a component library, or a design document. Read two or three real usage sites to learn the conventions you did not set: token naming, whether tokens are raw or semantic, how variants and dark mode resolve. When the system is a third-party library, read its current documentation instead of recalling its API.
 
-Agree the scope: which screens or components, which themes, which viewports. If no system exists at all, say so before continuing; the audit then reports the values in use and proposes a token set from them (step 2), and nothing is invented mid-task.
+Agree the scope: which screens or components, which themes, which viewports. When the scope is a new screen or a redesign rather than an existing one, set the direction with [DIRECTION.md](references/DIRECTION.md) before any styling is written. If no system exists at all, say so before continuing; the audit then reports the values in use and proposes a token set from them (step 2), and nothing is invented mid-task.
 
 **Complete when:** the token source, the component directory, the conventions, and the screens, themes, and viewports in scope are written down.
 
@@ -82,5 +82,5 @@ Report findings and changes as rows of principle, location, before, and after. O
 
 - `accessibility` owns WCAG conformance, keyboard and screen-reader behavior, and contrast as a requirement. This skill raises those issues when it meets them and does not certify them.
 - `performance` owns animation cost, layout shift, and render speed as measured outcomes.
-- `coding-standards` owns component structure and state. `prototype` owns exploring new visual directions.
+- `coding-standards` owns component structure and state. `prototype` owns comparing several visual directions as a throwaway experiment; setting the one direction for a new or redesigned screen uses [DIRECTION.md](references/DIRECTION.md).
 - `code-review` owns reviewing a change. This skill can supply the visual findings for one.

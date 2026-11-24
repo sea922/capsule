@@ -34,7 +34,7 @@ Version the eval set with the code. Keep a held-out portion you do not tune agai
 
 ## 3. Build the smallest pipeline
 
-Start with one call, a plain prompt, and typed output validated at the boundary. Add retrieval, tools, memory, multiple steps, or a second model only when an eval shows the simpler version failing, and add one at a time so the eval attributes the gain. Read the provider's current documentation, or the project's own client wrapper, for model names, parameters, and limits; do not write them from memory.
+Start with one call, a plain prompt, and typed output validated at the boundary. Add retrieval, tools, memory, multiple steps, or a second model only when an eval shows the simpler version failing, and add one at a time so the eval attributes the gain. For retrieval, follow [references/RETRIEVAL.md](references/RETRIEVAL.md). Read the provider's current documentation, or the project's own client wrapper, for model names, parameters, and limits; do not write them from memory.
 
 Keep these out of the prompt and in code: required tool calls, output schemas, permissions, and limits. A rule that exists only as prompt text is a request. Treat retrieved documents, tool results, and user text as data the model may be steered by, and validate what comes back before acting on it. Use `writing-for-agents` for the prompt and tool descriptions themselves.
 

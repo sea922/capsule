@@ -47,6 +47,7 @@ Group items by feature so that one screen's terms stay consistent, and reuse the
 - Supply every plural category the target language requires, which may be more or fewer than the source has.
 - Translate the meaning in context, not word by word. Avoid concatenation assumptions: a fragment that worked in the source word order may not in the target, so flag it for a code change.
 - Watch the target's known hazards: suffixes and case endings around placeholders, text expansion in buttons, and placeholder order in right-to-left text.
+- Keep diacritics, tone marks, and other combining characters exactly as the language writes them. Never strip or simplify them to plain letters; a changed mark can change the word.
 - Mark legal, safety, marketing, and culturally sensitive copy for a native speaker or specialist. A machine translation of a consent text is a draft.
 
 **Complete when:** every worklist item has a translation that follows the terminology sources, with placeholders intact, plural categories complete, and copy needing a specialist marked.
@@ -66,6 +67,10 @@ Removing unused or orphaned keys is a separate, confirmed step: list them, with 
 - Parse every changed file with the format's real parser.
 - Run a key-parity check: every target has exactly the source's keys, apart from plural-category keys the target language adds or drops and listed exceptions.
 - Compare placeholders, plural categories, and markup tags between source and target for each changed key.
+- Compare and deduplicate strings and keys after Unicode normalization to NFC, so two encodings of the same text do not read as different. Normalize for comparison only; do not alter the visible text.
+- Check that locale identifiers are valid BCP 47 tags, used consistently in file names, configuration, and the `lang` attribute the app sets, so fonts, hyphenation, and screen readers pick the right language.
+- Confirm that a missing translation falls back visibly, to the source language or a marked key, and is reported. A silent or invented fallback hides the gap.
+- Round-trip a sample of non-ASCII strings through the file format, and through any API or store they pass, and confirm they come back unchanged.
 - Run the project's i18n lint, type generation, tests, and build.
 - Where the app can run, view a few changed screens in a long-text language and a right-to-left language if one is supported.
 

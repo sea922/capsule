@@ -8,7 +8,7 @@ Plan, build, review, ship, and write with skills that keep agents on evidence,
 not guesses. Works with GitHub and GitLab.
 
 [![Version](https://img.shields.io/github/package-json/v/sea922/capsule?label=version&color=blueviolet)](CHANGELOG.md)
-[![Skills](https://img.shields.io/badge/skills-48-orange)](#-skills)
+[![Skills](https://img.shields.io/badge/skills-50-orange)](#-skills)
 [![CI](https://github.com/sea922/capsule/actions/workflows/ci.yml/badge.svg)](https://github.com/sea922/capsule/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 [![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757)](#-install)
@@ -69,6 +69,7 @@ compose.
 | [api-design](docs/engineering/api-design.md) | Design or change an HTTP API contract without breaking the callers that depend on it. |
 | [database-design](docs/engineering/database-design.md) | Design schemas, indexes, and queries that fit the workload, with PostgreSQL, MySQL, Redis, and ClickHouse references. |
 | [containers-and-deploys](docs/engineering/containers-and-deploys.md) | Build a service's container image, pipeline, rollout strategy, and infrastructure definitions, and prove them by running them. |
+| [observability](docs/engineering/observability.md) | Instrument a service with logs, metrics, traces, alerts, and dashboards that answer an operator's questions, verified with a real event. |
 | [llm-features](docs/engineering/llm-features.md) | Build, evaluate, and tune product features that call a language model, keeping or reverting each change on the project's own evals. |
 | [interface-polish](docs/engineering/interface-polish.md) | Audit design tokens, find visual drift, and apply concrete polish details to an existing interface. |
 | [i18n-sync](docs/engineering/i18n-sync.md) | Keep locale files in step with source strings: missing, unused, and stale keys, translated in context and verified. |
@@ -81,6 +82,7 @@ compose.
 | --- | --- |
 | [codebase-onboarding](docs/engineering/codebase-onboarding.md) | Map an unfamiliar repository: stack, architecture, a traced request, conventions, and where to start. |
 | [decision-records](docs/engineering/decision-records.md) | Record significant technical decisions as ADRs and answer why past ones were made. |
+| [issue-triage](docs/engineering/issue-triage.md) | Classify, verify, and de-duplicate an incoming GitHub or GitLab issue, then draft labels and a reply for approval. |
 | [diagnosing-bugs](docs/engineering/diagnosing-bugs.md) | Prove a root cause through reproduction, competing hypotheses, and discriminating evidence. |
 | [research](docs/engineering/research.md) | Investigate questions with primary sources, revision-aware citations, and explicit gaps. |
 | [planning-and-task-breakdown](docs/engineering/planning-and-task-breakdown.md) | Turn clear requirements into verifiable slices, dependencies, and a ready frontier. |
@@ -128,7 +130,7 @@ compose.
 
 ## 🧩 Agents and hooks
 
-capsule also ships read-only agents that its skills hand work to, indexed in [`agents/`](agents/README.md), and two hooks.
+capsule also ships read-only agents that its skills hand work to, indexed in [`agents/`](agents/README.md), and four hooks.
 
 | Agent | Used by | What it checks |
 | --- | --- | --- |
@@ -137,6 +139,8 @@ capsule also ships read-only agents that its skills hand work to, indexed in [`a
 | `code-review-comments` | `code-review` deep | Comments and docs that no longer match the code |
 | `code-review-tests` | `code-review` deep | Whether the tests would catch the change breaking |
 | `java-reviewer` | `code-review` deep | Java changes in Spring Boot, Quarkus, or plain Java: security, errors, layering, persistence, concurrency |
+| `code-review-stack` | `code-review` deep | Python, Go, TypeScript, React, and C# changes: the defects each stack's idioms make easy |
+| `code-review-security` | `code-review` deep | Reachable security weaknesses in a change that touches input, authentication, authorization, secrets, files, network, or dependencies |
 | `database-migrations-reviewer` | `database-migrations`, `code-review` deep | Migrations, schema, and queries that can lose data, lock tables, or break deploys |
 | `benchmark-auditor` | `benchmark`, `performance`, `code-review` deep | Whether a harness or a reported number supports its claim |
 | `production-readiness-auditor` | `production-readiness` | The evidence a launch review needs: what exists, what is missing, what looks risky |
@@ -150,6 +154,8 @@ capsule also ships read-only agents that its skills hand work to, indexed in [`a
 | --- | --- | --- |
 | `block-no-verify` | `--no-verify`, `commit -n`, `core.hooksPath` overrides, and `HUSKY=0` on git commands | `CAPSULE_HOOKS_DISABLED=block-no-verify` |
 | `config-protection` | Edits to existing lint and format configs (ESLint, Prettier, Biome, Stylelint, Ruff, and others) | `CAPSULE_HOOKS_DISABLED=config-protection` |
+| `block-destructive` | `rm -rf` of `/`, the home directory, `.`, `..`, or `*`; force pushes to `main` or `master`; `DROP DATABASE` and `DROP SCHEMA`; `terraform destroy`; `kubectl delete namespace` or `--all`; Docker volume pruning | `CAPSULE_HOOKS_DISABLED=block-destructive` |
+| `block-secret-commit` | A `git commit` whose added lines hold a private key or a vendor-format token (AWS, GitHub, GitLab, Slack, Stripe, and others) | `CAPSULE_HOOKS_DISABLED=block-secret-commit` |
 
 The hooks need Node.js. They stop an agent from casually skipping checks; they are not a security boundary. List several ids with commas to turn off more than one.
 

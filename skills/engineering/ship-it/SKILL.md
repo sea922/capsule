@@ -19,7 +19,8 @@ Resolve the endpoint from the user's request and prior decisions. For a bare
 "ship it" on finished work, state the default: **a merge-ready PR**. An explicit
 request to open a PR stops at publication; a request to land or merge continues
 through confirmed merge. When deployment is requested, read
-[deployment](references/DEPLOYMENT.md) before preparing that transition.
+[deployment](references/DEPLOYMENT.md) before preparing that transition. When it
+includes a version, tag, or published release, read [release](references/RELEASE.md).
 
 An imperative shipping request authorizes scoped repairs, verification, commits,
 pushes and PR creation or updates within repository and host policy. Carry forward

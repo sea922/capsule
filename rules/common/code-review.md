@@ -70,6 +70,8 @@ area:
 | **code-review-comments** | Comments and docs that contradict the code |
 | **code-review-tests** | Tests that would not catch a regression |
 | **java-reviewer** | Java, Spring Boot, and Quarkus changes |
+| **code-review-stack** | Python, Go, TypeScript, React, and C# changes |
+| **code-review-security** | Changes touching input, authentication, authorization, secrets, files, network, or dependencies |
 | **database-migrations-reviewer** | Schema, migration, and query safety |
 | **benchmark-auditor** | Whether a claimed speedup is supported by its measurement |
 | **performance-reviewer** | Hot paths, unbounded work, bundle weight |
