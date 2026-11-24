@@ -35,7 +35,7 @@ test('apply copies only the chosen sets and a repeat run changes nothing', (t) =
   assert.equal(first.created.length, first.planned);
   const installed = join(target, '.claude', 'rules', 'capsule');
   assert.deepEqual(readdirSync(installed).sort(), ['common', 'python']);
-  assert.equal(readFileSync(join(installed, 'python', 'python.md'), 'utf8'), readFileSync(join(RULES_ROOT, 'python', 'python.md'), 'utf8'));
+  assert.equal(readFileSync(join(installed, 'python', 'testing.md'), 'utf8'), readFileSync(join(RULES_ROOT, 'python', 'testing.md'), 'utf8'));
   const second = installRules({ target, sets: ['common', 'python'], apply: true });
   assert.equal(second.created.length, 0);
   assert.equal(second.unchanged.length, first.planned);
@@ -43,10 +43,10 @@ test('apply copies only the chosen sets and a repeat run changes nothing', (t) =
 
 test('a file the project changed is never overwritten and nothing else is written', (t) => {
   const target = project(t);
-  const edited = join(target, '.claude', 'rules', 'capsule', 'golang', 'golang.md');
+  const edited = join(target, '.claude', 'rules', 'capsule', 'golang', 'testing.md');
   mkdirSync(dirname(edited), { recursive: true });
   writeFileSync(edited, 'our own Go rules\n');
-  assert.throws(() => installRules({ target, sets: ['common', 'golang'], apply: true }), /golang\.md/);
+  assert.throws(() => installRules({ target, sets: ['common', 'golang'], apply: true }), /golang[\\/]testing\.md/);
   assert.equal(readFileSync(edited, 'utf8'), 'our own Go rules\n');
   assert.equal(existsSync(join(target, '.claude', 'rules', 'capsule', 'common')), false);
 });
@@ -69,15 +69,30 @@ test('the command line defaults to a dry run of the common set', (t) => {
   assert.deepEqual(readdirSync(join(target, '.claude', 'rules', 'capsule')).sort(), ['common', 'web']);
 });
 
-test('every rule is short, stack rules are path-scoped, and common rules always load', () => {
+test('every rule stays bounded, stack rules are path-scoped, and common rules always load', () => {
   for (const set of EXPECTED_SETS) {
     const files = readdirSync(join(RULES_ROOT, set)).filter((name) => name.endsWith('.md'));
     assert.ok(files.length > 0, `${set} has no rules`);
     for (const name of files) {
       const text = readFileSync(join(RULES_ROOT, set, name), 'utf8');
-      assert.ok(text.split('\n').length <= 80, `${set}/${name} is longer than 80 lines`);
+      assert.ok(text.split('\n').length <= 250, `${set}/${name} is longer than 250 lines`);
       const scoped = /^---\npaths:\n(?:  - ".+"\n)+---\n/.test(text);
       assert.equal(scoped, set !== 'common', `${set}/${name} path scoping is wrong`);
+    }
+  }
+});
+
+test('no rule points at a skill, agent, or tool that capsule does not have', () => {
+  const skills = new Set(readdirSync(join(RULES_ROOT, '..', 'skills'), { recursive: true })
+    .filter((path) => String(path).endsWith('SKILL.md'))
+    .map((path) => String(path).split(/[\\/]/).at(-2)));
+  for (const set of EXPECTED_SETS) {
+    for (const name of readdirSync(join(RULES_ROOT, set)).filter((file) => file.endsWith('.md'))) {
+      const text = readFileSync(join(RULES_ROOT, set, name), 'utf8');
+      assert.doesNotMatch(text, /\bECC\b|ecc:|See skill:|Context7/, `${set}/${name} still refers to its upstream`);
+      for (const match of text.matchAll(/the `([a-z][a-z0-9-]+)` skill/g)) {
+        assert.ok(skills.has(match[1]), `${set}/${name} names a missing skill: ${match[1]}`);
+      }
     }
   }
 });

@@ -127,26 +127,30 @@ runs on the canonical file instead of on per-host copies.
 ECC ships 122 rule files in a `common` layer plus language directories, copied
 into `~/.claude/rules/` or a project's `.claude/rules/` by an install script,
 with a `paths:` header scoping each language rule to its files. Capsule takes
-that delivery model: a `rules/` folder with `common`, `typescript`, `react`,
-`web`, `python`, `java`, `golang`, and `csharp` sets, and an opt-in installer
-that previews first and never overwrites a file the project changed.
+both the delivery model and the content for eight sets: `common`,
+`typescript`, `react`, `web`, `python`, `java`, `golang`, and `csharp`. This is
+the one place capsule vendors upstream files, at the repository owner's
+request; `rules/THIRD-PARTY-NOTICE.md` carries ECC's MIT notice.
 
-The content is capsule's own and differs from ECC's in three ways:
+The 49 copied files were adapted in four ways:
 
-- **Defaults, not absolutes.** ECC's rules state fixed standards such as a
-  minimum coverage figure and mandatory immutability. Each capsule rule opens by
-  deferring to the project's configuration and existing code, and
-  `common/precedence.md` fixes the order, so the rules agree with
+- **References.** ECC skill, agent, command, and tool names now name capsule's
+  skills, agents, and hooks, and pointers to ECC's framework skills (Spring
+  Boot, Quarkus, JPA, Django, FastAPI) are removed. A test fails if a rule names
+  a skill capsule does not have.
+- **Defaults, not mandates.** "ALWAYS", "MANDATORY", and fixed figures such as
+  80% coverage became defaults that defer to the project, and each set's
+  `coding-style.md` links `common/precedence.md`, so the rules agree with
   `coding-standards` and `tdd`.
-- **One short file per stack.** ECC has about five files per language, largely
-  code samples and pointers to its own skills. A rule costs context whenever it
-  loads, so capsule keeps one file of at most 80 lines per stack, enforced by a
-  test.
-- **A `common` set built around always-on guardrails** that a skill cannot
-  supply because it loads only on a match: evidence before claims, Git safety,
-  untrusted content, scope, and a table routing work to capsule skills.
+- **Model guidance.** `common/performance.md` drops claims about specific model
+  versions, which date quickly, for task-to-tier guidance and a pointer to
+  `orchestrate`.
+- **Hook suggestions.** Each stack's `hooks.md` says capsule does not ship those
+  hooks and a project may configure them; `common/hooks.md` describes capsule's
+  two.
 
-Not taken: ECC's `hooks.md`, `agents.md`, `performance.md` (model selection),
-and `development-workflow.md` rules, which describe ECC's own harness, and its
-other language sets.
+Capsule adds five `common` rules ECC has no equivalent for: `precedence`,
+`evidence`, `untrusted-content`, `scope`, and `skill-routing`. An opt-in
+installer previews first and never overwrites a file the project changed.
 
+Not taken: ECC's other language sets.

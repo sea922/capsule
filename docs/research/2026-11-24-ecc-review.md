@@ -24,7 +24,7 @@ ideas in its own wording and vendors no file.
 | Agents | 72 | 9 read-only reviewers and auditors |
 | Hooks | ~25 | 2 small guards |
 | Commands | 99 | None: capsule skills already act as commands |
-| Rules | 122 | The delivery model (a rules folder, path scoping, an opt-in installer); the content is rewritten as defaults |
+| Rules | 122 | Eight sets, copied and adapted, with an opt-in installer |
 | Guides | 3 | One checklist, from the security guide |
 | Contexts, examples, schemas | — | None: ECC installer and harness plumbing |
 

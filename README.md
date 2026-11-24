@@ -146,7 +146,7 @@ The hooks need Node.js. They stop an agent from casually skipping checks; they a
 
 ## 📏 Rules (optional)
 
-Rules are short, always-loaded guidance that Claude Code reads from a project's
+Rules are always-loaded guidance that Claude Code reads from a project's
 `.claude/rules/`. The plugin does not install them; copy the sets you want:
 
 ```sh
@@ -159,8 +159,9 @@ node rules/install.mjs --target /path/to/your-project --sets common,typescript,r
 | `typescript`, `react`, `web` | TypeScript and JavaScript, `.tsx`/`.jsx`, and HTML and CSS files |
 | `python`, `java`, `golang`, `csharp` | Files of that language |
 
-Every rule defers to the project's own conventions and tooling. See
-[`rules/README.md`](rules/README.md).
+Every rule defers to the project's own conventions and tooling. The rules are
+adapted from [affaan-m/ECC](https://github.com/affaan-m/ECC) under the MIT
+License. See [`rules/README.md`](rules/README.md).
 
 ## 📁 Repository structure
 
