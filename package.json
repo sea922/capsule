@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "check": "npm run test && npm run validate",
-    "test": "node --test scripts/*.test.mjs hooks/*.test.mjs rules/*.test.mjs",
+    "test": "node --test scripts/*.test.mjs hooks/*.test.mjs rules/*.test.mjs statusline/*.test.mjs",
     "validate": "node scripts/validate-repo.mjs",
     "changeset": "changeset",
     "version:skills": "changeset version && node scripts/sync-version.mjs && npm run validate",

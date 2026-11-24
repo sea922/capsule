@@ -193,6 +193,37 @@ Every rule defers to the project's own conventions and tooling. The rules are
 adapted from [affaan-m/ECC](https://github.com/affaan-m/ECC) under the MIT
 License. See [`rules/README.md`](rules/README.md).
 
+## 📟 Status line (optional)
+
+A one-line status bar for Claude Code: model, directory and git branch, context
+used, and the session's cost, lines changed, and duration.
+
+```text
+Opus │ capsule ⎇ feat/x* │ ██████░░░░ 68% │ $1.23 +120/-34 15m
+```
+
+A plugin cannot register a status line, so install it into a project yourself:
+
+```sh
+node statusline/install.mjs --target /path/to/your-project --apply
+```
+
+This copies the script to the project's `.claude/` folder and sets `statusLine`
+in `.claude/settings.local.json`. Without `--apply` it only shows what it would
+write, and it never replaces a status line you already have. To use it
+everywhere, copy `statusline/statusline.mjs` somewhere stable and point
+`statusLine.command` in `~/.claude/settings.json` at it.
+
+| Setting | Effect |
+| --- | --- |
+| `CAPSULE_STATUSLINE_USAGE=1` | Adds a second line with the 5-hour and 7-day rate-limit windows, when Claude Code reports them |
+| `CAPSULE_STATUSLINE_ASCII=1` | Uses plain ASCII instead of block and box characters |
+| `NO_COLOR=1` | Turns colour off |
+
+The context bar turns yellow at 50%, orange at 65%, and red at 80%. The script
+needs Node.js, makes no network request, and reads only what Claude Code passes
+it plus `git status` for the branch.
+
 ## 📁 Repository structure
 
 | Path | Contents |
@@ -203,6 +234,7 @@ License. See [`rules/README.md`](rules/README.md).
 | `docs/agents.md` | Index of the agents, which live with the skills that own them |
 | `hooks/` | The plugin's hooks and their tests |
 | `rules/` | Optional rule sets and their installer |
+| `statusline/` | Optional status line script, its installer, and tests |
 | `.claude-plugin/` | Claude Code plugin and marketplace metadata |
 | `.changeset/` | Versioning metadata |
 | `.github/workflows/` | CI, release, and traffic automation |

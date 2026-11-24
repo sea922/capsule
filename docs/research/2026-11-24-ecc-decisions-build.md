@@ -148,6 +148,8 @@ catalogue audit (`skill-evolve`), keeping docs current
 The searches behind the third column were by file name and keyword across
 the fourteen other preferred repositories, not a full read.
 
+The optional status line in `statusline/` takes its idea and its context-bar colour thresholds from ECC's `ecc-statusline.js`. It is capsule's own code: it adds the git branch, and it drops ECC's metrics hook, todo-list reading, and plugin listing so that it reads only the status line input and `git status`. Its input fields were checked against the Claude Code status line documentation on 2026-11-24.
+
 Not taken: ECC's Vue and Nuxt rule sets, a classical machine-learning skill,
 and its write-capable build-resolver agents.
 

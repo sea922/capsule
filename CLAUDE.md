@@ -39,3 +39,5 @@ claude plugin validate . --strict
 To list repository skills, run `scripts/list-skills.sh`.
 To link repository skills into local agent harnesses, run
 `scripts/link-skills.sh`.
+
+The optional status line lives in `statusline/`, with its installer and tests. It reads only the JSON Claude Code passes it and `git status`.
