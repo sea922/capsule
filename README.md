@@ -121,6 +121,8 @@ capsule also ships read-only agents that its skills hand work to, and two hooks.
 | `code-review-type-design` | `code-review` deep | Whether changed types still enforce their invariants |
 | `code-review-comments` | `code-review` deep | Comments and docs that no longer match the code |
 | `code-review-tests` | `code-review` deep | Whether the tests would catch the change breaking |
+| `code-review-database` | `code-review` deep | Migrations, schema, and queries that can lose data, lock tables, or break deploys |
+| `security-review-sanitizer` | `security-review` | Secrets, personal data, and internal references before publishing |
 | `adlc-spec-miner` | `adlc-spec` | Current behavior of existing code, as evidence-backed requirements and invariants |
 | `orchestrate-*` | `orchestrate` | Bounded explorer, researcher, worker, tester, and reviewer roles |
 
