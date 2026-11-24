@@ -51,3 +51,8 @@ npm run evals:build -- <skill> [<skill>...]
 claude plugin eval . --eval-dir evals-generated --runs 2 --no-publish
 ```
 
+In GitHub Actions, the manual **Skill evals** workflow runs the same thing for
+the skills you name, or for the skills changed on the branch. It needs an
+`ANTHROPIC_API_KEY` repository secret, stops at a cost ceiling, writes a
+summary to the run page, and never blocks a merge.
+
