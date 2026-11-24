@@ -10,3 +10,7 @@ __pycache__/
 Thumbs.db
 node_modules/
 dist/
+
+# Local Claude Code settings and the installed status line copy
+.claude/settings.local.json
+.claude/capsule-statusline.mjs
