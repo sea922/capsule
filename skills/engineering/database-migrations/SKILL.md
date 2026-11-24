@@ -29,7 +29,7 @@ Sequence everything that is not additive as expand, migrate, contract, across se
 2. **Dual-write:** deploy code that writes both shapes, and wait until every running instance is on it.
 3. **Backfill** historic rows (step 4).
 4. **Switch reads** to the new shape, and watch.
-5. **Contract:** drop the old shape in a later migration, once no supported version reads it.
+5. **Contract:** remove the old shape in a separate, later migration, after every supported version has stopped reading it.
 
 Keep schema changes and data changes in separate migrations. Never edit a migration that has already run anywhere; add a new one.
 
@@ -37,13 +37,13 @@ Keep schema changes and data changes in separate migrations. Never edit a migrat
 
 ## 3. Make each statement lock-safe
 
-Every statement takes a lock; what matters is which lock, for how long, and what queues behind it.
+No schema statement is lock-free. Know the lock each one takes, how long it holds it, and which queries wait behind it.
 
-- Set a short lock timeout and statement timeout for the migration session, so blocked DDL fails fast and can be retried.
+- Give the migration session a short lock timeout and a statement timeout. DDL that cannot get its lock then gives up quickly, and you retry it.
 - Build indexes with the engine's online option. On PostgreSQL a concurrent build cannot run in a transaction, and a failed one leaves an invalid index to drop before retrying.
 - Add foreign keys and check constraints unvalidated, then validate in a separate statement.
 - On MySQL, confirm the operation is online for that version and storage engine, or use online schema-change tooling.
-- Do not assume adding a column is free: whether it rewrites the table depends on the engine, the version, and the default.
+- Check whether adding the column rewrites the table. The answer changes with the engine, its version, and the column default.
 
 **Complete when:** each statement's lock and expected duration are known, or the unknown is stated.
 
@@ -55,7 +55,7 @@ Update in bounded primary-key ranges, committed per batch, resumable from a reco
 
 ## 5. State the rollback honestly
 
-Write the way back for each step, and say what it cannot recover. Dropping a column you just added is a real rollback. A down migration after a destructive step restores the shape, not the data: that rollback is a restore from backup, so name the backup and how long a restore takes.
+Write the way back for each step, and say what it cannot recover. Removing a column this change added undoes it fully. After a destructive step, a down migration brings back the structure and none of the rows, so the only way back is a backup restore: say which backup, and how long restoring it takes.
 
 **Complete when:** every step has a rollback, and every irreversible step is labelled irreversible.
 

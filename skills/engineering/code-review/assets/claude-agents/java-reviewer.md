@@ -19,9 +19,9 @@ Check the changed code, and the callers and configuration it depends on, for:
 - **Persistence:** a query in a loop or an eagerly fetched collection that produces N+1 queries; a list endpoint with no page limit; a modifying query without its annotation and transaction; a cascade or orphan-removal setting that can delete more than intended; fetch-join paging done in memory; report N+1 and in-memory paging as candidates for the parent to confirm with the SQL log or a statement count.
 - **Concurrency and state:** a mutable field in a singleton-scoped bean; asynchronous work on an unbounded or default executor, or whose failure nobody observes; a scheduled job or message handler that is unsafe to run twice or in two instances; a reactive stream subscribed more than once or sharing mutable state.
 - **Workflows:** an idempotency key checked after state has changed; a state transition with no guard; compensation that can half-complete; retries with no limit or backoff; failed asynchronous messages with no dead-letter path.
-- **Tests:** a full application context used where a unit test or slice would do; `Thread.sleep` used to wait for asynchronous work; a protected endpoint with no test of the unauthenticated and forbidden cases.
+- **Tests:** `Thread.sleep` used to wait for asynchronous work; a protected endpoint with no test of the unauthenticated and forbidden cases.
 
-A candidate needs a concrete trigger: the input, call path, concurrent caller, or data size that makes it fail. Leave formatting and naming to the project's tools, and report an idiom preference only when it hides a defect. Hand security candidates to the parent for a `security-review` when they are more than a local fix.
+A candidate needs a concrete trigger: the input, call path, concurrent caller, or data size that makes it fail. Leave formatting and naming to the project's tools, and report an idiom preference only when it hides a defect. When the parent says another pass covers error handling, types, queries, or security, name what you saw in one line and leave the analysis to that pass. Hand security candidates to the parent for the security pass or a `security-review` when they are more than a local fix.
 
 Return candidates for the parent's validation, most severe first:
 

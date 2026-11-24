@@ -13,6 +13,8 @@ The skill fixes who the map is for and what they need to do next, then surveys m
 
 It checks existing documentation against the code and reports where they disagree. It is read-only unless asked to save the guide, and never overwrites existing docs. On large repositories it can hand areas to the `orchestrate-explorer` agent.
 
+A reference covers keeping the docs in step with the code afterwards: one owner per fact, sections generated from their source of truth, and regenerated text proposed unless an update was requested.
+
 ## Workflow fit
 
 `codebase-design` owns design changes, `research` external questions, and `writing-for-agents` any agent instruction file.

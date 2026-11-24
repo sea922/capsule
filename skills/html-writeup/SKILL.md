@@ -1,6 +1,6 @@
 ---
 name: html-writeup
-description: Create and verify one standalone HTML write-up or shareable single-file HTML report for a decision, comparison, audit, architecture explanation, plan, status report, incident review, or research brief. Use when the deliverable needs document hierarchy plus tables, diagrams, evidence, or light navigation. Route production websites and application interfaces to a frontend skill; answer Markdown or plain-text requests directly.
+description: Create and verify one standalone HTML write-up or shareable single-file HTML report for a decision, comparison, audit, architecture explanation, plan, status report, incident review, or research brief. Use when the deliverable needs document hierarchy plus tables, diagrams, evidence, or light navigation. Route production websites and application interfaces to implement, with interface-polish for their visual finish; answer Markdown or plain-text requests directly.
 ---
 
 # HTML Write-up

@@ -5,8 +5,10 @@ Research for what was built from the
 Recommend, 18 Possible, and 30 Fold as reference rows. Every preferred
 repository in `docs/source-repos.md` was searched for each topic at the commits
 listed in the [adoption research](2026-11-24-ecc-adoption-research.md); most
-searches were by skill name and keyword, not a full read. No file is vendored,
-and the instructions use original wording.
+searches were by skill name and keyword, not a full read. The skills, agents, hooks,
+and references adapt ideas in capsule's own wording and vendor no file;
+`rules/java/springboot.md` is capsule-written, and the other rule files are
+ECC's, copied and adapted under its MIT licence.
 
 ## What was built
 
@@ -105,6 +107,14 @@ TypeScript and React references; the scope of browser request stubbing in
 pointers from the rules and neighbouring skills to the new skills. The review
 rested on model knowledge, not on current vendor documentation.
 
+A second review round then executed the hooks against about 200 commands and
+re-read everything added after the first. It led to fixes in the hooks (false
+blocks on quoted paths, heredoc text, and unrelated SQL text, and several
+misses), the perimeter reference (made truly passive), deep-review pass
+selection (a cap and a selection rule), references that their skill's
+description could not reach, stale docs pages, and attribution in the README
+and these notes.
+
 The gaps it found were then built: the `issue-triage` and `observability`
 skills; the read-only `code-review-stack` and `code-review-security` agents;
 the `block-destructive` and `block-secret-commit` hooks; and references for
@@ -119,18 +129,21 @@ catalogue audit (`skill-evolve`), keeping docs current
 | --- | --- | --- |
 | `issue-triage` | `issue-review`, `github-ops` | testdouble/han `issue-triage`; mattpocock `triage`; trailofbits `github-triage` |
 | `observability` | `dashboard-builder` | addyosmani `observability-and-instrumentation` (main source); agent-dispatcher `observability`; wshobson `slo-implementation` |
-| `code-review-stack` | Agents `python-`, `django-`, `fastapi-`, `go-`, `typescript-`, `react-`, `csharp-reviewer` | None |
-| `code-review-security` | Agent `security-reviewer`; `security-bounty-hunter` | None |
-| `block-destructive`, `block-secret-commit` | `safety-guard`; the secret patterns of hook `pre-bash-commit-quality` | None |
-| `security-review` `PERIMETER.md` | `web-perimeter-owasp-2025-audit` | None |
+| `code-review-stack` | Agents `python-`, `django-`, `fastapi-`, `go-`, `typescript-`, `react-`, `csharp-reviewer` | wshobson `python-pro`, `django-pro`, `fastapi-pro`, `golang-pro`, `typescript-pro`, `csharp-pro` found, not used (general personas that write code, not review checklists); humanlayer `narrow-react-prop-types` already reflected in the React reference; nothing else relevant |
+| `code-review-security` | Agent `security-reviewer`; `security-bounty-hunter` | Found, not used: addyosmani `agents/security-auditor.md`, wshobson `security-auditor`, EveryInc `ce-code-review` persona `security-reviewer`, gstack `cso` (same job; the reachable-path gate matches capsule's `security-review`, so nothing new was taken) |
+| `block-destructive`, `block-secret-commit` | `safety-guard`; the secret patterns of hook `pre-bash-commit-quality` | gstack `careful` (a similar watchlist, delivered as an opt-in warning skill, found after the build and not used); addyosmani `scripts/staged-secret-scan-test.js` (confirms the rule the hook follows: name the file, never print the value); nothing else relevant |
+| `security-review` `PERIMETER.md` | `web-perimeter-owasp-2025-audit` | Searched, nothing relevant |
 | `ship-it` `RELEASE.md` | `github-ops` | EveryInc compound-engineering (release automation drift); wshobson `changelog-automation` |
-| `interface-polish` `DIRECTION.md` | `frontend-design-direction` | None |
-| `grilling` `DISSENT.md` | `council` | None |
-| `skill-evolve` `STOCKTAKE.md` | `skill-stocktake` | None |
-| `codebase-onboarding` `LIVING-DOCS.md` | `living-docs-governance`, `docs-governance`, command `update-docs` | None |
+| `interface-polish` `DIRECTION.md` | `frontend-design-direction` | Found, not used: gstack `design-consultation`, `design-shotgun`, `design-html` (generate a whole design system and previews, a larger job than setting one direction) |
+| `grilling` `DISSENT.md` | `council` | Found, not used: gstack `codex` consult and challenge modes and `office-hours` second opinion (a second model, not independent roles); testdouble/han `adversarial-validator` (attacks an investigation, not a decision) |
+| `skill-evolve` `STOCKTAKE.md` | `skill-stocktake` | Found, not used: addyosmani `scripts/lib/skill-lint.js` (structural lint, not an overlap audit); agent-dispatcher `catalog/` (a routing index); nothing else relevant |
+| `codebase-onboarding` `LIVING-DOCS.md` | `living-docs-governance`, `docs-governance`, command `update-docs` | Found, not used: gstack `document-release` (a post-ship documentation audit); testdouble/han `han-documentation` (writes feature and decision docs, which `decision-records` covers) |
 | `llm-features` `RETRIEVAL.md` | Agent `rag-pipeline-reviewer` | wshobson `llm-application-dev` (topic list only) |
-| `diagnosing-bugs` `BUILD-ERRORS.md` | Agent `build-error-resolver`, command `build-fix` | None |
-| Additions to `i18n-sync`, `implement`, `TOOLS.md` | `yoruba-localization-testing`, `agent-introspection-debugging`, `agentic-engineering` | None |
+| `diagnosing-bugs` `BUILD-ERRORS.md` | Agent `build-error-resolver`, command `build-fix` | addyosmani `debugging-and-error-recovery` lists broken builds as a debugging trigger, consistent with keeping this under `diagnosing-bugs`; trailofbits `codeql` `build-fixes.md` is tool-specific; nothing else relevant |
+| Additions to `i18n-sync`, `implement`, `TOOLS.md` | `yoruba-localization-testing`, `agent-introspection-debugging`, `agentic-engineering` | Not searched |
+
+The searches behind the third column were by file name and keyword across
+the fourteen other preferred repositories, not a full read.
 
 Not taken: ECC's Vue and Nuxt rule sets, a classical machine-learning skill,
 and its write-capable build-resolver agents.

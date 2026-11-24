@@ -46,6 +46,8 @@ When the user asked to diagnose and fix, diagnosis still completes first. The ev
 
 Known-cause changes belong to `implement`; stable behavior slices belong to `tdd`; final proof belongs to `verification-before-completion`; and introduced-defect review belongs to `code-review`. Diagnosis can remain inconclusive without becoming a guessed implementation task.
 
+A failing build or type check has its own reference: read the first error, fix one error at a time with the smallest change, and never silence a check. A diagnose-only request reads the errors and reports; a requested repair goes to `implement`. Triage of an incoming issue report belongs to `issue-triage`.
+
 ## Attribution and design basis
 
 The original local workflow was informed by exact-symptom feedback loops from Matt Pocock's MIT-licensed [`diagnosing-bugs`](https://github.com/mattpocock/skills/tree/main/skills/engineering/diagnosing-bugs), boundary tracing and falsifiable experiments from Obra's MIT-licensed [`systematic-debugging`](https://github.com/obra/superpowers/tree/main/skills/systematic-debugging), non-reproduction and untrusted-log handling from Addy Osmani's MIT-licensed [`debugging-and-error-recovery`](https://github.com/addyosmani/agent-skills/tree/main/skills/debugging-and-error-recovery), technique breadth from Wshobson's MIT-licensed [`debugging-strategies`](https://github.com/wshobson/agents/tree/main/plugins/developer-essentials/skills/debugging-strategies), and root-cause/controlled-comparison practices from Cursor's MIT-licensed pstack and Benny subtrees. No upstream scripts or instructions are vendored. See the pinned [research record](../research/diagnosing-bugs-skill-research.md).

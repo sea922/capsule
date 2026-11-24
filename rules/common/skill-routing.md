@@ -14,6 +14,10 @@ Load the matching skill before starting the work, not after.
 | Understand an unfamiliar repository | `codebase-onboarding` |
 | Record or explain a technical decision | `decision-records` |
 | Plan multi-step work | `planning-and-task-breakdown` |
+| Answer a question from sources, or check current practice | `research` |
+| Try an uncertain idea as a throwaway experiment | `prototype` |
+| Stress-test a plan or decision | `grilling` |
+| Split independent work among agents | `orchestrate` |
 | Commit, branch, rebase, or recover Git state | `git-workflow` |
 | Write or update a pull or merge request | `pr-description` |
 | Carry a pull or merge request to merge | `babysit-pr` |
@@ -32,3 +36,6 @@ Load the matching skill before starting the work, not after.
 | Decide whether to launch, or deliver a release | `production-readiness`, `ship-it` |
 | Say something is done | `verification-before-completion` |
 | Write for people, or for agents | `writing-for-humans`, `writing-for-agents` |
+
+The table is not exhaustive: capsule has more skills than these, and each
+skill's own description decides when it applies.

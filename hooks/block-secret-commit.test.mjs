@@ -19,7 +19,6 @@ const FIXTURES = {
   'slack-token': 'xo' + 'xb-' + '1234567890-' + filler(24),
   'stripe-live-key': 'sk' + '_live_' + filler(24),
   'anthropic-api-key': 'sk' + '-ant-' + filler(40),
-  'google-api-key': 'AI' + 'za' + filler(35),
   'npm-token': 'np' + 'm_' + filler(36),
 };
 
@@ -58,6 +57,7 @@ test('generic assignments, placeholders, and documented example keys are not sec
     '+sk_test_' + filler(24),
     '+-----BEGIN PUBLIC KEY-----',
     '+-----BEGIN CERTIFICATE-----',
+    `+apiKey: "${'AI' + 'za' + filler(35)}"`,
   ];
   assert.deepEqual(findSecrets(diffFor('notes.md', lines)), []);
 });
@@ -65,11 +65,32 @@ test('generic assignments, placeholders, and documented example keys are not sec
 test('commit scope is read from the command', () => {
   assert.equal(commitScope('git status'), null);
   assert.equal(commitScope('echo git commit -m x'), null);
+  assert.equal(commitScope('git add secrets.txt'), null);
+  assert.equal(commitScope(5), null);
   assert.equal(commitScope('git commit -m "git add -A"').all, false);
-  assert.deepEqual(commitScope('git commit -m x'), { all: false, untracked: false, directory: null });
-  assert.deepEqual(commitScope('git commit -am x'), { all: true, untracked: false, directory: null });
-  assert.deepEqual(commitScope('git add -A && git commit -m x'), { all: true, untracked: true, directory: null });
-  assert.deepEqual(commitScope('git -C sub commit --all -m x'), { all: true, untracked: false, directory: 'sub' });
+  assert.deepEqual(commitScope('git commit -m x'), { all: false, add: null, directory: null });
+  assert.deepEqual(commitScope('git commit -am x'), { all: true, add: null, directory: null });
+  assert.deepEqual(commitScope('git -C sub commit --all -m x'), { all: true, add: null, directory: 'sub' });
+  assert.deepEqual(commitScope('git commit README.md -m x'), { all: true, add: null, directory: null });
+  assert.deepEqual(commitScope('git commit -m x -- docs/a.md'), { all: true, add: null, directory: null });
+  assert.deepEqual(commitScope('git add -A && git commit -m x'), { all: true, add: { paths: [':/'], force: false }, directory: null });
+  assert.deepEqual(commitScope('git add . && git commit -m x'), { all: true, add: { paths: ['.'], force: false }, directory: null });
+  assert.deepEqual(commitScope('git add a.txt "b c.txt" && git commit -m x'), { all: true, add: { paths: ['a.txt', 'b c.txt'], force: false }, directory: null });
+  assert.deepEqual(commitScope('git add -f .env; git commit -m x'), { all: true, add: { paths: ['.env'], force: true }, directory: null });
+  assert.deepEqual(commitScope('git add -u && git commit -m x'), { all: true, add: { paths: [], force: false }, directory: null });
+  assert.deepEqual(commitScope('(git commit -m x)'), { all: false, add: null, directory: null });
+  assert.deepEqual(commitScope('bash -c "git commit -am x"'), { all: true, add: null, directory: null });
+});
+
+test('file headers are only read from the diff header, and paths come out clean', () => {
+  const secret = FIXTURES['github-token'];
+  const stored = [
+    'diff --git a/saved.patch b/saved.patch', '--- a/saved.patch', '+++ b/saved.patch', '@@ -1,2 +1,2 @@',
+    '--- old', '+++ fake', `+TOKEN=${secret}`,
+  ].join('\n');
+  assert.deepEqual(findSecrets(stored), [{ file: 'saved.patch', line: 2, pattern: 'github-token' }]);
+  const spaced = ['diff --git "a/my file.txt" "b/my file.txt"', '--- /dev/null', '+++ "b/my file.txt"\t', '@@ -0,0 +1 @@', `+${secret}`].join('\n');
+  assert.deepEqual(findSecrets(spaced), [{ file: 'my file.txt', line: 1, pattern: 'github-token' }]);
 });
 
 function repository(t) {
@@ -111,6 +132,34 @@ test('commit -a covers tracked edits and a preceding git add covers new files', 
   assert.match(secretReason(commit('git add . && git commit -m x', root)), /\.env:3/);
 });
 
+test('a git add of named paths scans those paths only, and -f reaches ignored files', (t) => {
+  const { root } = repository(t);
+  writeFileSync(join(root, 'notes.txt'), 'plain\n');
+  writeFileSync(join(root, 'scratch.txt'), `${FIXTURES['slack-token']}\n`);
+  assert.equal(secretReason(commit('git add notes.txt && git commit -m x', root)), null, 'an unrelated untracked file does not block');
+  assert.match(secretReason(commit('git add scratch.txt && git commit -m x', root)), /scratch\.txt:1 slack-token/);
+  assert.match(secretReason(commit('git add -A && git commit -m x', root)), /scratch\.txt:1/);
+  rmSync(join(root, 'scratch.txt'));
+  writeFileSync(join(root, '.gitignore'), '.env\n');
+  writeFileSync(join(root, '.env'), `KEY=${FIXTURES['anthropic-api-key']}\n`);
+  assert.equal(secretReason(commit('git add . && git commit -m x', root)), null, 'an ignored file is not added by git add .');
+  assert.match(secretReason(commit('git add -f .env && git commit -m x', root)), /\.env:1 anthropic-api-key/);
+});
+
+test('a pathspec commit of an unstaged tracked file is checked', (t) => {
+  const { root } = repository(t);
+  writeFileSync(join(root, 'README.md'), `hello\n${FIXTURES['gitlab-token']}\n`);
+  assert.equal(secretReason(commit('git commit -m x', root)), null);
+  assert.match(secretReason(commit('git commit README.md -m x', root)), /README\.md:2 gitlab-token/);
+});
+
+test('paths with spaces and non-ASCII names are reported readably', (t) => {
+  const { root, git } = repository(t);
+  writeFileSync(join(root, 'my filé.txt'), `${FIXTURES['npm-token']}\n`);
+  git('add', '.');
+  assert.match(secretReason(commit('git commit -m x', root)), /\n {2}my filé\.txt:1 npm-token\n/);
+});
+
 test('outside a repository the commit is allowed', (t) => {
   const root = mkdtempSync(join(tmpdir(), 'capsule-norepo-'));
   t.after(() => rmSync(root, { recursive: true, force: true }));
@@ -132,6 +181,10 @@ test('the script blocks with exit 2, allows with exit 0, and honours the off swi
   assert.equal(run('git log').status, 0);
   assert.equal(run('git commit -m x', { CAPSULE_HOOKS_DISABLED: 'block-secret-commit' }).status, 0);
   assert.equal(spawnSync(process.execPath, [script], { input: 'not json', encoding: 'utf8' }).status, 0);
+  for (const input of ['', 'null', '{}', '{"tool_name":"Bash"}', '{"tool_name":"Bash","tool_input":null}',
+    '{"tool_name":"Bash","tool_input":{"command":5}}', '{"tool_name":"Bash","tool_input":{"command":"git commit -m x"},"cwd":7}']) {
+    assert.equal(spawnSync(process.execPath, [script], { input, encoding: 'utf8', cwd: tmpdir() }).status, 0, input);
+  }
 });
 
 test('the first commit of a new repository is still checked', (t) => {
@@ -141,4 +194,12 @@ test('the first commit of a new repository is still checked', (t) => {
   writeFileSync(join(root, 'token.txt'), `${FIXTURES['npm-token']}\n`);
   execFileSync('git', ['add', '.'], { cwd: root });
   assert.match(secretReason(commit('git commit -am init', root)), /token\.txt:1 npm-token/);
+});
+
+test('when the time budget is spent the commit is allowed', (t) => {
+  const { root, git } = repository(t);
+  writeFileSync(join(root, 'key.txt'), `${FIXTURES['private-key']}\n`);
+  git('add', 'key.txt');
+  assert.ok(secretReason(commit('git commit -m x', root)));
+  assert.equal(secretReason(commit('git commit -m x', root), 0), null);
 });

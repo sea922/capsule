@@ -18,7 +18,7 @@ Rules are optional. Installing the capsule plugin does not install them.
 | `golang` | Go files | `coding-style`, `patterns`, `testing`, `security`, `hooks` |
 | `csharp` | C# files | `coding-style`, `patterns`, `testing`, `security`, `hooks` |
 
-The `common` set is about 700 lines and loads in every session. Install a stack
+The `common` set is about 750 lines and loads in every session. Install a stack
 set only for the stacks a project uses.
 
 ## Install
@@ -47,8 +47,8 @@ something.
 These rules are adapted from [affaan-m/ECC](https://github.com/affaan-m/ECC)
 under the MIT License; see [THIRD-PARTY-NOTICE.md](THIRD-PARTY-NOTICE.md).
 capsule's changes: references point to capsule's skills, agents, and hooks;
-fixed standards became defaults that defer to the project; and five `common`
-rules were added.
+fixed standards became defaults that defer to the project; five `common`
+rules were added; and `java/springboot.md` was written for capsule.
 
 ## Writing a rule
 

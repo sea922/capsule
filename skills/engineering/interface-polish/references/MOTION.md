@@ -65,13 +65,13 @@ The first client render must match what the server sent. An element the server r
 
 **Exit animations.** Define the exit when you define the entrance. An exit needs the element to stay mounted until it finishes, which most frameworks do only through a presence mechanism, and it needs a stable key so the framework knows which element is leaving. Check that an element removed mid-entrance leaves cleanly.
 
-**Page transitions.** Keep them brief (the fast or normal token) and let the old view finish leaving before the new one enters, or the two overlap and reflow. A transition must never delay navigation the user can perceive as slow, and must not restart when only a query parameter changes. Scroll position and focus still reset correctly.
+**Page transitions.** Keep them brief (the fast or normal token) and sequence the two views, or cross-fade them without a layout change, or they overlap and reflow. A transition must never delay navigation the user can perceive as slow, and must not restart when only a query parameter changes. Scroll position and focus still reset correctly.
 
 **Scroll-triggered entrances.** Run once; replaying each time the element re-enters the viewport distracts. Start the reveal a little before the element is fully in view, and leave above-the-fold content alone. Ordinary content rarely needs it.
 
 **Scroll-linked values.** A progress bar or parallax tied to scroll position updates from the scroll value directly, not through state updates per scroll event. Keep the linked movement small.
 
-**Layout animation.** Animating an element's change of size or position in place suits small, isolated shifts: an expanding card, an accordion, a reordered item. On a large or deeply nested subtree it measures too much each frame; use explicit transforms there. Text inside a resizing container should animate position only, or it distorts while it scales. A shared-element transition between two views needs both ends to use the same identifier and comparable shapes.
+**Layout animation.** Animating an element's change of size or position in place suits small, isolated shifts: an expanding card, an accordion, a reordered item. On a large or deeply nested subtree it measures many elements on every layout change and distorts children that are not also corrected; use explicit transforms there. Text inside a resizing container should animate position only, or it distorts while it scales. A shared-element transition between two views needs both ends to use the same identifier and comparable shapes.
 
 **Drag and gestures.**
 

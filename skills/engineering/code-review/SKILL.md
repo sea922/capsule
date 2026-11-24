@@ -134,7 +134,7 @@ If nothing passes the gate, write `No findings.` Do not manufacture reassurance,
 
 After the findings, include only:
 
-- **Review scope:** target, base, level, and what was inspected.
+- **Review scope:** target, base, level, and what was inspected; for `deep`, the specialist passes run and skipped, with the reason.
 - **Blast radius** (`standard` and `deep`): the load-bearing fact, its rung on the proof ladder with the cited line or command, and the label `unproven` when it stopped below *ran*. For a trivial `standard` change with no cross-caller or state assumption, write `None — local change with no unverified assumption`.
 - **Residual risks:** unavailable specification, checks not run, unverified generated output, or areas for which a deeper review is warranted. Write `None identified` when appropriate.
 

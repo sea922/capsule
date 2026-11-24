@@ -62,19 +62,34 @@ compose.
 | [property-based-testing](docs/engineering/property-based-testing.md) | Find strong properties and generators, avoid vacuous tests, and triage shrunk counterexamples. |
 | [prototype](docs/engineering/prototype.md) | Answer one design or feasibility question with a small, reproducible experiment. |
 | [simplify](docs/engineering/simplify.md) | Reduce complexity in a scoped pass while preserving observable behavior. |
-| [database-migrations](docs/engineering/database-migrations.md) | Plan, write, and verify schema and data changes that survive a live deploy. |
-| [benchmark](docs/engineering/benchmark.md) | Produce or vet a measurement a decision can rest on, and search variants within a budget. |
-| [performance](docs/engineering/performance.md) | Make software measurably faster or lighter, or review code for performance risk, with numbers that hold up. |
 | [codebase-design](docs/engineering/codebase-design.md) | Design cohesive modules, evidence-gated abstractions, dependency direction, and explicit contracts. |
+| [coding-standards](docs/engineering/coding-standards.md) | Apply project conventions with shared rules, backend and frontend guidance, and per-stack references. |
+| [llm-features](docs/engineering/llm-features.md) | Build, evaluate, and tune product features that call a language model, keeping or reverting each change on the project's own evals. |
+
+### 🗄️ Design and data
+
+| Skill | What it does |
+| --- | --- |
 | [api-design](docs/engineering/api-design.md) | Design or change an HTTP API contract without breaking the callers that depend on it. |
 | [database-design](docs/engineering/database-design.md) | Design schemas, indexes, and queries that fit the workload, with PostgreSQL, MySQL, Redis, and ClickHouse references. |
-| [containers-and-deploys](docs/engineering/containers-and-deploys.md) | Build a service's container image, pipeline, rollout strategy, and infrastructure definitions, and prove them by running them. |
-| [observability](docs/engineering/observability.md) | Instrument a service with logs, metrics, traces, alerts, and dashboards that answer an operator's questions, verified with a real event. |
-| [llm-features](docs/engineering/llm-features.md) | Build, evaluate, and tune product features that call a language model, keeping or reverting each change on the project's own evals. |
-| [interface-polish](docs/engineering/interface-polish.md) | Audit design tokens, find visual drift, and apply concrete polish details to an existing interface. |
+| [database-migrations](docs/engineering/database-migrations.md) | Plan, write, and verify schema and data changes that survive a live deploy. |
+
+### 🎨 Frontend
+
+| Skill | What it does |
+| --- | --- |
+| [interface-polish](docs/engineering/interface-polish.md) | Audit design tokens, find visual drift, apply concrete polish details, and set the direction for a new screen. |
 | [i18n-sync](docs/engineering/i18n-sync.md) | Keep locale files in step with source strings: missing, unused, and stale keys, translated in context and verified. |
 | [seo](docs/engineering/seo.md) | Audit and fix how a site is crawled, indexed, and presented in search, working from what a crawler actually receives. |
-| [coding-standards](docs/engineering/coding-standards.md) | Apply project conventions with shared rules, backend and frontend guidance, and per-stack references. |
+
+### ⚙️ Operations and performance
+
+| Skill | What it does |
+| --- | --- |
+| [containers-and-deploys](docs/engineering/containers-and-deploys.md) | Build a service's container image, pipeline, rollout strategy, and infrastructure definitions, and prove them by running them. |
+| [observability](docs/engineering/observability.md) | Instrument a service with logs, metrics, traces, alerts, and dashboards that answer an operator's questions, verified with a real event. |
+| [performance](docs/engineering/performance.md) | Make software measurably faster or lighter, or review code for performance risk, with numbers that hold up. |
+| [benchmark](docs/engineering/benchmark.md) | Produce or vet a measurement a decision can rest on, and search variants within a budget. |
 
 ### 🔍 Investigate and plan
 
@@ -154,8 +169,8 @@ capsule also ships read-only agents that its skills hand work to, indexed in [`a
 | --- | --- | --- |
 | `block-no-verify` | `--no-verify`, `commit -n`, `core.hooksPath` overrides, and `HUSKY=0` on git commands | `CAPSULE_HOOKS_DISABLED=block-no-verify` |
 | `config-protection` | Edits to existing lint and format configs (ESLint, Prettier, Biome, Stylelint, Ruff, and others) | `CAPSULE_HOOKS_DISABLED=config-protection` |
-| `block-destructive` | `rm -rf` of `/`, the home directory, `.`, `..`, or `*`; force pushes to `main` or `master`; `DROP DATABASE` and `DROP SCHEMA`; `terraform destroy`; `kubectl delete namespace` or `--all`; Docker volume pruning | `CAPSULE_HOOKS_DISABLED=block-destructive` |
-| `block-secret-commit` | A `git commit` whose added lines hold a private key or a vendor-format token (AWS, GitHub, GitLab, Slack, Stripe, and others) | `CAPSULE_HOOKS_DISABLED=block-secret-commit` |
+| `block-destructive` | `rm -rf` of `/`, the home directory, `..`, or (outside a directory the command just entered) `.` and `*`; force pushes to, or deletion of, `main` or `master`; `DROP DATABASE` and `dropdb`; `terraform destroy`; `kubectl delete namespace` or `--all`; Docker volume pruning. Dry runs and `--help` pass | `CAPSULE_HOOKS_DISABLED=block-destructive` |
+| `block-secret-commit` | A `git commit` whose added lines hold a private key or a vendor-format token (AWS, GitHub, GitLab, Slack, Stripe live, Anthropic, npm) | `CAPSULE_HOOKS_DISABLED=block-secret-commit` |
 
 The hooks need Node.js. They stop an agent from casually skipping checks; they are not a security boundary. List several ids with commas to turn off more than one.
 
@@ -274,5 +289,60 @@ with per-work-item folders informed by the Conductor plugin in
 `grilling` and `planning-and-task-breakdown` skills; the
 [ADLC research](docs/research/2026-09-26-adlc.md) records every preferred source
 consulted. No upstream skill file is vendored.
+
+The skills, agents, hooks, and references added from the
+[ECC review](docs/research/2026-11-24-ecc-review.md) are adaptations of ideas
+in [`affaan-m/ECC`](https://github.com/affaan-m/ECC) (MIT) and the other
+preferred repositories. The
+[decision for every ECC skill](docs/research/2026-11-24-ecc-skills-decisions.md)
+says what was taken and why, and three notes record each source's influence:
+the [adoption research](docs/research/2026-11-24-ecc-adoption-research.md), the
+[performance and accessibility research](docs/research/2026-11-24-performance-accessibility-research.md),
+and the [decisions build research](docs/research/2026-11-24-ecc-decisions-build.md).
+
+- **From ECC:** the topics and much of the coverage of `database-migrations`,
+  `production-readiness`, `decision-records`, `codebase-onboarding`,
+  `api-design`, `e2e-testing`, `interface-polish`, `i18n-sync`,
+  `database-design`, `containers-and-deploys`, `llm-features`, `seo`, and
+  `issue-triage`; the per-stack references under `coding-standards`; the
+  references added under `performance`, `security-review`, `ship-it`,
+  `grilling`, `skill-evolve`, `codebase-onboarding`, `diagnosing-bugs`, and
+  `writing-for-agents`; the read-only review, audit, and spec-mining agents;
+  and the four guard hooks. The rule sets under `rules/` are ECC's files,
+  copied and adapted; see the
+  [third-party notice](rules/THIRD-PARTY-NOTICE.md).
+- **[`nahid-sparktales/agent-dispatcher`](https://github.com/nahid-sparktales/agent-dispatcher):**
+  method for `performance`, `benchmark`, `accessibility`,
+  `database-migrations`, `api-design`, `e2e-testing`, `interface-polish`,
+  `seo`, and `observability`.
+- **[`addyosmani/agent-skills`](https://github.com/addyosmani/agent-skills):**
+  the main source for `observability`, and parts of `performance`,
+  `production-readiness`, `decision-records`, `api-design`, and
+  `containers-and-deploys`.
+- **[`wshobson/agents`](https://github.com/wshobson/agents):** parts of
+  `database-design`, `containers-and-deploys`, `observability`,
+  `llm-features`, `decision-records`, and the Python, Go, and error-handling
+  references.
+- **[`anthropics/skills`](https://github.com/anthropics/skills):** `mcp-builder`
+  is the main source for the MCP server reference under `writing-for-agents`.
+- **[`cursor/plugins`](https://github.com/cursor/plugins) (pstack):**
+  `benchmark` and the TypeScript reference.
+- **[`garrytan/gstack`](https://github.com/garrytan/gstack):** `benchmark`,
+  post-deploy checks in `ship-it`, and the product questions under `grilling`.
+- **[`testdouble/han`](https://github.com/testdouble/han),
+  [`mattpocock/skills`](https://github.com/mattpocock/skills), and
+  [`trailofbits/skills`](https://github.com/trailofbits/skills):**
+  `issue-triage`; han also informed `decision-records` and
+  `codebase-onboarding`, and Trail of Bits the container and Python
+  verification guidance.
+- **[`EveryInc/compound-engineering-plugin`](https://github.com/EveryInc/compound-engineering-plugin):**
+  `benchmark` and the release reference under `ship-it`.
+- **[`humanlayer/skills`](https://github.com/humanlayer/skills):** one point in
+  the React reference.
+- **Vercel Labs `react-best-practices` (MIT):** the React reference under
+  `performance` descends from it by way of ECC's `react-performance`.
+
+Apart from the rule sets, no upstream file is vendored; the instructions are
+maintained here.
 
 </details>

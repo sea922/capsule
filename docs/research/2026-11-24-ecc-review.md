@@ -13,8 +13,9 @@ skills at `d2ef2680` and took only `change-impact`, into `ship-it` and
 
 This note records the findings. The [adoption research](2026-11-24-ecc-adoption-research.md)
 and the [performance and accessibility research](2026-11-24-performance-accessibility-research.md)
-record what was built from them and every other source consulted. Capsule adapts
-ideas in its own wording and vendors no file.
+record what was built from them and every other source consulted. Skills, agents, and hooks adapt ideas in capsule's own wording, and none of
+their files is vendored; the rule sets under `rules/` are ECC's files, copied
+and adapted under its MIT licence.
 
 ## Summary by resource type
 
@@ -71,7 +72,8 @@ their origin and credit it before adapting them. ECC's general `code-reviewer`,
 
 ## 3. Hooks
 
-Capsule ships none, so any hook changes what installing the plugin does.
+At the baseline capsule shipped no hooks, so any hook changes what installing
+the plugin does. It now ships four; see `hooks/`.
 
 | Hook | ECC source | What it stops |
 | --- | --- | --- |
@@ -108,7 +110,6 @@ project-specific).
 
 | ECC resource | Reason |
 | --- | --- |
-| Rules | Plugins cannot ship rules; absolute checklists ("always immutable", 80% coverage) conflict with capsule's project-first `coding-standards` and evidence-led `tdd` |
 | Commands | Thin wrappers over ECC's own skills and agents; `santa-loop` and `review-pr` are covered by `code-review` deep mode with specialist passes |
 | `verification-loop`, `conventional-commit-review`, `test-collaboration`, `issue-review`, `story-lifecycle`, `blueprint`, `intent-driven-development`, `product-capability` | Owned by `verification-before-completion`, `git-workflow`, `sprint-planning`, `planning-and-task-breakdown`, and the ADLC suite |
 | `error-handling`, `api-connector-builder`, `hexagonal-architecture`, `inherit-legacy-style`, `contract-first` | Covered by `coding-standards`, `implement`, and `codebase-design` |

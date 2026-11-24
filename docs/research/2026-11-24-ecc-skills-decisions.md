@@ -9,16 +9,24 @@ share a group reason. See the [review](2026-11-24-ecc-review.md), the
 [adoption research](2026-11-24-ecc-adoption-research.md).
 
 **Update:** the Recommend, Possible, and Fold as reference rows have since
-been built. The [build research](2026-11-24-ecc-decisions-build.md) maps each
-row to the skill or reference that answers it; the tables below keep the
-decision as it was made.
+been built, and the tables below keep each decision as it was first made. Two
+later review passes also built or folded some rows still listed under Covered
+or Out of scope: `seo`, `motion-foundations`, `motion-patterns`,
+`motion-advanced`, `latency-critical-systems`, `data-throughput-accelerator`,
+`bun-runtime`, `dashboard-builder`, `issue-review`, `council`,
+`skill-stocktake`, `safety-guard`, `frontend-design-direction`,
+`web-perimeter-owasp-2025-audit`, `living-docs-governance`, `docs-governance`,
+`agent-introspection-debugging`, `agentic-engineering`,
+`yoruba-localization-testing`, and `security-bounty-hunter`. The
+[build research](2026-11-24-ecc-decisions-build.md) maps every built row to the
+skill, reference, agent, or hook that answers it.
 
 ## Summary
 
 | Decision | Skills | Meaning |
 | --- | --- | --- |
 | Adopted | 24 | Already built into capsule on the `feat/ecc-adoption` branch. |
-| Recommend | 8 | Worth adding; not built yet. |
+| Recommend | 8 | Worth adding; built after this decision. |
 | Possible | 18 | Could be added, but overlaps something capsule has or serves a narrower need. |
 | Fold as reference | 30 | Stack deep-dives: better as an on-demand reference under `coding-standards` than as separate skills. |
 | Covered | 53 | Capsule already has a skill that does this job. |
@@ -58,7 +66,7 @@ Already built into capsule on the `feat/ecc-adoption` branch.
 
 ## Recommend (8)
 
-Worth adding; not built yet.
+Worth adding; built after this decision.
 
 | ECC skill | What it is (ECC's description) | In capsule | Reason |
 | --- | --- | --- | --- |

@@ -1,6 +1,6 @@
 ---
 name: codebase-onboarding
-description: Map an unfamiliar repository so a person or agent can start working in it - stack, architecture, entry points, how a request flows, conventions, and how to run and test it. Use when joining or inheriting a project, when asked for an overview, tour, or onboarding guide of a codebase or one area of it, "how does this repo work", or "where do I start". Deciding how to change the design belongs to codebase-design; external research to research.
+description: Map an unfamiliar repository so a person or agent can start working in it - stack, architecture, entry points, how a request flows, conventions, and how to run and test it. Use when joining or inheriting a project, when asked for an overview, tour, or onboarding guide of a codebase or one area of it, "how does this repo work", "where do I start", or when keeping the repository's docs in step with the code. Deciding how to change the design belongs to codebase-design; external research to research.
 ---
 
 # Codebase onboarding

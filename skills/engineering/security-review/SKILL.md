@@ -1,6 +1,6 @@
 ---
 name: security-review
-description: Review security and privacy risks read-only when a dedicated audit, threat model, dependency or CVE/advisory assessment, auth or tenant-isolation check, injection/SSRF/secret-exposure review, agent prompt-injection boundary review, fuzzing-campaign crash triage, or independent security gate is requested or needed. Routine changed-code review belongs to code-review; authorized remediation belongs to implement.
+description: Review security and privacy risks read-only when a dedicated audit, threat model, dependency or CVE/advisory assessment, auth or tenant-isolation check, injection/SSRF/secret-exposure review, agent prompt-injection boundary review, passive perimeter check of a deployed site the user owns, fuzzing-campaign crash triage, or independent security gate is requested or needed. Routine changed-code review belongs to code-review; authorized remediation belongs to implement.
 ---
 
 # Security Review
@@ -23,7 +23,7 @@ For each material boundary, follow attacker-controlled input through its transfo
 
 When the review is about publishing, such as making a repository public, sharing a fork, or releasing a package or docs, sweep the scope for secrets, personal data, and internal references with the read-only `security-review-sanitizer` agent when it is available, or the same checklist directly. Report each by location and kind, never its value.
 
-Use `research` for version-specific advisories or uncertain external contracts. When the forge is reachable, also read the repository's open dependency and secret-scanning alerts on GitHub or GitLab as leads. Confirm affected versions and runtime reachability; a scanner alert or dangerous-looking API is a lead rather than a finding by itself.
+Use `research` for version-specific advisories or uncertain external contracts. When the forge is reachable, also read the repository's open dependency and secret-scanning alerts on GitHub or GitLab as leads; do not copy alert contents that include a secret value into the report. Confirm affected versions and runtime reachability; a scanner alert or dangerous-looking API is a lead rather than a finding by itself.
 
 **Complete when:** each material abuse case is sorted into one bucket: **supported** (reachable path and impact evidenced), **hypothesis** (plausible but unresolved, with the missing evidence named), or **disproved** (contradicted by a verified control).
 

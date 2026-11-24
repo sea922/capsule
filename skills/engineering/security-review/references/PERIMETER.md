@@ -16,13 +16,13 @@ A check that needs more than this, such as an authenticated test or a live cache
 
 ## 1. Exposed files
 
-Request each path directly and judge the body by its signature, since a blocked directory listing says nothing about the files under it.
+Request each path directly and judge the body by its signature, since a blocked directory listing says nothing about the files under it. Request only the first few hundred bytes (a range request or a truncated read), decide from the shape, and discard the body without printing or storing it. For Git, `/.git/HEAD` alone is enough; do not fetch `/.git/config`, which can hold a token.
 
 | Path | Exposed when |
 | --- | --- |
-| `/.git/HEAD`, `/.git/config` | The response is `200` and looks like a ref line or a Git config section. The repository can then be rebuilt object by object even if `/.git/` itself returns `403`. |
-| Environment files such as `/.env` | The response is `200` with `NAME=value` lines and is not an HTML page. |
-| `/package.json`, lockfiles, `/.npmrc`, `/.yarnrc.yml`, `/composer.lock`, and similar manifests | The response is `200` with the file's own structure. A lockfile publishes the exact dependency tree; a registry config can carry a token. |
+| `/.git/HEAD` | The response is `200` and looks like a ref line. The repository can then be rebuilt object by object even if `/.git/` itself returns `403`. |
+| Environment files such as `/.env` | The response is `200` (or `206`) whose first bytes have the `NAME=value` shape and are not an HTML page. Do not read further. |
+| `/package.json`, lockfiles, `/.npmrc`, `/.yarnrc.yml`, `/composer.lock`, and similar manifests | The first bytes show the file's own structure. A lockfile publishes the exact dependency tree; a registry config can carry a token, so do not read past the opening bytes. |
 | `/docker-compose.yml`, backup and archive names next to the app | The response is `200` with the file's structure. |
 | Source maps (`*.js.map`) beside production bundles | The map is served. It carries original sources and comments; whether that matters is the project's call, so report it as a lead with what it reveals. |
 
@@ -41,20 +41,21 @@ A missing header is a hardening gap. It becomes a finding only with the abuse pa
 
 ## 3. Cross-origin access
 
-Send one request with an `Origin` header set to a domain that cannot exist. If the response echoes that origin in `Access-Control-Allow-Origin` together with `Access-Control-Allow-Credentials: true`, record a high-priority lead: any site could read that endpoint with the visitor's cookies. Whether it is a finding depends on whether the endpoint returns non-public data to a signed-in user, which the review confirms from the code or an authorized session. A wildcard origin without credentials on public data is usually intended.
+Send one request with an `Origin` header set to a domain that cannot exist. If the response echoes that origin in `Access-Control-Allow-Origin` together with `Access-Control-Allow-Credentials: true`, record a high-priority lead: any site could read that endpoint with whatever credentials the browser sends cross-site, such as `SameSite=None` cookies. Also try `Origin: null`. Whether it is a finding depends on whether the endpoint returns non-public data to a signed-in user, which the review confirms from the code or an authorized session. A wildcard origin without credentials on public data is usually intended.
 
 ## 4. Cache poisoning signals
 
-A cache that ignores a request header the origin uses to build the response can serve one visitor's poisoned page to everyone. From the outside, look only for the signal:
+A cache that ignores a request header the origin uses to build the response can serve one visitor's poisoned page to everyone. Without sending any such header, look only for the conditions that make it possible:
 
-- The response reflects a forwarded-host or forwarded-scheme header into a link, redirect, or script URL.
-- The response is cacheable (`Cache-Control`, `Age`, or the CDN's cache-status header), and `Vary` does not list that header.
+- The response is cacheable (`Cache-Control`, `Age`, or the CDN's cache-status header).
+- `Vary` lists no forwarded-host or forwarded-scheme header.
+- The page builds absolute URLs (links, redirects, script or canonical URLs) from the request host rather than from a configured one, as far as the response or the code shows.
 
-Sending such a header against a shared production cache key can poison it for real users. Do it only on an isolated staging host, or on a URL with a fresh random query parameter after showing that the cache keys on the query string, and only when the user has approved that probe. Otherwise report the reflection as a hypothesis and name the staging test that would settle it.
+These conditions are a hypothesis, not a confirmation. Confirming that the origin reflects a forwarded header means sending one, and against a shared cache that can poison the page for real users. Do it only on an isolated staging host with the user's approval, never on production. Otherwise report the hypothesis and name the staging test that would settle it.
 
 ## 5. Cookies
 
-For every `Set-Cookie` that carries a session or authentication value, record `Secure`, `HttpOnly`, `SameSite`, scope (`Domain`, `Path`), and lifetime. `SameSite=None` needs a reason, such as an intended cross-site embed, and a separate anti-forgery control. Flags describe the cookie only; they do not show that sessions expire or can be revoked.
+For every `Set-Cookie` that carries a session or authentication value, record `Secure`, `HttpOnly`, `SameSite`, scope (`Domain`, `Path`), and lifetime. `SameSite=None` is accepted by browsers only together with `Secure`, and needs a reason, such as an intended cross-site embed, and a separate anti-forgery control. Flags describe the cookie only; they do not show that sessions expire or can be revoked.
 
 ## 6. TLS basics
 

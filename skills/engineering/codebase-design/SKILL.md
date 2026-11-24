@@ -1,6 +1,6 @@
 ---
 name: codebase-design
-description: Design or improve software architecture through cohesive modules, intentional dependency direction, explicit inter-module contracts, and evidence-gated abstraction. Use for module or service boundaries, coupling/cohesion, abstraction timing (KISS/YAGNI/DRY), SOLID trade-offs, ports and adapters, dependency cycles, sync vs async communication, boundary reliability semantics, test seams, architecture refactoring, or agent-navigable structure. Route scoped behavior-preserving cleanup to simplify, coding conventions to coding-standards, and UI-only visual design or pure infrastructure topology to their dedicated skills.
+description: Design or improve software architecture through cohesive modules, intentional dependency direction, explicit inter-module contracts, and evidence-gated abstraction. Use for module or service boundaries, coupling/cohesion, abstraction timing (KISS/YAGNI/DRY), SOLID trade-offs, ports and adapters, dependency cycles, sync vs async communication, boundary reliability semantics, test seams, architecture refactoring, or agent-navigable structure. Route scoped behavior-preserving cleanup to simplify, coding conventions to coding-standards, UI-only visual design to interface-polish, and pure infrastructure topology to containers-and-deploys.
 ---
 
 # Codebase Design

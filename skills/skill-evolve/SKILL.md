@@ -1,6 +1,6 @@
 ---
 name: skill-evolve
-description: Improve agent skills from session evidence, keeping only edits that beat the current version. Use when a transcript, retro, failing eval, or feedback shows a skill failed to fire, skipped a rule, gave a wrong/outdated command or shape, or missed a step, or when deciding whether a proposed skill edit actually beats the current one. Writing a skill without session evidence belongs to writing-for-agents; lessons about the codebase belong to compound-learnings.
+description: Improve agent skills from session evidence, keeping only edits that beat the current version, or audit a whole skill catalogue for overlap and staleness. Use when a transcript, retro, failing eval, or feedback shows a skill failed to fire, skipped a rule, gave a wrong/outdated command or shape, or missed a step, when deciding whether a proposed edit beats the current skill, or when taking stock of the installed skills. Writing one skill without session evidence belongs to writing-for-agents; codebase lessons to compound-learnings.
 ---
 
 # Skill evolve

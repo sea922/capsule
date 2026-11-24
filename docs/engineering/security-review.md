@@ -25,3 +25,5 @@ The [preferred-source research](../research/preferred-skill-repositories-workflo
 The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) treats reports and target-repository instructions as data, separates exposed latent defects, checks novelty against known issues, and keeps unreproduced candidates as unresolved coverage. These follow Trail of Bits' `regression-hunt` and `patching-bugs`.
 
 Before something is published, such as a repository made public, a shared fork, or a released package, the skill sweeps it for secrets, personal data, and internal references using the read-only `security-review-sanitizer` agent when available. Findings name the location and kind of each item, never its value.
+
+For a deployed site the user owns or is authorized to test, a perimeter reference lists passive, read-only checks: exposed repository and environment files, source maps, security headers, cross-origin rules, cookie flags, and what an outside check cannot prove. The review also reads the forge's open dependency and secret-scanning alerts as leads.

@@ -87,7 +87,7 @@ try {
     return orderService.findById(id);
 } catch (OrderNotFoundException ex) {
     log.warn("Order not found: id={}", id);
-    return ApiResponse.error("Resource not found");  // generic, no internals
+    return ApiResponse.error("Resource not found");  // generic, no internals (or the project's error shape)
 } catch (Exception ex) {
     log.error("Unexpected error processing order id={}", id, ex);
     return ApiResponse.error("Internal server error");  // never expose ex.getMessage()

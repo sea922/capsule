@@ -5,7 +5,7 @@ description: Build, repair, and prune end-to-end test suites that exercise real 
 
 # End-to-end testing
 
-End-to-end tests are the most expensive coverage a project has and the only kind that proves a whole journey holds together. Suites fail when those two facts are confused: everything gets tested at this level, the suite turns slow and flaky, reruns become routine, and a red run stops meaning anything. A suite whose failures are ignored is worse than none.
+End-to-end tests are the most expensive coverage a project has and the only kind that proves a whole journey holds together. Suites fail when those two facts are confused: everything gets tested at this level, the suite grows slow and unreliable, people rerun it by habit, and a failure no longer tells anyone to stop. Once a team ignores red runs, the suite costs more than having none.
 
 The method is the same for any runner. Examples use Playwright; the [Playwright reference](references/PLAYWRIGHT.md) has the concrete forms.
 
@@ -54,7 +54,7 @@ Pin what differs between a laptop and CI: the build under test, viewport, time z
 
 ## 6. Wait for states, never for durations
 
-Wait for a condition the journey depends on: an element visible and enabled, a specific response received, the URL or text changed. Use the runner's retrying assertions with an explicit timeout. A fixed sleep is either slower than necessary or shorter than reality, usually both in the same week.
+Wait for a condition the journey depends on: an element visible and enabled, a specific response received, the URL or text changed. Use the runner's retrying assertions with an explicit timeout. A hard-coded pause wastes time on a fast machine and still loses the race on a slow one.
 
 Waiting for the network to go idle is a duration in disguise on pages with polling, streaming, or analytics; wait for the specific thing instead.
 

@@ -1,11 +1,11 @@
 ---
 name: interface-polish
-description: Audit and tighten the visual consistency and finish of an existing interface by extracting its design tokens, finding drift from them, and applying concrete, checkable details such as radius, alignment, shadows, motion, states, and hit areas. Use when a UI feels off, flat, generic, cramped, or unfinished, when auditing styling before a redesign, when asked to extract or document design tokens, when polishing a component or screen, or when setting the visual direction for a new or redesigned screen. WCAG conformance belongs to accessibility, speed to performance, and component structure to coding-standards.
+description: Audit and tighten the visual finish of an interface by extracting its design tokens, finding drift, and applying checkable details such as radius, alignment, shadows, motion, states, and hit areas. Use when a UI feels off, generic, cramped, or unfinished, when extracting or documenting design tokens, when polishing a component or screen, or when setting the visual direction for a new or redesigned screen. WCAG conformance belongs to accessibility, speed to performance, and component structure to coding-standards.
 ---
 
 # Interface polish
 
-An interface feels finished when its values agree with each other and its small details are deliberate. Most "it looks off" complaints trace to drift (a fifth grey, a one-off radius, a spacing value nobody chose) or to a missing detail (no pressed state, a counter that jitters, an icon centered by geometry instead of by eye). Find these in the code and confirm them on the screen. Keep the product's visual direction; this skill tightens what exists and does not restyle it.
+An interface feels finished when its values agree with each other and its small details are deliberate. Most "it looks off" complaints trace to drift (a fifth grey, a one-off radius, a spacing value nobody chose) or to a missing detail (no pressed state, a counter that jitters, an icon centered by geometry instead of by eye). Find these in the code and confirm them on the screen. Keep the product's visual direction when tightening an existing screen; a new or redesigned screen sets its direction first (step 1).
 
 ## 1. Find the system and the scope
 

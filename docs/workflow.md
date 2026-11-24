@@ -6,9 +6,11 @@ Start from the question or outcome you have. Most skills can be selected by the 
 | --- | --- | --- |
 | Build a clear, bounded change | [implement](engineering/implement.md) | A coherent change with fresh verification |
 | Drive a behavior change test-first | [tdd](engineering/tdd.md) | Red, green, and refactor evidence with behavioral coverage |
+| Write or fix end-to-end tests | [e2e-testing](engineering/e2e-testing.md) | Journeys covered, flakes diagnosed, and artifacts kept |
 | Prove a completion, fix, or benchmark claim | [verification-before-completion](engineering/verification-before-completion.md) | Fresh, scope-matched evidence and an honest verdict |
 | Route independent work among native agents and models | [orchestrate](engineering/orchestrate.md) | Bounded assignments, reconciled ownership, and verified integration |
 | Find why something is failing | [diagnosing-bugs](engineering/diagnosing-bugs.md) | Cause, evidence, and remaining uncertainty |
+| Triage an incoming issue or bug report | [issue-triage](engineering/issue-triage.md) | A decision, severity, and draft reply backed by code and search evidence |
 | Plan dependent work across sessions | [planning-and-task-breakdown](engineering/planning-and-task-breakdown.md) | Verifiable slices, dependencies, and ready frontier |
 | Plan a team sprint, backlog points, or tickets | [sprint-planning](engineering/sprint-planning.md) | Sprint goal, capacity, stories and spikes, and reference-anchored points |
 | Research an API, approach, or current practice | [research](engineering/research.md) | Cited findings and evidence limits |
@@ -21,17 +23,12 @@ Start from the question or outcome you have. Most skills can be selected by the 
 | Simplify working code | [simplify](engineering/simplify.md) | Lower complexity with behavior-preservation evidence |
 | Make software faster or lighter | [performance](engineering/performance.md) | Before and after numbers with their range, and the limiter named |
 | Compare options or check a speed claim | [benchmark](engineering/benchmark.md) | A reproducible verdict with runs, range, and limiter |
-| Change a database schema or data | [database-migrations](engineering/database-migrations.md) | A sequenced, rehearsed plan with honest rollback, and verified results |
 | Design or change an HTTP API | [api-design](engineering/api-design.md) | A recorded contract, classified as additive or breaking |
-| Write or fix end-to-end tests | [e2e-testing](engineering/e2e-testing.md) | Journeys covered, flakes diagnosed, and artifacts kept |
-| Polish an interface or audit its design tokens | [interface-polish](engineering/interface-polish.md) | Token drift found and before and after evidence |
-| Sync translation files with the source | [i18n-sync](engineering/i18n-sync.md) | Key parity verified, with placeholders preserved |
 | Design a schema, index, or query | [database-design](engineering/database-design.md) | A design tied to the workload and checked against the query plan |
+| Change a database schema or data | [database-migrations](engineering/database-migrations.md) | A sequenced, rehearsed plan with honest rollback, and verified results |
 | Containerize a service or build its pipeline | [containers-and-deploys](engineering/containers-and-deploys.md) | Built and run definitions with a rehearsed rollback |
-| Build a feature on a language model | [llm-features](engineering/llm-features.md) | Eval results that justify each kept change |
-| Improve search visibility or audit SEO | [seo](engineering/seo.md) | Eligibility findings with observed values, fixes verified from the response |
-| Triage an incoming issue or bug report | [issue-triage](engineering/issue-triage.md) | A decision, severity, and draft reply backed by code and search evidence |
 | Add logging, metrics, tracing, alerts, or a dashboard | [observability](engineering/observability.md) | Signals tied to operator questions, read back from a forced request and failure |
+| Build a feature on a language model | [llm-features](engineering/llm-features.md) | Eval results that justify each kept change |
 | Decide whether to launch | [production-readiness](engineering/production-readiness.md) | Ship, ship with caveats, or block, with blockers and unexamined areas |
 | Record why a decision was made | [decision-records](engineering/decision-records.md) | A numbered ADR linked from the index |
 | Understand an unfamiliar repository | [codebase-onboarding](engineering/codebase-onboarding.md) | A map with a traced path, conventions, and where to start |
@@ -45,6 +42,9 @@ Start from the question or outcome you have. Most skills can be selected by the 
 | Apply or define coding conventions | [coding-standards](engineering/coding-standards.md) | Project-first rules for the affected code domain |
 | Run a dedicated security audit | [security-review](engineering/security-review.md) | Scoped threat model, findings, and closing checks |
 | Audit or fix UI accessibility | [accessibility](engineering/accessibility.md) | WCAG 2.2 AA findings with keyboard and screen-reader evidence, and what stayed unverified |
+| Polish an interface or audit its design tokens | [interface-polish](engineering/interface-polish.md) | Token drift found and before and after evidence |
+| Sync translation files with the source | [i18n-sync](engineering/i18n-sync.md) | Key parity verified, with placeholders preserved |
+| Improve search visibility or audit SEO | [seo](engineering/seo.md) | Eligibility findings with observed values, fixes verified from the response |
 | Write or revise skills, `AGENTS.md`, or `CLAUDE.md` | [writing-for-agents](authoring/writing-for-agents.md) | Predictable agent instructions and eval coverage |
 | Draft or edit human-facing prose | [writing-for-humans](authoring/writing-for-humans.md) | Clear, natural, meaning-preserved prose in the right genre |
 | Build a standalone visual HTML write-up | [html-writeup](authoring/html-writeup.md) | Self-contained HTML document with browser verification |

@@ -23,6 +23,10 @@ name. Do not cache when:
 A cache also hides the slow path. Fix a wasteful algorithm before caching
 around it.
 
+This reference covers results derived from files and other stable inputs. For
+caching responses at request time, with expiry, stampede protection, and
+eviction, use the `database-design` skill's Redis reference.
+
 ## Build the key
 
 Hash the content, not the path. A renamed or moved file then still hits, and

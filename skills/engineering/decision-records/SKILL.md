@@ -1,6 +1,6 @@
 ---
 name: decision-records
-description: Record a significant technical decision as an architecture decision record (ADR), or answer why a past decision was made from the existing records. Use when the user says to record or document a decision, write an ADR, chooses between significant alternatives such as a framework, database, or API style, asks "why did we choose X", or supersedes an earlier decision. Working out the design itself belongs to codebase-design; lessons from incidents to compound-learnings.
+description: Record a significant technical decision as an architecture decision record (ADR), or answer why a past decision was made from the existing records. Use when the user says to record or document a decision, write an ADR, chooses between significant alternatives such as a framework, database, or API style, asks "why did we choose X", or supersedes an earlier decision. Working out the design itself belongs to codebase-design, api-design, or database-design; lessons from incidents to compound-learnings.
 ---
 
 # Decision records

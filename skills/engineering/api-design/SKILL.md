@@ -1,6 +1,6 @@
 ---
 name: api-design
-description: Design or change an HTTP API contract, covering resource names, methods and status codes, one error shape, pagination, filtering and sorting, versioning, idempotency, rate limits, and whether a change breaks existing callers. Use when adding or reshaping endpoints, deciding what a request or response should look like, choosing a pagination or versioning scheme, or reviewing whether an API change is safe for consumers. Module and function interfaces inside one codebase belong to codebase-design; authentication and authorization depth to security-review.
+description: Design or change an HTTP API contract, covering naming, status codes, errors, pagination, versioning, idempotency, and compatibility. Use when adding or reshaping endpoints, deciding what a request or response should look like, choosing a pagination or versioning scheme, or reviewing whether an API change is safe for consumers. Module and function interfaces inside one codebase belong to codebase-design; authentication and authorization depth to security-review.
 ---
 
 # API design
@@ -35,7 +35,7 @@ When an operation is an action that resists this, model it as a subordinate reso
 
 For each endpoint, list the success status and every error status it can return. Use the status line for the outcome and the body for detail: never a success status wrapping an error, and never a server error for a caller's mistake. The [contract reference](references/CONTRACT.md) has the status table and the usual confusions.
 
-Use one error shape for the whole API. It needs a stable machine-readable code, a human-readable message, per-field detail for validation failures, and a request or correlation identifier. With no precedent in the project, `application/problem+json` is a reasonable default. Errors carry no stack traces, queries, internal hostnames, or another tenant's identifiers.
+Use one error shape for the whole API. Give it four parts: a code that programs can branch on and that never changes meaning, a message written for a person, field-level detail when validation fails, and an identifier that ties the response to its request in the logs. With no precedent in the project, `application/problem+json` is a reasonable default. Errors carry no stack traces, queries, internal hostnames, or another tenant's identifiers.
 
 Decide how absent data is expressed (omitted field, `null`, or empty collection) and keep it uniform. Validate input where it enters, reject malformed input before any work is done, and say whether unknown fields are rejected or ignored, since that choice decides whether new request fields can ever be added safely.
 
@@ -72,7 +72,7 @@ Bound what a caller can ask for: request body size, page size, filter and expans
 
 Classify each change as additive or breaking before it ships. Additive: new endpoints, new optional request fields, new response fields. Breaking: removing or renaming a field, changing a type or format, tightening validation, changing a default, changing a status or error code, changing ordering callers rely on, or keeping a name while changing what it means. A new enum value is breaking unless consumers were told to tolerate unknown values. When it is unclear, treat the change as breaking.
 
-Prefer extending the current version over creating a new one. If the project has no versioning mechanism, pick one (URL path, media type, or a date header) and do not mix them. For a breaking change, plan the path: introduce the replacement alongside, announce the deprecation with a date, measure remaining use, and remove only when use has stopped or the date has passed with notice. Sequencing a storage change underneath belongs to `database-migrations`.
+Prefer extending the current version over creating a new one. If the project has no versioning mechanism, choose a single one, whether a path segment, a media type, or a dated header, and use only that. A breaking change needs a planned route: introduce the replacement alongside, announce the deprecation with a date, measure remaining use, and remove only when use has stopped or the date has passed with notice. Sequencing a storage change underneath belongs to `database-migrations`.
 
 **Complete when:** each change is classified, and each breaking change names its consumers and its deprecation path.
 

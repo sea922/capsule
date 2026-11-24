@@ -6,11 +6,14 @@ import { test } from 'node:test';
 import * as yaml from 'js-yaml';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const READ_ONLY = ['code-review-silent-failures', 'code-review-type-design', 'code-review-comments', 'code-review-tests', 'java-reviewer', 'code-review-stack', 'code-review-security', 'database-migrations-reviewer', 'benchmark-auditor', 'production-readiness-auditor',
-  'security-review-sanitizer', 'adlc-spec-miner', 'performance-reviewer', 'accessibility-reviewer'];
+const manifest = JSON.parse(readFileSync(join(ROOT, '.claude-plugin', 'plugin.json'), 'utf8'));
+// Every agent except the orchestrate roles, which may edit and run commands.
+const READ_ONLY = manifest.agents
+  .map((path) => basename(path, '.md'))
+  .filter((name) => !name.startsWith('orchestrate-'));
 
 test('read-only review and spec agents are registered and cannot edit, run commands, or delegate', () => {
-  const manifest = JSON.parse(readFileSync(join(ROOT, '.claude-plugin', 'plugin.json'), 'utf8'));
+  assert.ok(READ_ONLY.length >= 14, 'expected the read-only agents to be listed in plugin.json');
   const registered = new Map(manifest.agents.map((path) => [basename(path, '.md'), path]));
   for (const name of READ_ONLY) {
     assert.ok(registered.has(name), `${name} is not in plugin.json`);

@@ -21,6 +21,8 @@ const blocked = [
   'git config --local core.hooksPath .nohooks',
   'HUSKY=0 git commit -m x',
   'env HUSKY=0 git push',
+  '(git commit --no-verify)',
+  'git commit \\\n --no-verify -m x',
 ];
 
 const allowed = [
@@ -37,6 +39,10 @@ const allowed = [
   'git config --get core.hooksPath',
   'npm run lint -- --no-verify',
   'git commit -m x -- --no-verify',
+  'git commit -m"fix --no-verify thing"',
+  'cat <<EOF > notes.md\ngit commit --no-verify\nEOF',
+  "git commit -F - <<'MSG'\nwhy --no-verify and HUSKY=0 git push are banned\nMSG",
+  'git commit -m x # --no-verify would skip hooks',
 ];
 
 test('hook bypasses are blocked', () => {
@@ -60,4 +66,12 @@ test('the script blocks with exit 2 and a reason, allows with exit 0, and honour
   assert.equal(run('git commit --no-verify', { CAPSULE_HOOKS_DISABLED: 'config-protection,block-no-verify' }).status, 0);
   const garbage = spawnSync(process.execPath, [script], { input: 'not json', encoding: 'utf8' });
   assert.equal(garbage.status, 0);
+});
+
+test('malformed input never blocks or crashes', () => {
+  const script = fileURLToPath(new URL('./block-no-verify.mjs', import.meta.url));
+  for (const input of ['', 'not json', 'null', '{}', '{"tool_name":"Bash"}', '{"tool_name":"Bash","tool_input":null}',
+    '{"tool_name":"Bash","tool_input":{"command":5}}', '{"tool_name":"Bash","tool_input":{"command":{"a":1}}}']) {
+    assert.equal(spawnSync(process.execPath, [script], { input, encoding: 'utf8' }).status, 0, input);
+  }
 });

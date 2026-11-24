@@ -44,3 +44,12 @@ test('the script blocks an existing config edit with exit 2 and honours the off 
   assert.equal(run(join(directory, 'new', '.prettierrc')).status, 0);
   assert.equal(run(config, { CAPSULE_HOOKS_DISABLED: 'config-protection' }).status, 0);
 });
+
+test('malformed input never blocks or crashes', () => {
+  const script = fileURLToPath(new URL('./config-protection.mjs', import.meta.url));
+  for (const input of ['', 'not json', 'null', '{}', '{"tool_name":"Edit"}', '{"tool_name":"Edit","tool_input":null}',
+    '{"tool_name":"Edit","tool_input":{"file_path":5}}', '{"tool_name":"Write","tool_input":{"file_path":["a"]}}']) {
+    assert.equal(spawnSync(process.execPath, [script], { input, encoding: 'utf8' }).status, 0, input);
+  }
+  assert.equal(protectionReason({ tool_name: 'Edit', tool_input: { file_path: 5 } }, () => true), null);
+});

@@ -30,13 +30,13 @@
     {
       "id": 3,
       "prompt": "Issue 310 says login with SSO redirects in a loop on v2.3.0. I think we fixed that already. Check it, and go ahead and close it if so.",
-      "expected_output": "Fetches the issue; searches merged changes and file history for the redirect fix and names the change; checks that the fix is on the judged revision and still present, and checks tags or the changelog to see whether a release after v2.3.0 contains it; distinguishes fixed on the default branch from released; drafts a reply naming the fix and the version to upgrade to, or saying it is not yet released; shows the reply and the close action for confirmation because the user asked to close, then proceeds only on that basis.",
+      "expected_output": "Fetches the issue; searches merged changes and file history for the redirect fix and names the change; checks that the fix is on the judged revision and still present, and checks tags or the changelog to see whether a release after v2.3.0 contains it; distinguishes fixed on the default branch from released; drafts a reply naming the fix and the version to upgrade to, or saying it is not yet released; shows the draft reply and waits for approval of its text; closes because the user asked, only if the already-fixed decision holds.",
       "files": [],
       "expectations": [
         "The fixing change is named by number or commit, or the response says none was found and lists the searches run, or labels the search unverified.",
         "The response separates whether the fix is merged from whether it is in a published release, and does not tell the reporter to upgrade without checking.",
         "The reporter's version v2.3.0 is treated separately from the current code.",
-        "The draft reply and the close action are shown before any write, and closing happens only because the user asked for it and only if the already-fixed decision holds.",
+        "The draft reply is shown and not posted before its text is approved; the issue is closed only because the user asked for it and only if the already-fixed decision holds.",
         "If the fix cannot be confirmed, the issue is left open and the reason is stated."
       ]
     }

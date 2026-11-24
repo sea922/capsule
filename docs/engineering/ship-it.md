@@ -30,8 +30,15 @@ bumps and release documents. Merge, deployment, reviewer messages and thread
 resolution retain their own authorization. A delivery handoff carries the
 selected endpoint explicitly so a receiving skill cannot silently change it.
 
+When the endpoint includes a version, tag, changelog, or published release, a
+release reference covers choosing the version, building the changelog, tagging
+the right revision, and verifying the published artifact. Tagging and
+publishing wait for approval of that version at that revision.
+
 Standalone Git tasks and existing PR monitoring have their own entry points.
-This skill does not own initial feature design or a product completeness audit.
+This skill does not own initial feature design or a product completeness audit;
+`production-readiness` judges launch readiness and `containers-and-deploys`
+builds the pipeline and infrastructure.
 The similarly named LunkiBR skill checks UX details and solves a different problem.
 
 ## Evidence and limits

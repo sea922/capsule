@@ -1,6 +1,6 @@
 ---
 name: diagnosing-bugs
-description: Investigate an unexplained bug or performance regression when its cause requires evidence from code, runtime behavior, logs, or reproduction. Use for explicit diagnosis or root-cause requests, intermittent or environment-specific failures, and fix requests with an unknown cause, including when the stack trace or failing code is pasted inline. Answer quick questions from available evidence directly; send known-cause fixes to implement and review-only findings to code-review. Diagnose-only work remains read-only.
+description: Investigate an unexplained bug or performance regression when its cause requires evidence from code, runtime behavior, logs, or reproduction. Use for diagnosis or root-cause requests, intermittent or environment-specific failures, a failing build or type check, and fix requests with an unknown cause, including when the stack trace or failing code is pasted inline. Answer quick questions directly; send known-cause fixes to implement, review-only findings to code-review, and triage of an incoming issue report to issue-triage. Diagnose-only work remains read-only.
 ---
 
 # Diagnosing Bugs
@@ -13,7 +13,7 @@ Match the depth to the unresolved question before starting the diagnostic steps:
 
 - If the user asks for a quick explanation and the available error or code already supports one, answer it directly. State what the evidence shows and what remains uncertain. A hypothetical reproduction adds no evidence.
 - If the cause is already established and the user wants a change, use `implement`. A known-cause fix does not need a new diagnosis.
-- If the build, compiler, or type checker is failing and the messages name the locations, follow [references/BUILD-ERRORS.md](references/BUILD-ERRORS.md) instead of the full workflow.
+- If the build, compiler, or type checker is failing and the messages name the locations: for a diagnose-only request, read the errors as section 1 of [references/BUILD-ERRORS.md](references/BUILD-ERRORS.md) describes and report; when a fix was requested, hand the repair to `implement`, which follows the rest of that reference.
 - If the cause remains uncertain or the user asks for an investigation, follow the workflow below. Use the smallest faithful check that can distinguish causes; increase depth only when that check leaves uncertainty.
 
 **Complete when:** the request has a direct answer, a known-cause implementation route, or a specific unresolved causal question for diagnosis.

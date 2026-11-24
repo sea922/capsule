@@ -1,6 +1,6 @@
 ---
 name: ship-it
-description: Coordinates delivery of finished changes. Use when asked to ship completed work, take it to a merge-ready PR, merged PR, release, or deployment, or resume an interrupted delivery across local work and a PR. A request only to commit or push belongs to git-workflow; only to create or open a PR, or write its title or description, to pr-description; an existing PR watch to babysit-pr; product or UX audits to code-review or specialist review.
+description: Coordinates delivery of finished changes. Use when asked to ship completed work, take it to a merge-ready PR, merged PR, release, or deployment, or resume an interrupted delivery across local work and a PR. A request only to commit or push belongs to git-workflow; only to create or open a PR, or write its title or description, to pr-description; an existing PR watch to babysit-pr; launch readiness to production-readiness; building the pipeline or infrastructure to containers-and-deploys.
 ---
 
 # Ship it
@@ -19,8 +19,9 @@ Resolve the endpoint from the user's request and prior decisions. For a bare
 "ship it" on finished work, state the default: **a merge-ready PR**. An explicit
 request to open a PR stops at publication; a request to land or merge continues
 through confirmed merge. When deployment is requested, read
-[deployment](references/DEPLOYMENT.md) before preparing that transition. When it
-includes a version, tag, or published release, read [release](references/RELEASE.md).
+[deployment](references/DEPLOYMENT.md) before preparing that transition. When the
+endpoint includes a version, tag, changelog, or published release, read
+[release](references/RELEASE.md).
 
 An imperative shipping request authorizes scoped repairs, verification, commits,
 pushes and PR creation or updates within repository and host policy. Carry forward

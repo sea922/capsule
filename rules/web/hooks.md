@@ -35,11 +35,11 @@ Use the project's existing formatter entrypoint after edits:
   "hooks": {
     "PostToolUse": [
       {
-        "matcher": "Write|Edit",
+        "matcher": "Edit|Write|MultiEdit",
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.file_path' | xargs -I{} pnpm prettier --write {}"
+            "command": "jq -r '.tool_input.file_path | select(test(\"\\\\.(css|scss|html|jsx?|tsx?|vue|svelte)$\"))' | xargs -I{} pnpm prettier --write {}"
           }
         ]
       }
@@ -57,11 +57,11 @@ Equivalent local commands via `yarn prettier` or `npm exec prettier --` are fine
   "hooks": {
     "PostToolUse": [
       {
-        "matcher": "Write|Edit",
+        "matcher": "Edit|Write|MultiEdit",
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.file_path' | xargs -I{} pnpm eslint --fix {}"
+            "command": "jq -r '.tool_input.file_path | select(test(\"\\\\.(jsx?|tsx?|vue|svelte)$\"))' | xargs -I{} pnpm eslint --fix {}"
           }
         ]
       }
@@ -79,7 +79,7 @@ Use `--incremental` so re-runs reuse the previous `.tsbuildinfo` instead of chec
   "hooks": {
     "PostToolUse": [
       {
-        "matcher": "Write|Edit",
+        "matcher": "Edit|Write|MultiEdit",
         "hooks": [
           {
             "type": "command",
@@ -106,7 +106,7 @@ On Windows without GNU coreutils, replace `timeout 60` with a PowerShell wrapper
   "hooks": {
     "PostToolUse": [
       {
-        "matcher": "Write|Edit",
+        "matcher": "Edit|Write|MultiEdit",
         "hooks": [
           {
             "type": "command",

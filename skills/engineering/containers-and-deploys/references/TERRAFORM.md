@@ -77,7 +77,7 @@ resource "aws_iam_user" "this" {
 - Put `prevent_destroy` on stateful resources such as databases, buckets, and
   encryption keys, so an accidental destroy becomes a plan error. It only
   protects a block that still exists: to stop managing a resource without
-  destroying it, use a `removed` block with `destroy = false` where the installed version has `removed` blocks, not deletion of the block.
+  destroying it, do not simply delete its block: where the installed version supports `removed` blocks, declare one with `destroy = false`.
 - `create_before_destroy` avoids a gap when a replacement is unavoidable.
 - `ignore_changes` hides drift. Scope it to one attribute and say why in a comment.
 - Apply common tags or labels once at the provider level.
@@ -131,7 +131,7 @@ Reading a plan:
 
 In a pipeline, plan on proposed changes and post the result for review; apply
 only from the protected branch, after approval, using the saved plan. Use
-`-input=false` so a missing variable fails instead of hanging, give the plan job
+`-input=false` so an unset variable is an error and not a prompt that waits forever, give the plan job
 read-only credentials where the provider allows, and keep the apply role
 separate. A static-analysis step for misconfiguration before apply is cheap.
 

@@ -5,7 +5,9 @@ Research for the skills, agents, hooks, folds, and tooling adopted after the
 `accessibility` have their own
 [research note](2026-11-24-performance-accessibility-research.md). Every
 preferred repository in `docs/source-repos.md` was searched at the commit below
-for each topic. No file is vendored, and the instructions use original wording.
+for each topic. Skills, agents, and hooks
+adapt ideas in capsule's own wording and vendor no file; the rule sets are
+ECC's files, copied and adapted (see Rules below).
 
 ## Sources
 

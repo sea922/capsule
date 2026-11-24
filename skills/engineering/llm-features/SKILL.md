@@ -1,6 +1,6 @@
 ---
 name: llm-features
-description: Build, evaluate, and tune product features that call a language model, from deciding whether a model is needed at all to evals, cost and latency control, and diagnosing a pipeline or agent that behaves badly. Use when adding or changing a feature that calls an LLM API, writing evals for one, cutting its cost or latency, choosing between models, prompts, or agents, or working out why an LLM app got worse. Prompt, skill, and tool wording belongs to writing-for-agents; measurement loops to benchmark; agent security to security-review.
+description: Build, evaluate, and tune product features that call a language model, covering evals, retrieval, cost and latency control, and diagnosing a pipeline or agent that behaves badly. Use when adding or changing a feature that calls an LLM API, building retrieval (RAG) over documents, writing evals, cutting cost or latency, choosing between models, prompts, or agents, or working out why an LLM app got worse. Prompt, skill, and tool wording belongs to writing-for-agents; measurement loops to benchmark; agent security to security-review.
 ---
 
 # LLM features

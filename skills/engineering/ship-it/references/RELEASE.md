@@ -28,7 +28,7 @@ Write for someone deciding whether and how to upgrade. Group by breaking changes
 
 ## 4. Stop for the go-ahead
 
-A tag and a published release are visible to others and hard to withdraw: registries often refuse to reuse a version, and a moved tag breaks anyone who fetched it. Before either, confirm the release revision is the one whose checks passed, then present the version, the tag name, the target revision, the changelog, and what publishing will trigger. Wait for the user's go-ahead unless the request already gave it for this release.
+A tag and a published release are visible to others and hard to withdraw: registries often refuse to reuse a version, and a moved tag breaks anyone who fetched it. Before either, confirm the release revision is the one whose checks passed, then present the version, the tag name, the target revision, the changelog, and what publishing will trigger. Wait for the user's go-ahead on this version at this revision. A general shipping request does not cover tagging or publishing.
 
 **Complete when:** the user has approved this version at this revision, or the prepared release is reported as awaiting that decision.
 
@@ -36,7 +36,7 @@ A tag and a published release are visible to others and hard to withdraw: regist
 
 Update the version-bearing files and the changelog through the project's flow, which usually means a reviewed release change merged before the tag. Create the tag on that revision in the project's format, annotated or signed as the project does, and push it.
 
-Create the release on the forge with the CLI already in use: `gh release create` on GitHub or `glab release create` on GitLab, attaching the notes and any build artifacts and marking a pre-release as one. Check the installed version's options before relying on a flag. When CI publishes on a tag, let it; do not also publish by hand.
+Create the release on the forge with the CLI already in use: `gh release create` on GitHub or `glab release create` on GitLab, attaching the notes and any build artifacts and marking a pre-release as one. Confirm the pushed tag exists on the forge first: given a tag that does not exist, the CLI creates one from the default branch tip, so either push the tag first or pass the target revision explicitly (`--ref` on glab, `--target` on gh). Check the installed version's options before relying on a flag. When CI publishes on a tag, let it; do not also publish by hand.
 
 **Complete when:** the tag exists on the intended revision and the release is created, or CI has taken over publishing and its run is identified.
 
@@ -48,4 +48,4 @@ Confirm from the outside: the tag resolves to the intended revision, the release
 
 ## 7. When a release is bad
 
-Prefer a new release that fixes or reverts over rewriting the bad one. Do not move or delete a pushed tag, and do not republish different contents under the same version; consumers and caches may already hold it. Mark the bad release as such in its notes, use the registry's deprecation or yank mechanism where it exists, and say which version to use instead. Deleting a release, removing a published package, or rewriting a tag needs the user's explicit decision. For a deployed service, rollback follows the deployment reference.
+Prefer a new release that fixes or reverts over rewriting the bad one. Do not move or delete a pushed tag, and do not republish different contents under the same version; consumers and caches may already hold it. Mark the bad release as such in its notes, use the registry's deprecation or yank mechanism where it exists, and say which version to use instead. Deleting a release, removing a published package, or rewriting a tag needs the user's explicit decision. For a deployed service, rollback follows the [deployment reference](DEPLOYMENT.md).

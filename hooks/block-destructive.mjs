@@ -2,39 +2,57 @@ import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { runHook } from './hook-input.mjs';
-import { gitCall, program, segments, tokens } from './shell-words.mjs';
+import { gitCall, pieces, program, tokens } from './shell-words.mjs';
 
 // Stops a short list of commands that destroy far more than a task usually intends. It catches casual
 // mistakes, not a determined bypass: it is not a security boundary. Ordinary cleanup (rm -rf dist,
-// git reset --hard, git clean) is deliberately left alone.
+// git reset --hard, git clean, DROP TABLE) is deliberately left alone, and so are dry runs and --help.
 const PROTECTED_BRANCHES = new Set(['main', 'master']);
 const SHELLS = new Set(['sh', 'bash', 'zsh', 'dash', 'ksh']);
 const SQL_CLIENTS = new Set(['psql', 'mysql', 'mariadb', 'sqlite3', 'sqlcmd', 'cockroach', 'duckdb', 'clickhouse-client']);
-const DROP_STATEMENT = /\bdrop\s+(database|schema)\b/i;
+// Programs that run a command somewhere else, so a SQL client can appear among their arguments.
+const REMOTE_RUNNERS = new Set(['docker', 'podman', 'nerdctl', 'docker-compose', 'kubectl', 'ssh']);
+const DROP_DATABASE = /\bdrop\s+database\b/i;
 const PUSH_VALUE_OPTIONS = new Set(['-o', '--push-option', '--receive-pack', '--exec', '--repo']);
 const KUBECTL_VALUE_OPTIONS = new Set(['-n', '--namespace', '--context', '--kubeconfig', '--cluster', '--user', '-s',
   '--server', '--as', '-l', '--selector', '-f', '--filename', '-k', '--kustomize', '-o', '--output', '--field-selector',
   '--grace-period', '--timeout', '--cascade']);
+const CONTAINER_VALUE_OPTIONS = new Set(['--context', '-c', '-H', '--host', '--config', '-l', '--log-level', '--tlscacert',
+  '--tlscert', '--tlskey', '--connection', '--url', '--identity']);
 const NAMESPACE_KINDS = new Set(['namespace', 'namespaces', 'ns']);
+const HOME_DIRECTORIES = new Set(['~', '$HOME', '${HOME}']);
 
 const shortFlags = (words) => words.filter((word) => /^-[A-Za-z]+$/.test(word)).join('');
+const isParentChain = (path) => /^(\.\.\/)*\.\.$/.test(path);
+const isDryRun = (args) => args.some((word) => word === '--dry-run' || (/^--dry-run=/.test(word) && !/=(none|false)$/.test(word)));
 
-function wipesBroadly(target) {
-  if (target === '*') return true;
+// After `cd build`, `rm -rf ./*` empties that directory, which is ordinary cleanup. A `cd` to root, home,
+// a parent, or nowhere does not count.
+function entersWorkDirectory(args) {
+  const target = args.find((word) => word !== '--' && !/^-[LPe@]+$/.test(word));
+  if (!target || target === '-') return false;
+  const path = target.replace(/\/+$/, '');
+  return path !== '' && path !== '.' && !HOME_DIRECTORIES.has(path) && !['$PWD', '${PWD}'].includes(path) && !isParentChain(path);
+}
+
+function wipesBroadly(target, inWorkDirectory) {
+  if (target === '*') return !inWorkDirectory;
   let base = target.endsWith('/*') ? target.slice(0, -2) : target;
   base = base.replace(/\/+$/, '');
   if (base === '') return target.startsWith('/');
-  return ['~', '$HOME', '${HOME}', '.'].includes(base) || /^(\.\.\/)*\.\.$/.test(base);
+  if (base === '.') return !inWorkDirectory;
+  return HOME_DIRECTORIES.has(base) || isParentChain(base);
 }
 
-function removeReason(args) {
+function removeReason(args, inWorkDirectory) {
   const end = args.indexOf('--');
-  const options = end === -1 ? args.filter((word) => word.startsWith('-')) : args.slice(0, end).filter((word) => word.startsWith('-'));
-  const targets = end === -1 ? args.filter((word) => !word.startsWith('-')) : [...args.slice(0, end).filter((word) => !word.startsWith('-')), ...args.slice(end + 1)];
+  const before = end === -1 ? args : args.slice(0, end);
+  const options = before.filter((word) => word.startsWith('-'));
+  const targets = [...before.filter((word) => !word.startsWith('-')), ...(end === -1 ? [] : args.slice(end + 1))];
   const short = shortFlags(options);
   const recursive = /[rR]/.test(short) || options.includes('--recursive');
   const force = short.includes('f') || options.includes('--force');
-  const target = recursive && force ? targets.find(wipesBroadly) : undefined;
+  const target = recursive && force ? targets.find((word) => wipesBroadly(word, inWorkDirectory)) : undefined;
   return target ? `rm -rf ${target} deletes a whole root, home, parent, or current directory` : null;
 }
 
@@ -46,11 +64,18 @@ function pushReason({ rest, directory }, currentBranch) {
     else if (rest[index].startsWith('-')) options.push(rest[index]);
     else positionals.push(rest[index]);
   }
-  const force = options.includes('--force') || shortFlags(options).includes('f');
+  const short = shortFlags(options);
+  if (options.includes('--dry-run') || short.includes('n')) return null;
+  const force = options.includes('--force') || short.includes('f');
+  const deletes = options.includes('--delete') || short.includes('d');
   const refspecs = positionals.slice(1);
   for (const refspec of refspecs) {
-    const destination = refspec.replace(/^\+/, '').split(':').pop().replace(/^refs\/heads\//, '');
-    if (PROTECTED_BRANCHES.has(destination) && (force || refspec.startsWith('+'))) return `a force push overwrites history on ${destination}`;
+    const body = refspec.replace(/^\+/, '');
+    let destination = body.split(':').pop().replace(/^refs\/heads\//, '');
+    if (destination === 'HEAD' || destination === '@') destination = currentBranch(directory);
+    if (!PROTECTED_BRANCHES.has(destination)) continue;
+    if (deletes || body.startsWith(':')) return `this push deletes ${destination} on the remote`;
+    if (force || refspec.startsWith('+')) return `a force push overwrites history on ${destination}`;
   }
   if (!force) return null;
   if (options.includes('--all') || options.includes('--mirror')) return 'a force push of every branch overwrites history on the default branch';
@@ -66,6 +91,7 @@ function infrastructureReason(tool, args) {
 }
 
 function kubectlReason(args) {
+  if (isDryRun(args)) return null;
   const positionals = [];
   const options = [];
   for (let index = 0; index < args.length; index += 1) {
@@ -81,22 +107,42 @@ function kubectlReason(args) {
 }
 
 function containerReason(tool, args) {
-  const [area, action] = args.filter((word) => !word.startsWith('-'));
+  let start = 0;
+  while (start < args.length && args[start].startsWith('-')) start += CONTAINER_VALUE_OPTIONS.has(args[start]) ? 2 : 1;
+  const [area, action] = args.slice(start).filter((word) => !word.startsWith('-'));
   if (action !== 'prune') return null;
   if (area === 'volume') return `${tool} volume prune deletes data volumes`;
-  const all = args.includes('--all') || shortFlags(args).includes('a');
-  return area === 'system' && all && args.includes('--volumes') ? `${tool} system prune -a --volumes deletes images and data volumes` : null;
+  return area === 'system' && args.includes('--volumes') ? `${tool} system prune --volumes deletes data volumes` : null;
 }
 
-function segmentReason(words, currentBranch) {
-  const run = program(words);
+// A SQL client that is handed DROP DATABASE in its own arguments, its heredoc, or the pipeline feeding it.
+function databaseReason(parts, position) {
+  const [tool, ...args] = program(tokens(parts[position].text));
+  const isClient = (word) => SQL_CLIENTS.has(word) || word === 'dropdb';
+  const client = isClient(tool) ? tool : REMOTE_RUNNERS.has(tool) ? args.find(isClient) : undefined;
+  if (!client || args.includes('--help')) return null;
+  if (client === 'dropdb') return 'dropdb deletes a whole database';
+  let input = `${parts[position].text}\n${parts[position].heredoc ?? ''}`;
+  for (let index = position; index > 0 && parts[index].operator === '|'; index -= 1) {
+    input += `\n${parts[index - 1].text}\n${parts[index - 1].heredoc ?? ''}`;
+  }
+  return DROP_DATABASE.test(input) ? 'DROP DATABASE deletes a whole database' : null;
+}
+
+function segmentReason(part, state, currentBranch) {
+  const run = program(tokens(part.text));
   const [tool, ...args] = run;
   if (!tool) return null;
+  if (tool === 'cd' || tool === 'pushd') {
+    state.inWorkDirectory = entersWorkDirectory(args);
+    return null;
+  }
   if (SHELLS.has(tool)) {
     const flag = args.findIndex((word) => /^-[A-Za-z]*c$/.test(word));
-    return flag === -1 ? null : commandReason(args[flag + 1] ?? '', currentBranch);
+    return commandReason(flag === -1 ? part.heredoc ?? '' : args[flag + 1] ?? '', currentBranch);
   }
-  if (tool === 'rm') return removeReason(args);
+  if (args.includes('--help') || args.includes('-h')) return null;
+  if (tool === 'rm') return removeReason(args, state.inWorkDirectory);
   if (tool === 'git') {
     const call = gitCall(run);
     return call?.subcommand === 'push' ? pushReason(call, currentBranch) : null;
@@ -108,13 +154,13 @@ function segmentReason(words, currentBranch) {
 }
 
 function commandReason(command, currentBranch) {
-  const parts = segments(command).map(tokens);
-  for (const words of parts) {
-    const reason = segmentReason(words, currentBranch);
+  const parts = pieces(command);
+  const state = { inWorkDirectory: false };
+  for (let position = 0; position < parts.length; position += 1) {
+    const reason = segmentReason(parts[position], state, currentBranch) ?? databaseReason(parts, position);
     if (reason) return reason;
   }
-  const reachesDatabase = parts.some((words) => program(words).some((word) => SQL_CLIENTS.has(word)));
-  return reachesDatabase && DROP_STATEMENT.test(command) ? 'DROP DATABASE or DROP SCHEMA deletes a whole database' : null;
+  return null;
 }
 
 export function destructiveReason(command, currentBranch = () => null) {

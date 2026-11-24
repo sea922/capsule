@@ -28,7 +28,7 @@ Before changing anything, follow one real request end to end: how the user's inp
 
 ## Embeddings and the index
 
-- The same embedding model, version, and preprocessing must be used for indexing and for queries. Changing any of them means re-embedding the corpus; record the model with the index so a mismatch is detectable.
+- The same embedding model and version must be used for indexing and for queries, with the query and document conventions that model documents. Changing any of them means re-embedding the corpus; record the model with the index so a mismatch is detectable.
 - Choose the embedding model by retrieval recall on the project's own questions and languages, then by cost and latency. A public leaderboard is a starting list, not a result.
 - An exact search is the baseline. Use an approximate index when the corpus needs it, and measure the recall it gives up against the exact result on a sample.
 - Filter by metadata (tenant, language, date, document type) inside the search where the store supports it. Filtering after the top results are chosen can leave nothing.

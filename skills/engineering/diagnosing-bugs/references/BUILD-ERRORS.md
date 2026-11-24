@@ -27,7 +27,7 @@ Clearing caches or reinstalling dependencies is reasonable when the evidence poi
 
 Stop the loop and report when:
 
-- the same error returns after a few different attempts, which means the hypothesis about it is wrong; go to the full diagnostic workflow;
+- the same error returns after two attempts, which means the hypothesis about it is wrong; go to the full diagnostic workflow;
 - a fix produces more errors than it removes;
 - the fix would need a change of interface, ownership, or architecture, which belongs to `codebase-design`;
 - the cause is a missing or conflicting dependency, a toolchain version, or the environment, where the change is outside the code.

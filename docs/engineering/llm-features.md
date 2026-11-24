@@ -14,6 +14,8 @@ The skill first asks whether a model is needed at all: regular input is parsed w
 
 Cost and latency are instrumented and then reduced by routing each class of input to the cheapest model that passes, ordering prompts so the stable prefix can be cached, setting budgets, and retrying only transient failures. When an app behaves worse than the bare model, the skill audits its layers, from the assembled prompt through memory, tools, and rendering to hidden repair passes, and records findings with evidence. Alternatives are compared head to head on the project's own tasks. Every change is kept or reverted on eval results.
 
+For retrieval features, a reference covers when to retrieve at all, chunking, evaluating retrieval apart from generation, access control at retrieval time, and treating retrieved text as untrusted.
+
 The skill stays provider-neutral: model names, prices, and caching rules come from the provider's current documentation, not from the skill.
 
 ## Workflow fit

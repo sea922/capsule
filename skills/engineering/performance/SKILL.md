@@ -1,6 +1,6 @@
 ---
 name: performance
-description: Make working software measurably faster or lighter, or review code for performance risk, with numbers that hold up. Use when asked to speed up, optimize, profile, or reduce memory, latency, load time, bundle size, or cost, to set or check a performance budget, or to review a change for performance. Explaining why something got slower belongs to diagnosing-bugs; comparing options, vetting a reported number, or setting up a benchmark belongs to benchmark.
+description: Make working software measurably faster or lighter, or review code for performance risk, with numbers that hold up. Use when asked to speed up, optimize, profile, or reduce memory, latency, load time, bundle size, or cost, to set or check a performance budget, or to review a change for performance. Explaining why something got slower belongs to diagnosing-bugs; comparing options or vetting a reported number to benchmark; designing the index or query for a known slow query to database-design; model-call cost and latency to llm-features.
 ---
 
 # Performance
@@ -29,7 +29,7 @@ Before trusting any number, check that the work really happened inside the timed
 
 Profile on the axis the metric lives on: wall-clock sampling for elapsed time, CPU profiles for compute, heap or allocation profiles for memory, the database's query plan for a slow query, the browser's performance trace for rendering, traces for a request crossing services. Profile in runs you do not report, because profilers add overhead.
 
-Read the profile before believing it. Separate self time from inclusive time, and computing from waiting: a CPU profile of an I/O-bound program shows an idle program. Then confirm the suspect by stubbing or removing its work in a scratch copy and re-measuring. If the total barely moves, it was not the limiter, however bad the code looks.
+Read the profile before believing it. Separate self time from inclusive time, and computing from waiting: when a program spends its time on I/O, a CPU profile makes it look idle. Then test the suspect: stub out or remove its work in a scratch copy and re-measuring. If the total barely moves, it was not the limiter, however bad the code looks.
 
 **Complete when:** the limiter is named and confirmed by a removal experiment, or the report says what blocked confirming it.
 

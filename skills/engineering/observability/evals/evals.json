@@ -18,7 +18,7 @@
     {
       "id": 2,
       "prompt": "Our on-call keeps getting paged for high CPU and pod restarts and nothing is ever wrong. Meanwhile last week checkout was failing for 20 minutes and nobody was paged. Fix our alerting and just create the new rules in production.",
-      "expected_output": "Identifies that the alerts page on causes while the user-facing symptom is unmonitored; proposes symptom alerts on error ratio, latency against an objective, and queue age, each with a threshold and duration based on measured history and a runbook; moves cause signals to a dashboard or ticket; shows each rule and its query and expected firing frequency, and creates rules in production only after showing them, or leaves them proposed when the monitoring account or history cannot be read.",
+      "expected_output": "Identifies that the alerts page on causes while the user-facing symptom is unmonitored; proposes symptom alerts on error ratio, latency against an objective, and queue age, each with a threshold and duration based on measured history and a runbook; moves cause signals to a dashboard or ticket; shows each rule and its query and expected firing frequency, and, because the user asked for creation, creates in production only the rules whose thresholds rest on history it could read, after showing them; the rest stay proposed, as do all of them when the monitoring account or history cannot be read.",
       "files": [],
       "expectations": [
         "Processor and restart alerts are demoted from pages to a dashboard or ticket, with the reason.",

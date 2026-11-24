@@ -1,6 +1,6 @@
 ---
 name: containers-and-deploys
-description: Build the delivery path of a service, from container image and pipeline to rollout strategy and infrastructure definitions, and prove it by building and running it. Use when writing or fixing a Dockerfile or Compose file, setting up CI/CD, choosing rolling, blue-green, or canary rollout, adding health checks, writing Kubernetes manifests or Terraform, or debugging a container, pod, or plan that will not start. Judging launch readiness belongs to production-readiness; delivering one change to ship-it; the security audit to security-review.
+description: Build the delivery path of a service, from container image and pipeline to rollout strategy and infrastructure definitions. Use when writing or fixing a Dockerfile or Compose file, setting up CI/CD, choosing rolling, blue-green, or canary rollout, adding health checks, writing Kubernetes manifests or Terraform, or debugging a container, pod, or plan that will not start. Launch readiness belongs to production-readiness; delivering one change to ship-it; the security audit to security-review; an application fault inside a running container to diagnosing-bugs.
 ---
 
 # Containers and deploys

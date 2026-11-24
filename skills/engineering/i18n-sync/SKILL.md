@@ -1,6 +1,6 @@
 ---
 name: i18n-sync
-description: Keep an application's locale files in step with its source strings by finding missing, unused, and stale keys, translating from how each string is used and the project's terminology, and verifying structure and key parity. Use when adding keys or a new language, after source copy changed, when asked to translate, localize, or synchronize locale files, or to review translation gaps. Extracting hardcoded strings into keys belongs to implement; layout and screen-reader checks of translated UI to interface-polish and accessibility.
+description: Keep an application's locale files in step with its source strings by finding missing, unused, and stale keys, translating in context, and verifying key parity. Use when adding keys or a new language, after source copy changed, when asked to translate, localize, or synchronize locale files, or to review translation gaps. Extracting hardcoded strings into keys belongs to implement; layout and screen-reader checks of translated UI to interface-polish and accessibility.
 ---
 
 # i18n sync
@@ -68,7 +68,7 @@ Removing unused or orphaned keys is a separate, confirmed step: list them, with 
 - Run a key-parity check: every target has exactly the source's keys, apart from plural-category keys the target language adds or drops and listed exceptions.
 - Compare placeholders, plural categories, and markup tags between source and target for each changed key.
 - Compare and deduplicate strings and keys after Unicode normalization to NFC, so two encodings of the same text do not read as different. Normalize for comparison only; do not alter the visible text.
-- Check that locale identifiers are valid BCP 47 tags, used consistently in file names, configuration, and the `lang` attribute the app sets, so fonts, hyphenation, and screen readers pick the right language.
+- Check that each locale maps to a valid BCP 47 tag for the `lang` attribute and configuration, so fonts, hyphenation, and screen readers pick the right language, and that file names follow the framework's own locale naming consistently.
 - Confirm that a missing translation falls back visibly, to the source language or a marked key, and is reported. A silent or invented fallback hides the gap.
 - Round-trip a sample of non-ASCII strings through the file format, and through any API or store they pass, and confirm they come back unchanged.
 - Run the project's i18n lint, type generation, tests, and build.

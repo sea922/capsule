@@ -9,7 +9,7 @@ A benchmark is evidence only when someone else can rerun it and get the same ans
 
 ## 1. Fix the question and the budget
 
-Write the claim you expect to make, in the words you would ship: "export is 30% faster at p50 on the 60k-row dataset". Then record:
+Write the claim you expect to make, worded as it would appear in the PR: "p50 export time drops 30% on the 60k-row dataset". Then record:
 
 - the **primary metric**, its unit and direction, and why it reflects what the user experiences. A proxy such as a micro-benchmark may guide diagnosis, but improving it does not show the user's task improved;
 - the **hard constraints** that must stay true whatever the score: correctness, safety, data integrity, cost ceiling;
@@ -64,6 +64,6 @@ When asked whether a reported number is real, or when `performance` or `code-rev
 
 ## 7. Report
 
-Lead with the verdict: faster, slower, no measurable difference, or inconclusive. Give the number with its unit, run count, and range, the limiter, and the conditions. Report benchmark success, user-level acceptance, and deployed results as three separate things. Say "best measured variant", not "optimal", unless the search covered every option. Keep one primary number in a PR description and link the ledger.
+Open with the verdict, one of faster, slower, no measurable difference, or inconclusive. Then state the number and its unit, how many runs produced it and their range, the limiter, and the conditions. Report benchmark success, user-level acceptance, and deployed results as three separate things. Say "best measured variant", not "optimal", unless the search covered every option. Keep one primary number in a PR description and link the ledger.
 
 **Complete when:** a reader could rerun the comparison and knows exactly what was and was not shown.

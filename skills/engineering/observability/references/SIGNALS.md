@@ -18,6 +18,7 @@ Read when choosing fields, metric names and labels, or span boundaries. The proj
 - Allow-list the fields that may be logged instead of logging an object and removing what looks sensitive. Whole request and response bodies, headers, and exception objects that embed input are the common leaks.
 - Log an error once, where it is handled, with its cause. The same failure logged at every layer reads as several failures.
 - A debug level left on in production is a frequent cause of a telemetry bill; check it before touching sampling.
+- Log volume and retention are a cost decision: estimate what a new high-frequency line adds, and raise a change to retention with the user instead of setting it.
 
 ## Metrics
 
@@ -28,7 +29,7 @@ Read when choosing fields, metric names and labels, or span boundaries. The proj
 | A queue | Depth and the age of the oldest item; age shows a stuck consumer that depth alone hides |
 | A dependency call | Attempts, outcomes, duration, retries, apart from the caller's total |
 
-- Use histograms for durations and sizes, with buckets that bracket the objective's threshold. Read p50, p95, and p99 together with the count.
+- Use histograms for durations and sizes, with buckets that bracket the objective's threshold. Read p50, p95, and p99 together with the count. Aggregate the histogram buckets across instances and then compute the percentile; an average of per-instance percentiles is not a percentile.
 - Use a counter for things that only increase and a gauge for a level that goes both ways. Derive a rate at query time.
 - Follow the naming and unit convention already in use, and put the unit in the name where the convention does.
 - Labels come from small fixed sets. Use the route template, not the path; the status class, not every code, unless a code matters on its own.
@@ -55,5 +56,5 @@ Read when choosing fields, metric names and labels, or span boundaries. The proj
 | Every signal is green and users complain | Measurement sits behind the point of failure; measure closer to the user, past the load balancer, edge cache, and client |
 | Telemetry cost jumped | An unbounded label, or debug logging left on |
 | A trace stops halfway | Context is not propagated across an asynchronous or queue boundary |
-| Nothing was recorded for the window that mattered | Sampling or retention dropped it; say so and do not reconstruct it from what seems likely |
+| The period you need has no data | It was sampled out or has aged past retention; report the gap and do not fill it with a guess |
 | Durations look fine while requests time out | Timed-out or failed requests are not recorded in the histogram |

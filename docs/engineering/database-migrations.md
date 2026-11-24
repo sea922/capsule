@@ -15,6 +15,6 @@ After a run it verifies with evidence: migration history, row counts and checksu
 
 ## Workflow fit
 
-`performance` owns slow queries, `ship-it` the surrounding release, and `production-readiness` the launch decision.
+`database-design` owns designing the schema, index, or query, `performance` owns slow queries, `ship-it` the surrounding release, and `production-readiness` the launch decision.
 
 See the [workflow map](../workflow.md), the [source research](../research/2026-11-24-ecc-adoption-research.md), and the [skill instructions](../../skills/engineering/database-migrations/SKILL.md).

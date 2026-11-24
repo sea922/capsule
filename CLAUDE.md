@@ -13,6 +13,9 @@ Rules live under `rules/<set>/`, at most 250 lines each, adapted from ECC (see
 `common` rule has none. Rules state defaults that yield to the project and name
 only skills and agents capsule has.
 
+Hooks live in `hooks/`, each with a test and a `CAPSULE_HOOKS_DISABLED` id,
+registered in `hooks/hooks.json` and the README table.
+
 Store all research in `docs/research/`. Before researching a skill, read
 `docs/source-repos.md`. Consult every relevant preferred repository and record
 its influence, or why it was not applicable, in the research report. Treat the

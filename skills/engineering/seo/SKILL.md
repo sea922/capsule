@@ -7,7 +7,7 @@ description: Audit and improve how a web product is found in search, from what a
 
 Most pages that fail in search are not outranked; they were never eligible. They are blocked, not indexed, split across several URLs, or built for a query nobody asks with that intent. Establish eligibility from what a crawler receives, fix blockers before refinements, and never report a state you did not observe.
 
-Keep five states apart: published, crawlable, indexed, ranking for a query, and earning clicks. Each is checked differently, and each can fail while the one before it holds. "The page is live" describes only the first.
+Keep five states apart: published, crawlable, indexed, ranking for a query, and earning clicks. Each has its own check, and a page can pass one and still fail the next. Saying a page is live covers the first state and nothing more.
 
 ## 1. Scope the surface and the goal
 
@@ -57,7 +57,7 @@ Change the template, layout, or generator that produces the value, so every page
 - structured data only for a type that truly applies, generated from the same data the page displays
 - internal links from related, indexed pages, with anchor text that describes the destination
 
-Stop and ask before any change that can remove traffic: editing `robots.txt`, adding `noindex`, changing a canonical, adding or changing redirects, or merging and deleting live URLs. Show the current value and the proposed one, with any interaction between the changes. When the user asked for that exact change, show these first, then proceed; otherwise wait for confirmation. Decline tactics that no longer help or carry penalty risk, such as keyword repetition, thin pages per keyword variant, hidden text, or markup for content that is not on the page, and say why.
+Stop and ask before a change that could cost traffic: a `robots.txt` edit, a new `noindex`, a different canonical, a new or altered redirect, or live URLs being merged or deleted. Show the current value and the proposed one, with any interaction between the changes. When the user asked for that exact change, show these first, then proceed; otherwise wait for confirmation. Decline tactics that no longer help or carry penalty risk, such as keyword repetition, thin pages per keyword variant, hidden text, or markup for content that is not on the page, and say why.
 
 Keep content work brief here: one primary intent per URL, no two pages chasing the same one, and the answer near the top. Writing the copy belongs to `writing-for-humans`.
 

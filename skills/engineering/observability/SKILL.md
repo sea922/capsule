@@ -1,11 +1,11 @@
 ---
 name: observability
-description: Instrument a service so its behaviour can be seen and acted on, with structured logs, metrics, traces, objectives, symptom-based alerts, and dashboards built from an operator's questions. Use when adding logging, metrics, tracing, alerts, or a dashboard, before a service or critical path carries real traffic, or after an incident the data could not explain. Launch readiness belongs to production-readiness; speeding up a measured path to performance; finding a failure's cause to diagnosing-bugs.
+description: Instrument a service so its behaviour can be seen and acted on, with structured logs, metrics, traces, objectives, symptom-based alerts, and dashboards built from an operator's questions. Use when adding structured logging, metrics, tracing, alerts, or a dashboard to a service, when a service or critical path about to carry real traffic lacks them, or after an incident showed the telemetry was missing. Launch readiness belongs to production-readiness; speeding up a measured path to performance; finding a failure's cause to diagnosing-bugs.
 ---
 
 # Observability
 
-Telemetry is written before the incident and read during it. Start from the questions someone will ask when the service misbehaves, emit only the signals that answer them, and do not call a path observable until a real event has been found in the data.
+Telemetry has to be in place before an incident, because that is when it gets read. Start from the questions someone will ask when the service misbehaves, emit only the signals that answer them, and do not call a path observable until a real event has been found in the data.
 
 ## 1. Write the questions
 
@@ -29,7 +29,7 @@ Map each question to the signal that answers it. A question with no signal is a 
 
 Log events, not sentences: a stable event name and machine-readable fields, through the project's logger. Carry service, version, environment, route or job name, outcome, duration, and error class. Use levels consistently, so an error means someone may need to act and handled degradation is a warning.
 
-Generate or accept one correlation id at the system boundary and attach it to every log line, span, outbound call, and emitted message, including the background job that consumes the message. When several entry points write to one log, such as a scheduler, an endpoint, and a manual run, record which one started the work.
+Create one correlation id where a request enters the system, or reuse the one it arrives with, and carry it on each log line, span, outgoing call, and published message, through to the background job that consumes the message. When several entry points write to one log, such as a scheduler, an endpoint, and a manual run, record which one started the work.
 
 Decide per field what is kept, hashed, truncated, or dropped, before anything leaves the process. Drop secrets, tokens, authorization headers, cookies, payment data, and whole request bodies; keep personal data out unless the project has decided to hold it. Sending telemetry to a new third-party backend is a data-export decision to raise with the user, not a default to switch on.
 
@@ -47,7 +47,7 @@ Keep metric labels to small fixed sets, such as route template, status class, an
 
 ## 5. Trace across boundaries
 
-Use the tracing library the project already has. Where it has none, OpenTelemetry is the vendor-neutral default, and its automatic instrumentation covers common HTTP, RPC, and database clients; read its current documentation for setup instead of recalling an API. Add manual spans only around meaningful units of work, with the attributes an operator will filter by.
+Use the tracing library the project already has. Where it has none, OpenTelemetry is the vendor-neutral default, and in most languages its automatic instrumentation or instrumentation libraries cover common HTTP, RPC, and database clients; read its current documentation for setup instead of recalling an API. Add manual spans only around meaningful units of work, with the attributes an operator will filter by.
 
 Propagate context across every asynchronous boundary: HTTP headers, message metadata, thread and task hand-offs. A trace that stops halfway invites a confident wrong conclusion. Sample at a rate the backend and budget can hold, and keep errors and slow requests where the backend supports it.
 
@@ -59,7 +59,7 @@ Follow [references/ALERTS.md](references/ALERTS.md). Define what good service me
 
 Alert on symptoms users feel: error rate, latency against the objective, queue age. Causes such as processor load or a restarted instance go on a dashboard. Every alert is actionable, has a threshold and duration justified by the objective or by history, and links to a runbook that says what it means, what to check first, and who to escalate to. Keep two severities: act now, and act this week.
 
-Creating or changing alert rules, dashboards, retention, or sampling alters shared configuration and often costs money. Write the rule and its query, then ask before creating anything in a shared or production account.
+Creating or changing alert rules, dashboards, retention, or sampling alters shared configuration and often costs money. Write the rule and its query, then ask before creating anything in a shared or production account. When the user already asked for that exact creation, show each rule, its query, and its expected firing frequency first, and create only the rules whose thresholds rest on history you could read; leave the rest proposed.
 
 **Complete when:** each objective has a measured basis, each alert has a symptom, threshold, duration, and runbook, and nothing shared was created without the user's go-ahead.
 
@@ -81,7 +81,7 @@ Each question that cannot be answered is a gap to fix now. Where no telemetry ba
 
 ## Report
 
-Separate what was instrumented (code that emits a signal), what was observed (an event or query result read back), and what remains unverified. Quote one emitted event with its real field names and the query that returns it. List the questions with answered or not answered beside each, alerts and dashboards proposed apart from any created, and any data-export or cost decision left with the user.
+Separate what was instrumented (code that emits a signal), what was observed (an event or query result read back), and what remains unverified. Include one real event as it was emitted, field names unchanged, with the query that finds it. Mark each question answered or not answered. Keep proposed alerts and dashboards apart from any that were created, and name any data-export or cost decision left with the user.
 
 ## Boundaries
 

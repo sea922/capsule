@@ -53,10 +53,11 @@ an output schema and return structured content where the SDK supports it.
 
 ## 4. Return errors the agent can act on
 
-Distinguish two failures. A problem with the request itself, such as an
-unknown tool or malformed arguments, is a protocol error. A tool that ran and
-failed returns a result flagged as an error, with a message the model can use
-to correct the call, as TOOLS.md describes. Keep stack traces, internal paths,
+Distinguish two failures. A malformed request or an unknown tool is a protocol
+error. A tool that ran and failed returns a result flagged as an error, with a
+message the model can use to correct the call, as TOOLS.md describes. For
+arguments that fail validation, follow the specification version in use;
+recent revisions return them as tool errors so the model can correct the call. Keep stack traces, internal paths,
 and upstream credentials out of both. Put a timeout on every outbound call so
 a hung dependency becomes a clear error.
 

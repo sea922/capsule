@@ -22,7 +22,7 @@ export function isProtectedConfig(filePath) {
 
 export function protectionReason(input, exists = existsSync) {
   const filePath = input.tool_input?.file_path;
-  if (!EDIT_TOOLS.has(input.tool_name) || !filePath || !isProtectedConfig(filePath) || !exists(filePath)) return null;
+  if (!EDIT_TOOLS.has(input.tool_name) || typeof filePath !== 'string' || !filePath || !isProtectedConfig(filePath) || !exists(filePath)) return null;
   return `Blocked: ${basename(filePath)} configures linting or formatting. Fix the code the check reports instead of `
     + 'loosening the check. If the config itself must change, ask the user first.';
 }
