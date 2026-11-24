@@ -24,6 +24,8 @@ Read the relevant code before asking any technical question. Carry every intent 
 
 When the work changes behavior that an earlier, delivered ADLC work item specified, cite that spec in this one and state its current behavior, the new behavior, and what must not change. Leave the delivered spec and its approvals as they are.
 
+When the work changes existing behavior that no delivered spec describes, record that current behavior from the code first. Use the read-only `adlc-spec-miner` agent when it is available, or the same method directly: requirements as `WHEN … THEN …` and invariants, each with `path:line` evidence and marked tested or inferred. State conflicts it finds as decisions for the human, not as settled behavior.
+
 Apply constraints now, while the spec is written: security, privacy, compliance, performance, and compatibility. Settle uncertain external facts with `research`, a consequential module boundary with `codebase-design`, and a question an experiment can answer with `prototype`. Ask the human about each remaining choice that changes acceptance, scope, or risk.
 
 When the behavior would contradict the approved intent, stop drafting and return `/adlc-intent` with the conflict.

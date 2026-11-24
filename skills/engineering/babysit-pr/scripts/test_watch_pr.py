@@ -143,7 +143,7 @@ class GitLabWatchTests(unittest.TestCase):
     def test_forge_is_github_only_for_github_hosts(self):
         for host, forge in (("github.com", "github"), ("acme.ghe.com", "github"),
                             ("github.acme.io", "github"), ("gitlab.com", "gitlab"),
-                            ("git.ringkas.homes", "gitlab")):
+                            ("git.example.org", "gitlab")):
             self.assertEqual(watcher.detect_forge(host), forge, host)
 
     def test_merged_mr_is_terminal(self):

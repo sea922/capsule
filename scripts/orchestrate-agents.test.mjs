@@ -195,7 +195,8 @@ test('Claude plugin manifest references the five checked-in Claude definitions',
   const manifestPath = join(REPOSITORY_ROOT, '.claude-plugin', 'plugin.json');
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
   const expected = AGENT_NAMES.map((name) => `./skills/engineering/orchestrate/assets/claude-agents/${name}.md`);
-  assert.deepEqual(manifest.agents, expected);
+  const orchestrateEntries = manifest.agents.filter((entry) => entry.startsWith('./skills/engineering/orchestrate/'));
+  assert.deepEqual(orchestrateEntries, expected);
   for (const entry of expected) {
     assert.equal(existsSync(join(REPOSITORY_ROOT, ...entry.slice(2).split('/'))), true, `missing manifest agent: ${entry}`);
   }

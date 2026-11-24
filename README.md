@@ -8,7 +8,7 @@ Plan, build, review, ship, and write with skills that keep agents on evidence,
 not guesses. Works with GitHub and GitLab.
 
 [![Version](https://img.shields.io/github/package-json/v/sea922/capsule?label=version&color=blueviolet)](CHANGELOG.md)
-[![Skills](https://img.shields.io/badge/skills-36-orange)](#-skills)
+[![Skills](https://img.shields.io/badge/skills-35-orange)](#-skills)
 [![CI](https://github.com/sea922/capsule/actions/workflows/ci.yml/badge.svg)](https://github.com/sea922/capsule/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 [![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757)](#-install)
@@ -62,6 +62,7 @@ compose.
 | [property-based-testing](docs/engineering/property-based-testing.md) | Find strong properties and generators, avoid vacuous tests, and triage shrunk counterexamples. |
 | [prototype](docs/engineering/prototype.md) | Answer one design or feasibility question with a small, reproducible experiment. |
 | [simplify](docs/engineering/simplify.md) | Reduce complexity in a scoped pass while preserving observable behavior. |
+| [performance](docs/engineering/performance.md) | Make software measurably faster or lighter, or review code for performance risk, with numbers that hold up. |
 | [codebase-design](docs/engineering/codebase-design.md) | Design cohesive modules, evidence-gated abstractions, dependency direction, and explicit contracts. |
 | [coding-standards](docs/engineering/coding-standards.md) | Apply project conventions with shared rules and backend and frontend guidance. |
 
@@ -80,6 +81,7 @@ compose.
 | Skill | What it does |
 | --- | --- |
 | [code-review](docs/engineering/code-review.md) | Review changes at quick, standard, or deep depth with evidence-backed findings. |
+| [accessibility](docs/engineering/accessibility.md) | Audit and fix UI against WCAG 2.2 AA with real keyboard, screen-reader, zoom, and contrast evidence. |
 | [security-review](docs/engineering/security-review.md) | Assess trust boundaries and concrete abuse paths in a scoped, read-only review. |
 | [verification-before-completion](docs/engineering/verification-before-completion.md) | Prove completion claims with fresh, scope-matched evidence and honest verdicts. |
 | [compound-learnings](docs/engineering/compound-learnings.md) | Capture durable engineering lessons and refresh them against current code. |
@@ -111,6 +113,30 @@ compose.
 | [html-writeup](docs/authoring/html-writeup.md) | Build a self-contained HTML document with diagrams, tables, and code, verified in a real browser. |
 | [skill-evolve](docs/authoring/skill-evolve.md) | Turn real-session evidence into skill edits, keeping only those that beat the current version. |
 
+## 🧩 Agents and hooks
+
+capsule also ships read-only agents that its skills hand work to, and two hooks.
+
+| Agent | Used by | What it checks |
+| --- | --- | --- |
+| `code-review-silent-failures` | `code-review` deep | Errors a change swallows, hides behind fallbacks, or loses |
+| `code-review-type-design` | `code-review` deep | Whether changed types still enforce their invariants |
+| `code-review-comments` | `code-review` deep | Comments and docs that no longer match the code |
+| `code-review-tests` | `code-review` deep | Whether the tests would catch the change breaking |
+| `code-review-database` | `code-review` deep | Migrations, schema, and queries that can lose data, lock tables, or break deploys |
+| `performance-reviewer` | `performance`, `code-review` deep | Hot paths, unbounded work, and bundle weight, as potential impact |
+| `accessibility-reviewer` | `accessibility`, `code-review` deep | Likely WCAG barriers in UI code, for manual checks to confirm |
+| `security-review-sanitizer` | `security-review` | Secrets, personal data, and internal references before publishing |
+| `adlc-spec-miner` | `adlc-spec` | Current behavior of existing code, as evidence-backed requirements and invariants |
+| `orchestrate-*` | `orchestrate` | Bounded explorer, researcher, worker, tester, and reviewer roles |
+
+| Hook | Blocks | Turn off |
+| --- | --- | --- |
+| `block-no-verify` | `--no-verify`, `commit -n`, `core.hooksPath` overrides, and `HUSKY=0` on git commands | `CAPSULE_HOOKS_DISABLED=block-no-verify` |
+| `config-protection` | Edits to existing lint and format configs (ESLint, Prettier, Biome, Stylelint, Ruff, and others) | `CAPSULE_HOOKS_DISABLED=config-protection` |
+
+The hooks need Node.js. They stop an agent from casually skipping checks; they are not a security boundary. List several ids with commas to turn off more than one.
+
 ## 📁 Repository structure
 
 | Path | Contents |
@@ -118,6 +144,7 @@ compose.
 | `skills/` | The skills, grouped into bucket folders |
 | `docs/` | Human-facing skill pages under `adlc/`, `engineering/`, `productivity/`, and `authoring/`, with source research under `research/` |
 | `scripts/` | Maintainer helpers: validation, versioning, audit, packaging, traffic |
+| `hooks/` | The plugin's hooks and their tests |
 | `.claude-plugin/` | Claude Code plugin and marketplace metadata |
 | `.changeset/` | Versioning metadata |
 | `.github/workflows/` | CI, release, and traffic automation |

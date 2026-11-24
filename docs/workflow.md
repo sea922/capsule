@@ -19,6 +19,7 @@ Start from the question or outcome you have. Most skills can be selected by the 
 | Try an uncertain design or feasibility idea | [prototype](engineering/prototype.md) | A reproducible experiment and observation |
 | Design a module or responsibility boundary | [codebase-design](engineering/codebase-design.md) | An explicit interface and ownership decision |
 | Simplify working code | [simplify](engineering/simplify.md) | Lower complexity with behavior-preservation evidence |
+| Make software faster or lighter | [performance](engineering/performance.md) | Before and after numbers with their range, and the limiter named |
 | Review changes | [code-review](engineering/code-review.md) | Evidence-backed findings at the requested depth |
 | Commit, branch, rebase, stack, or recover Git state | [git-workflow](engineering/git-workflow.md) | Clean history, verified freshness, and safe recovery |
 | Create, prepare, or retire an isolated checkout | [git-worktrees](engineering/git-worktrees.md) | Isolated worktree without displacing another task's work |
@@ -28,6 +29,7 @@ Start from the question or outcome you have. Most skills can be selected by the 
 | Ship finished changes | [ship-it](engineering/ship-it.md) | A verified PR, merge, or deployment endpoint |
 | Apply or define coding conventions | [coding-standards](engineering/coding-standards.md) | Project-first rules for the affected code domain |
 | Run a dedicated security audit | [security-review](engineering/security-review.md) | Scoped threat model, findings, and closing checks |
+| Audit or fix UI accessibility | [accessibility](engineering/accessibility.md) | WCAG 2.2 AA findings with keyboard and screen-reader evidence, and what stayed unverified |
 | Write or revise skills, `AGENTS.md`, or `CLAUDE.md` | [writing-for-agents](authoring/writing-for-agents.md) | Predictable agent instructions and eval coverage |
 | Draft or edit human-facing prose | [writing-for-humans](authoring/writing-for-humans.md) | Clear, natural, meaning-preserved prose in the right genre |
 | Build a standalone visual HTML write-up | [html-writeup](authoring/html-writeup.md) | Self-contained HTML document with browser verification |
