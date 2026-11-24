@@ -35,7 +35,7 @@ envs/
   experiments only.
 - Turn on versioning for the state store so a bad write can be recovered, block
   public access, and restrict who can read it: state holds sensitive values in plain text.
-- Backend blocks cannot use variables. Supply per-environment values with
+- In Terraform, backend blocks cannot use variables; confirm for the OpenTofu version in use. Supply per-environment values with
   `-backend-config` or a partial configuration file.
 - A lock error means another run holds it or one crashed. Confirm nothing is
   running, then release that specific lock. Never bypass with `-lock=false`.
@@ -77,7 +77,7 @@ resource "aws_iam_user" "this" {
 - Put `prevent_destroy` on stateful resources such as databases, buckets, and
   encryption keys, so an accidental destroy becomes a plan error. It only
   protects a block that still exists: to stop managing a resource without
-  destroying it, use a `removed` block with `destroy = false`, not deletion of the block.
+  destroying it, use a `removed` block with `destroy = false` where the installed version has `removed` blocks, not deletion of the block.
 - `create_before_destroy` avoids a gap when a replacement is unavoidable.
 - `ignore_changes` hides drift. Scope it to one attribute and say why in a comment.
 - Apply common tags or labels once at the provider level.

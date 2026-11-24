@@ -112,4 +112,5 @@ Inline single-file components are fine for trivial presentational pieces.
 
 ## Related capsule Skills
 
-Use the `coding-standards` skill to apply or define a project's conventions.
+Use the `coding-standards` skill to apply or define a project's conventions;
+it has a React (with Next.js and Vite sections) reference that goes deeper than these rules.

@@ -235,8 +235,8 @@ Traps that pass review and fail in production:
 | --- | --- | --- |
 | `updateMany` / `deleteMany` result | Returns a count, not rows | Read the ids first, or re-query |
 | `deleteMany()` with no `where` | Empties the table | Always pass a `where`; treat its absence as a defect |
-| `@updatedAt` with bulk writes | Not set by `updateMany` | Set the column explicitly |
-| Soft delete with `findUniqueOrThrow` | Returns soft-deleted rows; adding `deletedAt` to a unique `where` does not type-check | `findFirstOrThrow` with the filter |
+| `@updatedAt` with raw SQL or writes outside Prisma Client | Not set | Set the column explicitly; verify bulk-write behaviour on the installed version |
+| Soft delete with `findUniqueOrThrow` | Returns soft-deleted rows unless the filter is added | Add `deletedAt: null` to the `where` (Prisma 5 and later), or use `findFirstOrThrow` with the filter on older versions |
 | Soft delete in middleware or an extension | Hidden filtering that is hard to debug | Filter explicitly, or document the extension where queries are written |
 | `migrate dev` on a shared database | May offer to reset it on drift | `migrate deploy` everywhere except a private local database |
 | Editing an applied migration | Checksum mismatch on every environment that ran it | Add a new migration |

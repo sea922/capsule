@@ -59,8 +59,9 @@ the sections the change touches.
   channel when the sender must not block on a receiver that may have left.
   Prefer a mutex for protecting state and channels for handing off work.
 - **Fan-out with a limit.** Use an error group (with a concurrency limit) or a
-  fixed worker pool rather than a goroutine per item on unbounded input. The
-  group cancels siblings on first failure and returns that error.
+  fixed worker pool rather than a goroutine per item on unbounded input. A
+  group created with a context cancels that context on the first failure;
+  siblings stop only if they watch it. `Wait` returns that first error.
 - **Shared state.** Run tests with the race detector. `sync.Once` for lazy
   initialisation, atomics for single counters, a mutex for anything compound.
 - **Shutdown.** Listen for the termination signal, stop accepting work, and

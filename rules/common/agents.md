@@ -22,6 +22,7 @@ Agent(subagent_type: "capsule:code-review-tests", prompt: "...")
 | code-review-type-design | Types that no longer enforce their rules | Deep review of types and schemas |
 | code-review-comments | Comments and docs that contradict the code | Deep review |
 | code-review-tests | Tests that would not catch a regression | Deep review |
+| java-reviewer | Defects in Java, Spring Boot, and Quarkus changes | Java changes |
 | database-migrations-reviewer | Unsafe schema, migration, and query changes | Database changes |
 | performance-reviewer | Performance risk, as potential impact | Hot paths and large data |
 | benchmark-auditor | Whether a measurement supports its claim | Reported speedups or regressions |

@@ -1,6 +1,6 @@
 ---
 name: seo
-description: Audit and improve how a web product is found in search, from what a crawler actually receives, covering crawlability, robots and sitemaps, canonicals and redirects, indexability, titles and descriptions, headings, structured data, internal links, and rendering for crawlers. Use when asked for an SEO audit or fix, when a page is missing from results or search traffic dropped, when adding schema markup, sitemap, or robots rules, or before launching pages meant to be found. Making pages faster belongs to performance; WCAG conformance to accessibility; visual finish to interface-polish.
+description: Audit and improve how a web product is found in search, from what a crawler actually receives, covering crawling, indexing, on-page signals, structured data, and rendering for crawlers. Use when asked for an SEO audit or fix, when a page is missing from results or search traffic dropped, when adding schema markup, sitemap, or robots rules, or before launching pages meant to be found. Making pages faster belongs to performance; WCAG conformance to accessibility; visual finish to interface-polish.
 ---
 
 # SEO
@@ -57,7 +57,7 @@ Change the template, layout, or generator that produces the value, so every page
 - structured data only for a type that truly applies, generated from the same data the page displays
 - internal links from related, indexed pages, with anchor text that describes the destination
 
-Stop and ask before any change that can remove traffic: editing `robots.txt`, adding `noindex`, changing a canonical, adding or changing redirects, or merging and deleting live URLs. Show the current value and the proposed one. Decline tactics that no longer help or carry penalty risk, such as keyword repetition, thin pages per keyword variant, hidden text, or markup for content that is not on the page, and say why.
+Stop and ask before any change that can remove traffic: editing `robots.txt`, adding `noindex`, changing a canonical, adding or changing redirects, or merging and deleting live URLs. Show the current value and the proposed one, with any interaction between the changes. When the user asked for that exact change, show these first, then proceed; otherwise wait for confirmation. Decline tactics that no longer help or carry penalty risk, such as keyword repetition, thin pages per keyword variant, hidden text, or markup for content that is not on the page, and say why.
 
 Keep content work brief here: one primary intent per URL, no two pages chasing the same one, and the answer near the top. Writing the copy belongs to `writing-for-humans`.
 

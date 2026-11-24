@@ -157,7 +157,7 @@ const isOnline = useSyncExternalStore(
 ## React 19 Additions
 
 - `use()` — unwrap promises and contexts inline; usable conditionally (only hook with that property)
-- `useFormStatus()` / `useFormState()` (or `useActionState`) — form submission state without prop drilling
+- `useFormStatus()` and `useActionState()` — form submission state without prop drilling. `useActionState` was named `useFormState` before React 19; use the name the installed version exports
 - `useOptimistic()` — optimistic UI updates while a server action is pending
 - `useTransition()` — mark non-urgent state updates so urgent ones stay responsive
 

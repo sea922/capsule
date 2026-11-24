@@ -64,7 +64,7 @@ Requests decide scheduling; limits decide throttling and kills.
   secrets, or the cloud provider's store).
 - Pods do not restart when a ConfigMap or Secret changes. Roll the workload, or
   use a content hash in the name or an annotation so a change triggers a rollout.
-- Mounted files update in place; values read from the environment do not.
+- Mounted files update in place, except `subPath` mounts; values read from the environment do not.
 
 ## Network
 
@@ -102,16 +102,21 @@ application.
 
 ## Before applying
 
+Read-only checks, validated against the cluster's admission rules:
+
 ```sh
 kubectl diff -f manifests/
 kubectl apply --dry-run=server -f manifests/
+```
+
+Applying, restarting, scaling, and undoing change shared state: confirm the
+context and namespace, and get the user's go-ahead first. After approval, watch
+the rollout, and keep the way back at hand:
+
+```sh
 kubectl rollout status deployment/<name> --timeout=120s
 kubectl rollout undo deployment/<name>
 ```
-
-The first two are read-only against the cluster's admission rules. Applying,
-restarting, scaling, and undoing change shared state: confirm the context and
-namespace, and get the user's go-ahead first.
 
 ## When it will not run
 

@@ -50,7 +50,7 @@ A secondary index therefore already covers the primary-key columns.
 
 ## Reading a plan
 
-Use `EXPLAIN` for the estimate and, where the version has it, `EXPLAIN ANALYZE` (MySQL) or `ANALYZE` (MariaDB) for the measured run.
+Use `EXPLAIN` for the estimate and, where the version has it, `EXPLAIN ANALYZE` (MySQL) or `ANALYZE` (MariaDB) for the measured run. Both measured forms execute the statement, so run them on a replica or a non-production copy and never on a write in production.
 
 | Field | Concern |
 | --- | --- |

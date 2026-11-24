@@ -14,6 +14,14 @@ paths:
 
 # Web Hooks
 
+capsule does not ship these. They are examples a project can adopt in its
+`.claude/settings.json`, adjusted to its own package manager and scripts.
+
+A hook command receives the tool call as JSON on standard input; the edited
+file's path is at `tool_input.file_path`. The examples read it with `jq`.
+Hook configuration changes between Claude Code versions, so confirm the shape
+against the current hooks documentation.
+
 ## Recommended PostToolUse Hooks
 
 Prefer project-local tooling. Do not wire hooks to remote one-off package execution.
@@ -28,8 +36,12 @@ Use the project's existing formatter entrypoint after edits:
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
-        "command": "pnpm prettier --write \"$FILE_PATH\"",
-        "description": "Format edited frontend files"
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path' | xargs -I{} pnpm prettier --write {}"
+          }
+        ]
       }
     ]
   }
@@ -46,8 +58,12 @@ Equivalent local commands via `yarn prettier` or `npm exec prettier --` are fine
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
-        "command": "pnpm eslint --fix \"$FILE_PATH\"",
-        "description": "Run ESLint on edited frontend files"
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path' | xargs -I{} pnpm eslint --fix {}"
+          }
+        ]
       }
     ]
   }
@@ -56,7 +72,7 @@ Equivalent local commands via `yarn prettier` or `npm exec prettier --` are fine
 
 ### Type Check
 
-Use `--incremental` so re-runs reuse the previous `.tsbuildinfo` (1-3s on unchanged code instead of 30-60s every time). Wrap in `timeout` so a stuck tsc gets reaped by the OS instead of accumulating across edits — this prevents the multi-process buildup that happens when edits fire faster than tsc finishes.
+Use `--incremental` so re-runs reuse the previous `.tsbuildinfo` instead of checking the whole program each time. Wrap in `timeout` so a stuck `tsc` is stopped instead of piling up when edits arrive faster than it finishes.
 
 ```json
 {
@@ -64,20 +80,24 @@ Use `--incremental` so re-runs reuse the previous `.tsbuildinfo` (1-3s on unchan
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
-        "command": "timeout 60 pnpm tsc --noEmit --pretty false --incremental --tsBuildInfoFile node_modules/.cache/tsc-hook.tsbuildinfo",
-        "description": "Type-check after frontend edits (incremental + timeout-capped)"
+        "hooks": [
+          {
+            "type": "command",
+            "command": "timeout 60 pnpm tsc --noEmit --pretty false --incremental --tsBuildInfoFile node_modules/.cache/tsc-hook.tsbuildinfo"
+          }
+        ]
       }
     ]
   }
 }
 ```
 
-**Why both flags matter:**
-- Without `--incremental`, every edit re-checks the entire program from scratch. On a real Next.js project this stacks fast: edits at 5-10s intervals + 30-60s tsc runs = N concurrent tsc processes.
-- Without `timeout`, a tsc that hangs (transitive dep change, type-checker stuck on a recursive type) never exits and orphans when the parent shell does.
-- `--tsBuildInfoFile` is required because `--noEmit` normally suppresses the buildinfo write; specifying the path explicitly keeps incremental working.
+**Why the flags matter:**
+- Without `--incremental`, every edit re-checks the entire program, and slow runs overlap.
+- Without `timeout`, a `tsc` that hangs never exits.
+- `--tsBuildInfoFile` names where the incremental state is kept, since `--noEmit` writes no other output.
 
-If you're on Windows without GNU coreutils, swap `timeout 60` for a PowerShell wrapper or rely on a Stop/SessionEnd hook to sweep stale tsc processes.
+On Windows without GNU coreutils, replace `timeout 60` with a PowerShell wrapper.
 
 ### CSS Lint
 
@@ -87,8 +107,12 @@ If you're on Windows without GNU coreutils, swap `timeout 60` for a PowerShell w
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
-        "command": "pnpm stylelint --fix \"$FILE_PATH\"",
-        "description": "Lint edited stylesheets"
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path | select(test(\"\\\\.(css|scss|sass|less)$\"))' | xargs -I{} pnpm stylelint --fix {}"
+          }
+        ]
       }
     ]
   }
@@ -99,7 +123,7 @@ If you're on Windows without GNU coreutils, swap `timeout 60` for a PowerShell w
 
 ### Guard File Size
 
-Block oversized writes from tool input content, not from a file that may not exist yet:
+Block oversized writes from the tool input's content, not from a file that may not exist yet. Exit code 2 blocks the call and shows the message to the agent. The limit is an example; use the project's own.
 
 ```json
 {
@@ -107,8 +131,12 @@ Block oversized writes from tool input content, not from a file that may not exi
     "PreToolUse": [
       {
         "matcher": "Write",
-        "command": "node -e \"let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{const i=JSON.parse(d);const c=i.tool_input?.content||'';const lines=c.split('\\n').length;if(lines>800){console.error('[Hook] BLOCKED: File exceeds 800 lines ('+lines+' lines)');console.error('[Hook] Split into smaller modules');process.exit(2)}console.log(d)})\"",
-        "description": "Block writes that exceed 800 lines"
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"let d='';process.stdin.on('data',c=>d+=c);process.stdin.on('end',()=>{const i=JSON.parse(d);const c=i.tool_input?.content||'';const lines=c.split('\\n').length;if(lines>800){console.error('Blocked: file would be '+lines+' lines; split it into smaller modules');process.exit(2)}})\""
+          }
+        ]
       }
     ]
   }
@@ -119,13 +147,16 @@ Block oversized writes from tool input content, not from a file that may not exi
 
 ### Final Build Verification
 
+A Stop hook takes no matcher:
+
 ```json
 {
   "hooks": {
     "Stop": [
       {
-        "command": "pnpm build",
-        "description": "Verify the production build at session end"
+        "hooks": [
+          { "type": "command", "command": "pnpm build" }
+        ]
       }
     ]
   }

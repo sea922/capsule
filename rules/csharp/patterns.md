@@ -9,6 +9,10 @@ paths:
 
 ## API Response Pattern
 
+Follow the project's existing response and error shape. Where it has none, an
+envelope like this is one option; use the `api-design` skill to choose the
+contract:
+
 ```csharp
 public sealed record ApiResponse<T>(
     bool Success,

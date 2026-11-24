@@ -16,9 +16,17 @@ Load the matching skill before starting the work, not after.
 | Commit, branch, rebase, or recover Git state | `git-workflow` |
 | Write or update a pull or merge request | `pr-description` |
 | Carry a pull or merge request to merge | `babysit-pr` |
-| Schema or data changes | `database-migrations` |
+| Design a schema, index, or query | `database-design` |
+| Change a live schema or its data | `database-migrations` |
+| Design or change an HTTP API | `api-design` |
+| Write or fix end-to-end tests | `e2e-testing` |
+| Build a container image, pipeline, or infrastructure definition | `containers-and-deploys` |
+| Build a feature that calls a language model | `llm-features` |
 | Make something faster, or check a speed claim | `performance`, `benchmark` |
 | Audit or fix accessibility | `accessibility` |
+| Polish an interface or audit its design tokens | `interface-polish` |
+| Keep translation files in step with the source | `i18n-sync` |
+| Improve how a site is crawled and indexed | `seo` |
 | Decide whether to launch, or deliver a release | `production-readiness`, `ship-it` |
 | Say something is done | `verification-before-completion` |
 | Write for people, or for agents | `writing-for-humans`, `writing-for-agents` |

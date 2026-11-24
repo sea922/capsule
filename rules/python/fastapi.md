@@ -57,4 +57,6 @@ Do not create `SessionLocal()` or long-lived clients inside route handlers.
 
 ## Related capsule Skills
 
-Use the `coding-standards` skill to apply the project's own conventions.
+Use the `coding-standards` skill to apply the project's own conventions; its
+Python reference has a FastAPI section. Use the `api-design` skill for the
+HTTP contract.

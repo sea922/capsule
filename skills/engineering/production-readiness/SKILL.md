@@ -1,6 +1,6 @@
 ---
 name: production-readiness
-description: Decide whether a system or release is ready for real users, read-only, with a ship, ship-with-caveats, or block verdict. Use for launch reviews, go/no-go calls, pre-release or pre-launch audits, "what will break in production?" questions, and rollout or rollback planning. Delivering the change belongs to ship-it; a dedicated security audit to security-review.
+description: Decide whether a system or release is ready for real users, read-only, with a ship, ship-with-caveats, or block verdict. Use for launch reviews, go/no-go calls, pre-release or pre-launch audits, "what will break in production?" questions, and reviewing a rollout or rollback plan. Building one belongs to containers-and-deploys; delivering the change to ship-it; a dedicated security audit to security-review.
 ---
 
 # Production readiness

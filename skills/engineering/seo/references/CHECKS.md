@@ -59,8 +59,8 @@ documentation.
 
 - Use a type only when the page is that thing: an article, a product with an
   offer, a breadcrumb trail, an organization, a question page.
-- Every marked-up value must be visible on the page and generated from the same
-  data the page shows.
+- Every marked-up value must match what the page shows and be generated from
+  the same data.
 - Validate that it parses and carries the required properties with the
   engine's own testing tool. Eligibility for a rich result is decided by the
   engine and changes; markup never guarantees one.
@@ -74,7 +74,8 @@ documentation.
 | Hybrid or streamed | Check that metadata is in the first response and that late content is not the main content |
 
 Check also that the mobile response carries the same content and markup as the
-desktop one, since engines index the mobile version.
+desktop one, since the major engines primarily index the mobile version; confirm for the
+engine that matters.
 
 ## Reading a traffic drop
 

@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Drive behavior changes through observable red, green, and refactor evidence. Use when the user asks for test-first development, TDD, red-green-refactor, a regression test before a fix, or when an implementation workflow or plan item needs a behavioral slice protected by an executable test. Route property and generator design to property-based-testing, diagnosis of an unknown cause to diagnosing-bugs, broad completion proof to verification-before-completion, review-only work to code-review, and non-behavioral edits to proportionate artifact checks.
+description: Drive behavior changes through observable red, green, and refactor evidence. Use when the user asks for test-first development, TDD, red-green-refactor, a regression test before a fix, or when an implementation workflow or plan item needs a behavioral slice protected by an executable test. Route property and generator design to property-based-testing, end-to-end suites to e2e-testing, diagnosis of an unknown cause to diagnosing-bugs, broad completion proof to verification-before-completion, review-only work to code-review, and non-behavioral edits to proportionate artifact checks.
 ---
 
 # Test-Driven Development

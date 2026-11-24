@@ -46,7 +46,7 @@ public class OrderService {
 
 ## Constructor Injection
 
-Always use constructor injection — never field injection:
+Default to constructor injection over field injection, unless the project's convention differs:
 
 ```java
 // GOOD — constructor injection (testable, immutable)
@@ -127,7 +127,8 @@ String message = switch (result) {
 
 ## API Response Envelope
 
-Consistent API responses:
+Follow the project's existing response and error shape. Where it has none, an
+envelope is one option; use the `api-design` skill to choose the contract:
 
 ```java
 public record ApiResponse<T>(boolean success, T data, String error) {
@@ -142,4 +143,6 @@ public record ApiResponse<T>(boolean success, T data, String error) {
 
 ## Related capsule Skills
 
-Use the `codebase-design` skill for module boundaries and when an abstraction earns its place.
+Use the `codebase-design` skill for module boundaries and when an abstraction
+earns its place, and the `coding-standards` skill for its Java, Spring Boot,
+and Quarkus references. The `java-reviewer` agent reviews Java changes read-only.

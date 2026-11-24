@@ -14,6 +14,11 @@ paths:
 
 # Web Performance Rules
 
+These targets and budgets are defaults for a project that has set none; the
+project's own budgets and measured baseline come first. Use the `performance`
+skill to measure and improve (it has a React and Next.js reference), and the
+`seo` skill where the concern is search visibility.
+
 ## Core Web Vitals Targets
 
 | Metric | Target |

@@ -183,7 +183,7 @@ Component test with RTL + JSDOM cannot:
 - Test browser-native animation, CSS transitions
 - Test cross-frame interactions (iframes, popups)
 
-For those, use Playwright Component Testing or end-to-end Playwright/Cypress runs. Follow the project's existing end-to-end setup.
+For those, use Playwright Component Testing or end-to-end Playwright/Cypress runs. Follow the project's existing end-to-end setup, and use the `e2e-testing` skill for the suite.
 
 ## Coverage Targets
 

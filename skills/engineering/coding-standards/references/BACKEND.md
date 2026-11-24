@@ -90,4 +90,5 @@ unexercised; a happy-path response alone does not demonstrate failure handling.
 
 Error classification, retries, and client-safe messages are in
 [ERROR-HANDLING.md](ERROR-HANDLING.md). Stack-specific guidance is in
-[PYTHON.md](PYTHON.md), [GO.md](GO.md), and [CSHARP.md](CSHARP.md).
+[TYPESCRIPT.md](TYPESCRIPT.md), [PYTHON.md](PYTHON.md), [JAVA.md](JAVA.md),
+[GO.md](GO.md), and [CSHARP.md](CSHARP.md).

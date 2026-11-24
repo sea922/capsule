@@ -43,11 +43,13 @@ Group items by feature so that one screen's terms stay consistent, and reuse the
 ## 4. Translate
 
 - Follow the glossary and do-not-translate list first, then the established wording in the target file, then the style guide's register and formality.
-- Keep placeholders, plural selectors, and markup tags byte-for-byte, reordering them as the target grammar needs. Never translate a placeholder name.
+- Keep placeholder names and markup tags byte-for-byte, reordering them as the target grammar needs. Never translate a placeholder name.
 - Supply every plural category the target language requires, which may be more or fewer than the source has.
 - Translate the meaning in context, not word by word. Avoid concatenation assumptions: a fragment that worked in the source word order may not in the target, so flag it for a code change.
 - Watch the target's known hazards: suffixes and case endings around placeholders, text expansion in buttons, and placeholder order in right-to-left text.
 - Mark legal, safety, marketing, and culturally sensitive copy for a native speaker or specialist. A machine translation of a consent text is a draft.
+
+**Complete when:** every worklist item has a translation that follows the terminology sources, with placeholders intact, plural categories complete, and copy needing a specialist marked.
 
 ## 5. Apply without collateral damage
 
@@ -62,7 +64,7 @@ Removing unused or orphaned keys is a separate, confirmed step: list them, with 
 ## 6. Verify
 
 - Parse every changed file with the format's real parser.
-- Run a key-parity check: every target has exactly the source's keys, apart from listed exceptions.
+- Run a key-parity check: every target has exactly the source's keys, apart from plural-category keys the target language adds or drops and listed exceptions.
 - Compare placeholders, plural categories, and markup tags between source and target for each changed key.
 - Run the project's i18n lint, type generation, tests, and build.
 - Where the app can run, view a few changed screens in a long-text language and a right-to-left language if one is supported.

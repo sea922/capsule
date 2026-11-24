@@ -14,24 +14,30 @@ paths:
 
 # Web Design Quality Standards
 
+These are defaults. The project's design system, tokens, and existing visual
+language come first: where they exist, consistency with them matters more than
+anything below. Use the `interface-polish` skill to audit tokens, find drift,
+and finish an existing interface.
+
 ## Anti-Template Policy
 
-Do not ship generic template-looking UI. Frontend output should look intentional, opinionated, and specific to the product.
+Avoid generic template-looking UI. Frontend output should look intentional and specific to the product.
 
-### Banned Patterns
+### Patterns to Avoid
+
+Where the project has no design system to follow, avoid:
 
 - Default card grids with uniform spacing and no hierarchy
 - Stock hero section with centered headline, gradient blob, and generic CTA
 - Unmodified library defaults passed off as finished design
 - Flat layouts with no layering, depth, or motion
-- Uniform radius, spacing, and shadows across every component
 - Safe gray-on-white styling with one decorative accent color
 - Dashboard-by-numbers layouts with sidebar + cards + charts and no point of view
 - Default font stacks used without a deliberate reason
 
-### Required Qualities
+### Qualities to Aim For
 
-Every meaningful frontend surface should demonstrate at least four of these:
+A new surface with no design system to follow usually benefits from several of these:
 
 1. Clear hierarchy through scale contrast
 2. Intentional rhythm in spacing, not uniform padding everywhere
@@ -50,7 +56,7 @@ Every meaningful frontend surface should demonstrate at least four of these:
 2. Define a palette intentionally.
 3. Choose typography deliberately.
 4. Gather at least a small set of real references.
-5. Reuse the project's design system and tokens first; use the `accessibility` skill to audit the result.
+5. Reuse the project's design system and tokens first; steps 1–4 apply only where it leaves the choice open. Use the `accessibility` skill to audit the result.
 
 ## Worthwhile Style Directions
 

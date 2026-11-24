@@ -1,6 +1,6 @@
 ---
 name: database-migrations
-description: Plan, write, and verify database schema and data changes that survive a live deploy without losing data or locking tables. Use when adding, changing, renaming, or dropping columns, tables, indexes, or constraints, writing a migration or backfill, reviewing one, or checking that a migration did what it claimed. Slow queries belong to performance; a migration's surrounding release to ship-it.
+description: Plan, write, and verify database schema and data changes that survive a live deploy without losing data or locking tables. Use when adding, changing, renaming, or dropping columns, tables, indexes, or constraints, writing a migration or backfill, reviewing one, or checking that a migration did what it claimed. Designing the schema, index, or query belongs to database-design; slow queries to performance; a migration's surrounding release to ship-it.
 ---
 
 # Database migrations

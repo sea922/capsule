@@ -6,9 +6,9 @@ Prices, model names, cache rules, minimum cacheable sizes, retention times, and 
 
 ## Measure first
 
-Log per call: model, input tokens, output tokens, cached tokens read and written, latency (time to first token and total), retries, and the outcome. Aggregate per feature and per unit of work (a document, a conversation, a ticket). Without this, every later step is a guess.
+Log per call: model, input tokens, output tokens, cached tokens read and written, latency (time to first token and total), retries, and the outcome. Aggregate per feature and per unit of work (a document, a conversation, a ticket). Without this, every later step is a guess. Keep personal data and raw prompt and response content out of these logs unless the project has decided to keep them.
 
-Estimate a batch before running it: items times expected tokens times the current rate, checked on a small sample.
+Estimate a batch before running it: items times expected tokens times the current rate, checked on a small sample. A large paid batch needs the user's go-ahead, with the estimate shown.
 
 ## Cheapest levers first
 

@@ -61,9 +61,9 @@ Start the wait before the action that triggers it. Do not use `page.waitForTimeo
 
 ## Data and sign-in
 
-- A setup project signs in once and writes `storageState`; test projects depend on it and load that state. Use one saved state per role.
+- A setup project signs in once and writes `storageState`; test projects depend on it and load that state. Use one saved state per role. Saved state files hold session tokens: keep them out of version control.
 - Fixtures create per-test records through the API with a unique suffix, and delete them afterwards.
-- `page.route` replaces third-party calls at the network boundary. Leave the application's own API real.
+- `page.route` replaces third-party calls the browser makes. Calls the backend makes (payments, email) need a stub server or the provider's sandbox, set in the test environment's configuration. Leave the application's own API real.
 - Fix `timezoneId`, `locale`, and `viewport` in the configuration, emulate reduced motion, and use the clock API for time-dependent journeys.
 
 ## Configuration points
@@ -76,12 +76,12 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,       // a pass on retry is reported as flaky
   reporter: [['html'], ['junit', { outputFile: 'results/e2e.xml' }]],
   use: {
-    baseURL: process.env.BASE_URL,
+    baseURL: process.env.BASE_URL ?? 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
-  webServer: { command: 'npm run start:test', url: process.env.BASE_URL, reuseExistingServer: !process.env.CI },
+  webServer: { command: 'npm run start:test', url: process.env.BASE_URL ?? 'http://localhost:3000', reuseExistingServer: !process.env.CI },
 });
 ```
 

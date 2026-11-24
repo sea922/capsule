@@ -21,7 +21,7 @@ paths:
 
 ## Error Handling
 
-Always wrap errors with context:
+Wrap errors with context by default:
 
 ```go
 if err != nil {
@@ -31,4 +31,5 @@ if err != nil {
 
 ## Related capsule Skills
 
-Use the `coding-standards` skill to apply or define a project's conventions.
+Use the `coding-standards` skill to apply or define a project's conventions;
+it has a Go reference that goes deeper than these rules.

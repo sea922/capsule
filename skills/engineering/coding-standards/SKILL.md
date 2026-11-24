@@ -1,6 +1,6 @@
 ---
 name: coding-standards
-description: Supplies coding conventions for shared code, backend services, and frontend interfaces. Use when applying project coding standards during implementation, assessing convention violations in review, or defining standards for a project. Implementation stays with implement; review orchestration stays with code-review; consequential architecture decisions belong to codebase-design.
+description: Supplies coding conventions for shared code, backend services, and frontend interfaces, with per-stack references for TypeScript, React, Python, Java, Go, and C#. Use when applying project coding standards during implementation, assessing convention violations in review, or defining standards for a project. Implementation stays with implement; review orchestration stays with code-review; consequential architecture decisions belong to codebase-design.
 ---
 
 # Coding standards
@@ -46,7 +46,7 @@ are identified, with assumptions distinguished from documented rules.
 | Java, including Spring Boot, Quarkus, JPA, and MyBatis | [Java](references/JAVA.md) |
 | Go | [Go](references/GO.md) |
 | C# and .NET | [C#](references/CSHARP.md) |
-| A change crossing both domains | Both references, including their shared interface |
+| A change crossing backend and frontend | Both domain references, including their shared interface |
 | A CLI, pure library, or other code outside these domains | The shared baseline only |
 
 Classify by responsibility: a server endpoint written inside a UI framework is

@@ -6,7 +6,7 @@ writing the way back. The checks after a deploy has run belong to `ship-it`
 
 ## Pipeline stages
 
-Put the cheapest and most likely failures first, and run independent checks in parallel.
+Put the cheapest and most likely failures first, and run independent checks in parallel. Pipeline syntax differs between forges and changes: read the current documentation for the one the project uses.
 
 | Stage | Proves | Runs on |
 | --- | --- | --- |

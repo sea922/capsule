@@ -126,4 +126,6 @@ Use descriptive names with `@DisplayName`:
 
 ## Related capsule Skills
 
-Use the `tdd` skill for test-first work and `property-based-testing` for generated cases.
+Use the `tdd` skill for test-first work, `e2e-testing` for end-to-end suites,
+and `property-based-testing` for generated cases. The `coding-standards`
+skill's Java references cover test-slice choices per framework.

@@ -14,7 +14,7 @@ Use the standard `go test` with **table-driven tests**.
 
 ## Race Detection
 
-Always run with the `-race` flag:
+Run tests with the `-race` flag by default:
 
 ```bash
 go test -race ./...

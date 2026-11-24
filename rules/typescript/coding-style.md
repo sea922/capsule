@@ -202,4 +202,5 @@ const validated: UserInput = userSchema.parse(input)
 
 ## Related capsule Skills
 
-Use the `coding-standards` skill to apply or define a project's conventions.
+Use the `coding-standards` skill to apply or define a project's conventions;
+it has a TypeScript (with NestJS, Prisma, and Bun sections) reference that goes deeper than these rules.

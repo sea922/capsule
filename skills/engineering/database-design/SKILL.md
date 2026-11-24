@@ -19,6 +19,8 @@ Identify the engine and its version from the repository or the running instance,
 
 Read existing schemas, models, and query code for the conventions already in use, and follow them. Say which volumes and patterns are measured and which are assumed. A design made without the access patterns is a guess, so ask for them when they cannot be read from the code.
 
+**Complete when:** the engine and version are known, and the access patterns and volumes are listed with measured and assumed ones told apart.
+
 ## 2. Model the data
 
 Start normalised: one fact in one place, each table about one thing. Denormalise only for a read that is known to be too slow or too frequent to join, and name who keeps the copy in step.
@@ -26,6 +28,8 @@ Start normalised: one fact in one place, each table about one thing. Denormalise
 Give every table a primary key. Default to a compact, monotonic surrogate key, because random keys scatter writes across the index; use a time-ordered identifier when ids must be generated outside the database or must not reveal counts. Keep natural keys as unique constraints.
 
 Model relationships with foreign keys and decide each delete rule deliberately. Keep tenancy, ownership, and lifecycle fields as real columns. Semi-structured columns suit optional attributes nobody filters on; a field that is filtered, joined, or constrained deserves a column.
+
+**Complete when:** every table has a primary key, each relationship has a delete rule, and each denormalised copy has a named owner.
 
 ## 3. Choose types and constraints
 
@@ -37,6 +41,8 @@ Pick the narrowest type that holds the real range of values, and choose it for m
 - booleans for flags, and a constrained text column or lookup table for a status set that will grow
 
 Let the database enforce invariants: `NOT NULL` wherever absence has no meaning, unique constraints for identity, foreign keys for references, and check constraints for ranges and allowed values. A rule enforced only in application code holds until a second writer, a script, or a race breaks it.
+
+**Complete when:** each column has a type chosen for its meaning and range, and each invariant from step 1 is enforced by a constraint or its absence is explained.
 
 ## 4. Index for the queries
 
@@ -50,19 +56,29 @@ Write the index from the query, not from the table:
 
 Every index slows writes and takes space. Remove one that no query uses, and prefer extending an existing index over adding a near duplicate.
 
+**Complete when:** each index names the query it serves, and no index lacks one.
+
 ## 5. Write the query and read its plan
 
 Select the columns needed. Page with a keyset on an indexed, unique order instead of a deep offset. Fetch related rows in one query or one batch per level instead of one query per row. Write multi-row inserts and bounded batches for bulk work. Always pass values as parameters.
 
 Then read the plan on data of realistic size and distribution, because a plan on an empty table says nothing. Check the access method for each table, the estimated against the actual row counts, and any sort or temporary structure. A wide gap between estimate and actual usually means stale statistics or a predicate the planner cannot see through. Change one thing and read the plan again.
 
+A measured plan executes the statement. Run it on a replica or a non-production copy, ask before running anything against production, and never run a measured plan of a write there.
+
+**Complete when:** each query that matters has a plan read on realistic data, or is reported as not run.
+
 ## 6. Transactions and isolation
 
 Group writes that must succeed or fail together, and keep the transaction short: no network calls, user waits, or large loops while it is open. Know the engine's default isolation level and what it permits; for a read-then-write that must not race, use a locking read, an atomic conditional update, or a stricter level, and expect to retry on a serialisation failure or deadlock. Take locks in one consistent order across code paths. Make retried writes idempotent with a unique key or an upsert.
 
+**Complete when:** each group of writes has a transaction boundary, and each read-then-write has a stated defence against a race.
+
 ## 7. Connections and limits
 
 Use a pool, and size it from what the database can serve across every application instance, not per instance. More connections than the database has capacity for makes everything slower. Set acquisition, statement, and idle-in-transaction timeouts so one stuck request cannot hold the rest, and recycle connections before the server's idle limit closes them. Send a read to a replica only when it tolerates lag, and keep a read that follows the user's own write on the primary. The runtime account gets the privileges the application needs and no more, with schema changes under a separate one.
+
+**Complete when:** the pool size is derived from the database's capacity across all instances, and the timeouts and account privileges are set.
 
 ## 8. Load the engine reference
 
@@ -74,6 +90,8 @@ Read the one that matches the engine before finalising types, indexes, or settin
 - [ClickHouse](references/CLICKHOUSE.md) for analytical tables
 
 For an engine not listed, apply the steps above and check its own documentation for index kinds, default isolation, and locking behaviour.
+
+**Complete when:** the matching reference has been read, or the engine's own documentation where none matches.
 
 ## 9. Report
 

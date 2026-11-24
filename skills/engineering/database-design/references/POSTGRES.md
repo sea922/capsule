@@ -46,7 +46,7 @@ A query predicate must match a partial or expression index for the planner to us
 - Claim queue work with `FOR UPDATE SKIP LOCKED` inside a short transaction. It is right for queues and wrong for reads that need a consistent view.
 - Use `RETURNING` instead of a second read after a write.
 - Bulk-load with multi-row `INSERT` or `COPY`, not a statement per row.
-- Prefer `EXISTS` over `IN` with a large subquery, and `= ANY(?)` with an array parameter over a long literal list.
+- Prefer `= ANY(?)` with an array parameter over a long literal list.
 
 ## Reading a plan
 
@@ -67,7 +67,7 @@ MVCC keeps old row versions until vacuum removes them. A transaction left open b
 
 ## Row-level security
 
-Enable it on tenant tables and index the columns its policies filter on. Wrap a per-request function call in a scalar subquery, as in `(SELECT current_setting('app.tenant_id'))`, so it is evaluated once and not per row. Table owners and superusers bypass policies unless forced, so the application must not connect as either.
+Enable it on tenant tables and index the columns its policies filter on. Wrap a per-request function call in a scalar subquery, as in `(SELECT current_setting('app.tenant_id'))`, so it is evaluated once and not per row. Superusers and roles with `BYPASSRLS` always bypass policies, and the table owner does unless the table has `FORCE ROW LEVEL SECURITY`, so the application must connect as neither.
 
 ## Connections and settings
 

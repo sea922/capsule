@@ -1,12 +1,17 @@
 ---
 paths:
-  - "**/src/main/java/**/*.java"
-  - "**/src/test/java/**/*.java"
+  - "**/*Controller.java"
+  - "**/*Service.java"
+  - "**/*Repository.java"
+  - "**/*Configuration.java"
+  - "**/*Config.java"
+  - "**/*Application.java"
   - "**/application*.yml"
   - "**/application*.yaml"
-  - "**/application*.properties"
 ---
 # Spring Boot Rules
+
+Apply only when the build file declares Spring Boot.
 
 Use these rules for Spring Boot projects alongside the general Java rules. The
 project's own conventions win, and annotation and property names change between
@@ -81,8 +86,8 @@ class OrderController {
 ## Testing
 
 - Test service and domain logic with plain JUnit and Mockito, without a Spring context.
-- Use `@WebMvcTest` for controller mapping, validation, error shape, and security rules.
-- Use `@DataJpaTest` against a real database in a container for repository queries.
+- Use `@WebMvcTest` for controller mapping, validation, error shape, and security rules. The slice does not load every configuration class, so import the security configuration the test depends on.
+- Use `@DataJpaTest` for repository queries, against a real database in a container. By default the slice may replace the datasource with an embedded database; configure it to keep the container's, as the installed version documents.
 - Keep `@SpringBootTest` for wiring across layers, and keep its configurations few so the context is reused.
 - Cover the unauthenticated and forbidden cases of a protected endpoint.
 - Wait for asynchronous results with a polling assertion, not `Thread.sleep`.

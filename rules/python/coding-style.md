@@ -41,4 +41,5 @@ class Point(NamedTuple):
 
 ## Related capsule Skills
 
-Use the `coding-standards` skill to apply or define a project's conventions.
+Use the `coding-standards` skill to apply or define a project's conventions;
+it has a Python (with FastAPI, Django, and Celery sections) reference that goes deeper than these rules.

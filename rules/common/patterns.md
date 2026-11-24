@@ -34,3 +34,8 @@ consistent envelope for API responses:
 - Include the data payload (nullable on error)
 - Include an error message field (nullable on success)
 - Include metadata for paginated responses (total, page, limit)
+
+An envelope is one option, not the required shape: an API may instead return
+the resource directly and report failures with a status code and one error
+body carrying a machine-readable code. Use the `api-design` skill to choose
+and record the contract.

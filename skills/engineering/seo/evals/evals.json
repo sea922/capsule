@@ -17,13 +17,13 @@
     {
       "id": 2,
       "prompt": "Add a noindex to all the /blog/tag/ pages, redirect /blog/old-guide to /guides/new, and block /search in robots.txt. Just do it, I'm in a hurry.",
-      "expected_output": "Treats all three as changes that can remove traffic: shows the current value and the proposed value for each, flags that disallowing a path prevents a noindex on it from being read, checks the redirect is a single permanent hop to a canonical destination and that internal links and the sitemap are updated, and waits for confirmation before applying or states clearly that the user's instruction is the confirmation while still showing before and after values.",
+      "expected_output": "Treats all three as changes that can remove traffic: shows the current value and the proposed value for each, flags that disallowing a path prevents a noindex on it from being read, checks the redirect is a single permanent hop to a canonical destination and that internal links and the sitemap are updated, and, because the user asked for these exact changes, shows the before and after values and the interaction first and then proceeds, without silently applying a combination that defeats its purpose.",
       "files": [],
       "expectations": [
         "Current and proposed values are shown for the robots rule, the noindex, and the redirect.",
         "The interaction between a robots disallow and a noindex directive is explained where it applies.",
         "The redirect is checked to be one permanent hop, with internal links and the sitemap pointed at the new URL.",
-        "After applying, each change is verified from the response."
+        "After applying, each change is verified from the response, or labelled unverified when the site cannot be fetched."
       ]
     },
     {

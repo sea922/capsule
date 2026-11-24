@@ -69,7 +69,9 @@ area:
 | **code-review-type-design** | Types that no longer enforce their invariants |
 | **code-review-comments** | Comments and docs that contradict the code |
 | **code-review-tests** | Tests that would not catch a regression |
+| **java-reviewer** | Java, Spring Boot, and Quarkus changes |
 | **database-migrations-reviewer** | Schema, migration, and query safety |
+| **benchmark-auditor** | Whether a claimed speedup is supported by its measurement |
 | **performance-reviewer** | Hot paths, unbounded work, bundle weight |
 | **accessibility-reviewer** | User-interface accessibility |
 

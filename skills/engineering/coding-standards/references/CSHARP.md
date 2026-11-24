@@ -62,7 +62,8 @@ change touches.
 - **Lifetimes.** A singleton must not depend on a scoped service; the scoped
   instance is captured for the life of the process. When a singleton or
   background service needs scoped work, create a scope per unit of work.
-  Enable scope validation so the container reports this at start-up.
+  Enable scope validation and validate-on-build so the container reports this
+  at start-up in every environment.
 - **HTTP clients** come from the client factory (named or typed), not from
   `new HttpClient()` per call (socket exhaustion) nor from a static instance
   that never refreshes DNS.
@@ -78,7 +79,8 @@ change touches.
 - **Abstractions.** An interface per class is not a requirement. Add one at a
   boundary that has a second implementation or needs a test seam. With an ORM
   that already provides a unit of work and repositories, another generic
-  repository layer usually hides useful features and adds little.
+  repository layer usually hides useful features and adds little. Where the
+  project already has repositories, follow them.
 - **Guard clauses** at the top of public methods (`ArgumentNullException
   .ThrowIfNull` and its siblings) keep invalid state out early.
 

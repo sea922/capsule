@@ -8,10 +8,10 @@
       "files": [],
       "expectations": [
         "A worklist of missing keys per locale is built before any translation.",
-        "Each key's usage in the checkout code is read to choose the translation in context.",
+        "Each key's usage in the checkout code is read to choose the translation in context, or the translation is labelled as made without usage context when the code is not available.",
         "Placeholders, plural forms, and markup are preserved exactly and required plural categories for each language are supplied.",
         "Only worklist keys change; key order, formatting, and unrelated translations are untouched.",
-        "Changed files are parsed and a key-parity check is run, and the report says the translations were not reviewed by a native speaker."
+        "Changed files are parsed and a key-parity check is run, or these are labelled unverified when no files are available, and the report says the translations were not reviewed by a native speaker."
       ]
     },
     {
@@ -37,7 +37,7 @@
         "Keys matching dynamic prefixes such as status.* are listed as uncertain and not deleted by default.",
         "Deletion happens only after the user confirms the list.",
         "Approved keys are removed consistently from all locale files without reformatting them.",
-        "Files are parsed and key parity and project checks are run afterwards."
+        "Files are parsed and key parity and project checks are run afterwards, or labelled unverified when they could not be run."
       ]
     }
   ]

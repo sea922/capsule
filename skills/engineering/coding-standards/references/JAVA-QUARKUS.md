@@ -22,10 +22,12 @@ consequences shape the code:
 ## Beans and scopes
 
 - `@ApplicationScoped` is the default for services: created lazily behind a
-  client proxy, so interceptors work. `@Singleton` has no proxy; choose it
-  deliberately, not as a synonym.
-- Interceptors, including `@Transactional`, do not apply to a call from one
-  method to another in the same bean, or to private methods.
+  client proxy. `@Singleton` has no client proxy, so it is created when first
+  injected and is harder to replace in tests; interceptors work on both.
+  Choose it deliberately, not as a synonym.
+- Unlike Spring, Quarkus intercepts a call from one method to another in the
+  same bean, so `@Transactional` on the inner method does apply; private
+  methods are never intercepted. Confirm against the installed version.
 - Constructor injection as elsewhere; avoid private injected fields, which
   need reflection.
 
@@ -48,6 +50,16 @@ Pick the active-record style or the repository style for a bounded context and
 keep to it. Bind query parameters; never build a query string from input.
 Transactions belong on the service method. The entity and persistence advice
 in [JAVA.md](JAVA.md) applies unchanged.
+
+## Caching, configuration, and health
+
+- Cache through the cache extension's annotations, with a key that carries
+  everything the result depends on and an invalidation for every write path.
+- Properties and YAML configuration are equivalent; use the one the project
+  has, and keep per-environment values in profiles, not in code.
+- Add a readiness check for each dependency the service cannot work without,
+  and keep liveness free of dependency checks so an outage does not restart
+  the service.
 
 ## Messaging and async
 
@@ -72,6 +84,12 @@ in [JAVA.md](JAVA.md) applies unchanged.
   ownership in the service through the security identity.
 - Keep secrets out of the configuration file committed to the repository;
   supply them from the environment or a secret store.
+- Hash passwords with the framework's bcrypt utility or the identity
+  provider; never store or compare them in plain text.
+- Rate-limit sign-in and other costly endpoints, at the gateway or with a
+  fault-tolerance or rate-limit extension.
+- Set security response headers (content type options, frame options,
+  transport security) through the HTTP configuration or a response filter.
 - Configure CORS with named origins. Do not take the client address from
   `X-Forwarded-For` unless a trusted proxy sets it and proxy handling is on.
 

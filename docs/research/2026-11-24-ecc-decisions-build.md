@@ -90,6 +90,26 @@ and provider field names, and its ECC-specific harness sections. The skills
 state defaults that yield to the project and send the reader to current vendor
 documentation for anything that changes between versions.
 
+## Deep review
+
+After the build, six read-only reviewers re-read the work and the sources: the
+skills still marked Out of scope (opening each file), ECC's agents, hooks, and
+commands, every rule file against its ECC original, the 53 Covered claims, and
+every line of the new skills and references. The corrections they led to:
+HTTP retry and precondition semantics in `api-design`; row-level-security and
+production-plan safety in `database-design`; Quarkus interception in the
+Quarkus reference and `java-reviewer`; Prisma, Vite, and Next.js claims in the
+TypeScript and React references; the scope of browser request stubbing in
+`e2e-testing`; the hook configuration shape in `rules/web/hooks.md`; the
+`paths:` header and test-slice lines of `rules/java/springboot.md`; and
+pointers from the rules and neighbouring skills to the new skills. The review
+rested on model knowledge, not on current vendor documentation.
+
+Gaps it found that are not built: stack review passes for Python, Go,
+TypeScript, React, and C#; issue triage; observability; passive perimeter
+checks; cutting a release; design direction for a new screen; independent
+dissent on a decision; a whole-catalogue skill audit.
+
 ## Not verified
 
 - No new eval has been run against a model.

@@ -119,6 +119,9 @@ recovery failures.
 - **Python.** Define a small exception hierarchy under one base class per
   package. Convert with `raise ... from err`. Avoid bare `except:` and
   `except Exception: pass`. See [PYTHON.md](PYTHON.md).
+- **Java.** Throw unchecked exceptions named for the failure, wrap with the
+  cause, and map them to responses in one central handler. See
+  [JAVA.md](JAVA.md).
 - **Go.** Return errors as values, wrap with `%w`, and match with `errors.Is`
   and `errors.As`. Keep `panic` for programmer errors. See [GO.md](GO.md).
 - **C#.** Throw specific exception types, rethrow with `throw;`, and handle

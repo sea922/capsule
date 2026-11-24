@@ -112,4 +112,6 @@ public class OrderNotFoundException extends RuntimeException {
 
 ## Related capsule Skills
 
-Use the `coding-standards` skill to apply or define a project's conventions.
+Use the `coding-standards` skill to apply or define a project's conventions;
+it has Java, Spring Boot, and Quarkus references that go deeper than these
+rules. The `java-reviewer` agent reviews Java changes read-only.

@@ -35,7 +35,7 @@ For local development, one Compose file should bring up the service and its depe
 
 ## 3. Define the pipeline
 
-Order the stages so cheap failures come first: lint and type checks, unit tests, build, integration tests against real dependencies, image build and scan, then deploy. Read [DEPLOYMENT.md](references/PIPELINES.md) for stage design.
+Order the stages so cheap failures come first: lint and type checks, unit tests, build, integration tests against real dependencies, image build and scan, then deploy. Read [PIPELINES.md](references/PIPELINES.md) for stage design.
 
 - Build the artifact once, tag it with the commit, and promote that same artifact through every environment. Rebuilding per environment tests one thing and ships another.
 - Run verification on every proposed change; deploy only from the protected branch or a release tag.

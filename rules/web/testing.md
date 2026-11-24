@@ -48,6 +48,8 @@ paths:
 
 ## E2E Shape
 
+Use the `e2e-testing` skill to build or repair the suite.
+
 ```ts
 import { test, expect } from '@playwright/test';
 

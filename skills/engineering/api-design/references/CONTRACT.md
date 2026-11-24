@@ -85,7 +85,7 @@ Every accepted field comes from an allowlist and maps to a query the database ca
 
 ## Rate limits
 
-State the limit, its window, and what it is keyed on (credential, account, address, endpoint). Exceeding it returns `429` with `Retry-After`. Expose remaining allowance in response headers, using the `RateLimit-*` names or the project's existing ones, so clients can slow down before being refused. Give expensive endpoints their own tighter limit instead of lowering the global one.
+State the limit, its window, and what it is keyed on (credential, account, address, endpoint). Exceeding it returns `429` with `Retry-After`. Expose remaining allowance in response headers, using the project's existing header names, or the current IETF rate-limit header draft after checking its status, so clients can slow down before being refused. Give expensive endpoints their own tighter limit instead of lowering the global one.
 
 ## Deprecation
 

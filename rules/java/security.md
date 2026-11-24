@@ -97,3 +97,4 @@ try {
 ## Related capsule Skills
 
 Use the `security-review` skill for a dedicated security or privacy audit.
+The `java-reviewer` agent flags security defects in Java changes read-only.

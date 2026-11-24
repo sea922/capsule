@@ -5,8 +5,8 @@ decide; what follows are defaults for where they are silent. This is the layer
 under the React rules and the [frontend standards](FRONTEND.md): it assumes the
 rules of hooks, the state-location ladder, and the query-priority order, and
 covers the judgement calls and traps beneath them. Skip the framework sections
-that do not apply. Measured rendering problems belong to `performance`, which
-has its own [React reference](../../performance/references/REACT.md).
+that do not apply. Measured rendering problems belong to the `performance`
+skill, which has its own React reference.
 
 ## Component contracts
 
@@ -94,6 +94,21 @@ has its own [React reference](../../performance/references/REACT.md).
   route root blocks the whole page on its slowest part; a fallback without a
   matching size shifts the layout when content arrives.
 
+## Forms
+
+- **Uncontrolled by default.** Let the form element hold the values and read
+  them on submit. Control an input only when its value drives other interface,
+  is formatted on each keystroke, or is validated as the user types.
+- **Form actions** (where the installed React version has them) give pending
+  and result state without hand-written submit handlers. Validate on the
+  server whatever the client checked, and return field errors in a shape the
+  form can show beside each field.
+- **Past trivial size, use the project's form library.** Multi-step flows,
+  dynamic field arrays, and cross-field validation written by hand in state
+  become the hardest code in the feature to change.
+- **Keep the user's input on failure.** A failed submit leaves every value in
+  place, moves focus to the first error, and re-enables the submit control.
+
 ## Errors
 
 - Error boundaries catch errors thrown while rendering. They do not catch
@@ -144,10 +159,10 @@ version and its docs before applying or flagging any of the following.
   behaviour in a production build; development mode does not cache the same
   way.
 - **File conventions are versioned.** The request-interception file was
-  renamed in a recent major (`middleware` to `proxy`). Do not "fix" a filename
+  renamed in one recent major (`middleware` to `proxy`). Do not "fix" a filename
   from memory; check the docs for the installed version.
-- **The bundler is versioned.** Recent releases use Turbopack for development
-  by default and offer it for builds. If a webpack-only plugin or a custom
+- **The bundler is versioned.** Recent releases default to Turbopack for
+  development and, in the newest, for builds. If a webpack-only plugin or a custom
   webpack config is in play, confirm which bundler runs before debugging a
   build difference. The flag to opt out depends on the version.
 - **Slow development server.** Confirm the default bundler is active and that
@@ -170,9 +185,9 @@ version and its docs before applying or flagging any of the following.
   the two differ. Verify with a build and `vite preview` before release.
   `vite preview` is a smoke test, not a production server.
 - **The client prefix is not a security boundary.** Every prefixed variable is
-  inlined into the bundle. Setting `envPrefix` to an empty string, or calling
-  `loadEnv` with an empty prefix and passing the result to `define`, exposes
-  server secrets.
+  inlined into the bundle. Widening `envPrefix` to a prefix server variables
+  share, or calling `loadEnv` with an empty prefix and passing the result to
+  `define`, exposes server secrets.
 - **Production source maps publish the source.** Leave them off, or use hidden
   maps uploaded to the error tracker and removed from the deployed output.
 - **Stale pre-bundle cache.** After patching a dependency or switching
@@ -184,8 +199,8 @@ version and its docs before applying or flagging any of the following.
 - **Containers and proxies.** The dev server binds to localhost by default;
   set `server.host` in a container, and the HMR client port when behind a
   proxy.
-- **Monorepos.** File serving is restricted to the project root; allow the
-  workspace root explicitly when importing sibling packages.
+- **Monorepos.** File serving is limited to the detected workspace root; add
+  to `server.fs.allow` only when importing from outside it.
 - **Aliases.** Reuse `tsconfig` paths through a plugin instead of repeating
   them in `resolve.alias`.
 - **Slow dev server.** Barrel files and extensionless imports cost the most.
