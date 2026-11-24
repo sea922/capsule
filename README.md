@@ -8,7 +8,7 @@ Plan, build, review, ship, and write with skills that keep agents on evidence,
 not guesses. Works with GitHub and GitLab.
 
 [![Version](https://img.shields.io/github/package-json/v/sea922/capsule?label=version&color=blueviolet)](CHANGELOG.md)
-[![Skills](https://img.shields.io/badge/skills-40-orange)](#-skills)
+[![Skills](https://img.shields.io/badge/skills-47-orange)](#-skills)
 [![CI](https://github.com/sea922/capsule/actions/workflows/ci.yml/badge.svg)](https://github.com/sea922/capsule/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 [![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757)](#-install)
@@ -66,7 +66,13 @@ compose.
 | [benchmark](docs/engineering/benchmark.md) | Produce or vet a measurement a decision can rest on, and search variants within a budget. |
 | [performance](docs/engineering/performance.md) | Make software measurably faster or lighter, or review code for performance risk, with numbers that hold up. |
 | [codebase-design](docs/engineering/codebase-design.md) | Design cohesive modules, evidence-gated abstractions, dependency direction, and explicit contracts. |
-| [coding-standards](docs/engineering/coding-standards.md) | Apply project conventions with shared rules and backend and frontend guidance. |
+| [api-design](docs/engineering/api-design.md) | Design or change an HTTP API contract without breaking the callers that depend on it. |
+| [database-design](docs/engineering/database-design.md) | Design schemas, indexes, and queries that fit the workload, with PostgreSQL, MySQL, Redis, and ClickHouse references. |
+| [containers-and-deploys](docs/engineering/containers-and-deploys.md) | Build a service's container image, pipeline, rollout strategy, and infrastructure definitions, and prove them by running them. |
+| [llm-features](docs/engineering/llm-features.md) | Build, evaluate, and tune product features that call a language model, keeping or reverting each change on the project's own evals. |
+| [interface-polish](docs/engineering/interface-polish.md) | Audit design tokens, find visual drift, and apply concrete polish details to an existing interface. |
+| [i18n-sync](docs/engineering/i18n-sync.md) | Keep locale files in step with source strings: missing, unused, and stale keys, translated in context and verified. |
+| [coding-standards](docs/engineering/coding-standards.md) | Apply project conventions with shared rules, backend and frontend guidance, and per-stack references. |
 
 ### 🔍 Investigate and plan
 
@@ -86,6 +92,7 @@ compose.
 | --- | --- |
 | [code-review](docs/engineering/code-review.md) | Review changes at quick, standard, or deep depth with evidence-backed findings. |
 | [production-readiness](docs/engineering/production-readiness.md) | Judge whether a release is ready for real users, with a ship, ship-with-caveats, or block verdict. |
+| [e2e-testing](docs/engineering/e2e-testing.md) | Build and repair end-to-end suites that cover real journeys and stay trustworthy. |
 | [accessibility](docs/engineering/accessibility.md) | Audit and fix UI against WCAG 2.2 AA with real keyboard, screen-reader, zoom, and contrast evidence. |
 | [security-review](docs/engineering/security-review.md) | Assess trust boundaries and concrete abuse paths in a scoped, read-only review. |
 | [verification-before-completion](docs/engineering/verification-before-completion.md) | Prove completion claims with fresh, scope-matched evidence and honest verdicts. |

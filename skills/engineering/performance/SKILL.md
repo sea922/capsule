@@ -37,6 +37,8 @@ Read the profile before believing it. Separate self time from inclusive time, an
 
 First ask whether the work can be avoided: fewer round trips, less data fetched, work done once instead of per item, the right index, pagination. Then make it cheaper. Change one thing per measurement, because two changes measured together cannot be told apart.
 
+For React and Next.js work, the [React reference](references/REACT.md) lists candidate causes and fixes in impact order; use it once the limiter is confirmed. When the confirmed limiter is repeated expensive work on inputs that rarely change, such as parsing, extraction, compilation, or file analysis, read the [caching reference](references/CACHING.md) before adding a cache.
+
 Caching, batching, concurrency, and laziness change behavior. Name the invariant each one adds, such as cache key inputs, staleness window, ordering, memory ceiling, or partial-failure handling, and keep the test suite green.
 
 **Complete when:** one change is in place, its new invariants are stated, and the existing checks pass.

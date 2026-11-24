@@ -8,6 +8,11 @@ share a group reason. See the [review](2026-11-24-ecc-review.md), the
 [stack skills review](2026-11-24-ecc-stack-skills-review.md), and the
 [adoption research](2026-11-24-ecc-adoption-research.md).
 
+**Update:** the Recommend, Possible, and Fold as reference rows have since
+been built. The [build research](2026-11-24-ecc-decisions-build.md) maps each
+row to the skill or reference that answers it; the tables below keep the
+decision as it was made.
+
 ## Summary
 
 | Decision | Skills | Meaning |

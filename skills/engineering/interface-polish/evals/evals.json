@@ -1,0 +1,44 @@
+{
+  "skill_name": "interface-polish",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our settings page feels off but I can't say why. It's a React app with Tailwind. Can you take a look?",
+      "expected_output": "Locates the Tailwind config and conventions, inventories the colors, type, spacing, radius, shadow, and motion values the page uses with counts, reports drift with file and line, walks the detail checks, confirms findings in the running page across themes and viewports, and reports before and after rows without restyling the product.",
+      "files": [],
+      "expectations": [
+        "The token source and the project's conventions are located before anything is changed.",
+        "Values in use are inventoried by category with counts and whether each is a token or a literal.",
+        "Drift findings name a file, the value found, and the value the system expects.",
+        "Findings are confirmed in the running interface, or labelled as unconfirmed from source only.",
+        "The product's visual direction is kept; no new palette or style is introduced."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Extract design tokens from this codebase. We have hex colors and pixel values scattered across about 60 CSS modules.",
+      "expected_output": "Counts the distinct values per category, proposes the smallest token set that covers real usage, folds near-duplicates into the dominant value and lists each merge, writes the tokens in a format the project already uses, and flags merges that visibly change the interface for a decision.",
+      "files": [],
+      "expectations": [
+        "The proposed tokens come from counted values in the codebase, not from a generic scale.",
+        "Near-duplicate values are merged and every merge is listed with its reason.",
+        "Tokens are named by role where appropriate and written in the project's existing format.",
+        "No second token pipeline or new dependency is added without asking.",
+        "Merges that would visibly change the interface are flagged for the user's decision."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Polish this dropdown menu component. It has transition: all 0.4s, a single dark box-shadow, and the chevron icon looks slightly off-center.",
+      "expected_output": "Names the transitioning properties with a shorter duration and a quicker exit, replaces the single shadow with soft layered ones checked in dark theme, corrects the chevron optically, checks states and hit area, lists call sites before changing the shared component, and verifies on screen including reduced motion.",
+      "files": [],
+      "expectations": [
+        "transition: all is replaced with named properties and a duration suited to interface state changes.",
+        "The shadow is changed to layered, low-opacity shadows and checked in the dark theme.",
+        "The chevron is aligned optically, in the asset or with a small offset.",
+        "Hover, pressed, focus-visible, and disabled states and the hit area are checked.",
+        "The result is verified in the rendered component, and accessibility conformance is handed to the accessibility skill instead of being certified."
+      ]
+    }
+  ]
+}

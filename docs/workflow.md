@@ -22,6 +22,13 @@ Start from the question or outcome you have. Most skills can be selected by the 
 | Make software faster or lighter | [performance](engineering/performance.md) | Before and after numbers with their range, and the limiter named |
 | Compare options or check a speed claim | [benchmark](engineering/benchmark.md) | A reproducible verdict with runs, range, and limiter |
 | Change a database schema or data | [database-migrations](engineering/database-migrations.md) | A sequenced, rehearsed plan with honest rollback, and verified results |
+| Design or change an HTTP API | [api-design](engineering/api-design.md) | A recorded contract, classified as additive or breaking |
+| Write or fix end-to-end tests | [e2e-testing](engineering/e2e-testing.md) | Journeys covered, flakes diagnosed, and artifacts kept |
+| Polish an interface or audit its design tokens | [interface-polish](engineering/interface-polish.md) | Token drift found and before and after evidence |
+| Sync translation files with the source | [i18n-sync](engineering/i18n-sync.md) | Key parity verified, with placeholders preserved |
+| Design a schema, index, or query | [database-design](engineering/database-design.md) | A design tied to the workload and checked against the query plan |
+| Containerize a service or build its pipeline | [containers-and-deploys](engineering/containers-and-deploys.md) | Built and run definitions with a rehearsed rollback |
+| Build a feature on a language model | [llm-features](engineering/llm-features.md) | Eval results that justify each kept change |
 | Decide whether to launch | [production-readiness](engineering/production-readiness.md) | Ship, ship with caveats, or block, with blockers and unexamined areas |
 | Record why a decision was made | [decision-records](engineering/decision-records.md) | A numbered ADR linked from the index |
 | Understand an unfamiliar repository | [codebase-onboarding](engineering/codebase-onboarding.md) | A map with a traced path, conventions, and where to start |

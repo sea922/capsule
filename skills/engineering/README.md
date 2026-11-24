@@ -7,19 +7,26 @@ See the [workflow map](../../docs/workflow.md) for entry points and handoffs.
 ## Model-invoked
 
 - [accessibility](../../docs/engineering/accessibility.md) - audit and fix UI against WCAG 2.2 AA with real keyboard, screen-reader, zoom, and contrast evidence.
+- [api-design](../../docs/engineering/api-design.md) - design or change an HTTP API contract without breaking the callers that depend on it.
 - [babysit-pr](../../docs/engineering/babysit-pr.md) - own the PR or GitLab MR repair and watch loop through an explicit, verified endpoint.
 - [codebase-onboarding](../../docs/engineering/codebase-onboarding.md) - map an unfamiliar repository so someone can start working in it.
 - [codebase-design](../../docs/engineering/codebase-design.md) - design cohesive modules, evidence-gated abstractions, intentional dependency direction, and explicit inter-module contracts.
 - [benchmark](../../docs/engineering/benchmark.md) - produce or vet a measurement a decision can rest on, and search variants within a budget.
 - [code-review](../../docs/engineering/code-review.md) - review changes at quick, standard, or deep depth with a bounded default and evidence-backed findings.
 - [compound-learnings](../../docs/engineering/compound-learnings.md) - capture durable engineering lessons past a counterfactual bar and refresh the store against current code.
+- [containers-and-deploys](../../docs/engineering/containers-and-deploys.md) - build a service's container image, pipeline, rollout strategy, and infrastructure definitions, and prove them by running them.
+- [database-design](../../docs/engineering/database-design.md) - design schemas, indexes, and queries that fit the workload, with PostgreSQL, MySQL, Redis, and ClickHouse references.
 - [database-migrations](../../docs/engineering/database-migrations.md) - plan, write, and verify schema and data changes that survive a live deploy.
 - [decision-records](../../docs/engineering/decision-records.md) - record significant technical decisions as ADRs and answer why past ones were made.
 - [diagnosing-bugs](../../docs/engineering/diagnosing-bugs.md) - establish root causes through reproduction, hypotheses, and discriminating evidence before remediation.
 - [coding-standards](../../docs/engineering/coding-standards.md) - apply project conventions with shared rules and conditional backend and frontend guidance.
+- [e2e-testing](../../docs/engineering/e2e-testing.md) - build and repair end-to-end suites that cover real journeys and stay trustworthy.
+- [i18n-sync](../../docs/engineering/i18n-sync.md) - keep locale files in step with source strings: missing, unused, and stale keys, translated in context and verified.
 - [implement](../../docs/engineering/implement.md) - execute authorized changes in coherent slices while preserving repository state and user authority.
 - [git-workflow](../../docs/engineering/git-workflow.md) - make focused commits, manage branches and integration, check whether a branch already landed, and recover interrupted Git state.
 - [git-worktrees](../../docs/engineering/git-worktrees.md) - select, prepare, retire, and recover isolated checkouts.
+- [interface-polish](../../docs/engineering/interface-polish.md) - audit design tokens, find visual drift, and apply concrete polish details to an existing interface.
+- [llm-features](../../docs/engineering/llm-features.md) - build, evaluate, and tune product features that call a language model, keeping or reverting each change on the project's own evals.
 - [orchestrate](../../docs/engineering/orchestrate.md) - select native agents and models, coordinate bounded assignments, and verify integrated results.
 - [planning-and-task-breakdown](../../docs/engineering/planning-and-task-breakdown.md) - plan verifiable slices, dependencies, and the ready frontier.
 - [performance](../../docs/engineering/performance.md) - make software measurably faster or lighter, or review code for performance risk, with numbers that hold up.

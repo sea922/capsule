@@ -1,0 +1,44 @@
+{
+  "skill_name": "i18n-sync",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We added a checkout flow last sprint. en.json has the new keys but de.json, fr.json and tr.json don't. Sync them.",
+      "expected_output": "Reads the i18n setup and terminology sources, builds a worklist of missing keys per locale, reads the checkout components to learn how each string is used, translates with existing wording and intact placeholders and plurals, edits only those keys while preserving file structure, then parses the files and runs a key-parity and placeholder check before reporting.",
+      "files": [],
+      "expectations": [
+        "A worklist of missing keys per locale is built before any translation.",
+        "Each key's usage in the checkout code is read to choose the translation in context.",
+        "Placeholders, plural forms, and markup are preserved exactly and required plural categories for each language are supplied.",
+        "Only worklist keys change; key order, formatting, and unrelated translations are untouched.",
+        "Changed files are parsed and a key-parity check is run, and the report says the translations were not reviewed by a native speaker."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Marketing rewrote a bunch of English strings in en.json yesterday. Update the Spanish and Japanese files to match.",
+      "expected_output": "Establishes which source strings changed from version history or a lock file, shows old source, new source, and current translation for each, retranslates only where the meaning changed, does not silently overwrite existing or reviewed translations, and flags marketing copy for native review.",
+      "files": [],
+      "expectations": [
+        "Changed source strings are identified from history or a lock file, or the inability to determine staleness is stated.",
+        "Each stale item is shown with old source, new source, and the current translation.",
+        "Translations are replaced only where the meaning changed, and overwrites are listed for confirmation.",
+        "Existing human-reviewed translations are not silently overwritten.",
+        "Marketing copy is flagged for native-speaker review."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Clean up our locale files, I think there are lots of dead keys. Keys are sometimes built like t(`status.${order.state}`).",
+      "expected_output": "Searches for key usage including dynamically built keys, separates clearly unused keys from uncertain ones that match dynamic prefixes, lists orphaned keys, asks for confirmation before deleting, removes approved keys from every locale while preserving structure, and verifies by parsing, parity check, and the project's tests.",
+      "files": [],
+      "expectations": [
+        "Dynamic key construction is checked before a key is called unused.",
+        "Keys matching dynamic prefixes such as status.* are listed as uncertain and not deleted by default.",
+        "Deletion happens only after the user confirms the list.",
+        "Approved keys are removed consistently from all locale files without reformatting them.",
+        "Files are parsed and key parity and project checks are run afterwards."
+      ]
+    }
+  ]
+}

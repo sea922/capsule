@@ -1,0 +1,3 @@
+interface:
+  display_name: "i18n Sync"
+  short_description: "Find missing, unused, and stale locale keys, translate in context, and verify key parity"

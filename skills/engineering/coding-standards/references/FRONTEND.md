@@ -46,6 +46,29 @@ When browser and server rendering coexist, keep secrets and privileged access
 on the server, and follow the framework's serialization and hydration rules.
 Client-side checks improve interaction but cannot establish authorization.
 
+React idioms, testing setup, and Next.js and Vite traps are in the
+[React standards](REACT.md).
+
+## Failure, load, and motion
+
+Contain failures. Put an error boundary, or the framework's equivalent, around
+each independently useful region so one broken widget does not blank the page.
+Give it a way to retry and report what it caught. Boundaries catch rendering
+errors; handle event-handler and asynchronous failures where they occur.
+
+Load heavy, rarely used UI on demand, such as charts, editors, and admin
+screens, with a fallback sized like the content. Render long lists
+incrementally, with pagination or the project's virtualization library, once
+profiling shows the list is the cost, and re-check keyboard and screen-reader
+behavior afterwards.
+
+Rate-limit work driven by typing, scrolling, or resizing: debounce or throttle
+the value that triggers the request or the computation, not the input itself.
+
+Use the project's animation library and tokens. Animate transform and opacity,
+keep exit animations from blocking the next interaction, and honor
+`prefers-reduced-motion`.
+
 ## Evidence
 
 Use existing component and integration checks for the changed behavior. Exercise

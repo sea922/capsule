@@ -23,6 +23,8 @@ Map the root choice and the consequential choices that depend on it. Keep facts 
 - ask the user for judgement, preference, authority, intent, or information only they possess;
 - return external evidence gaps to the caller's `research` workflow and empirical uncertainty to its `prototype` workflow; the caller owns any artifact creation and then returns the observation to the interview.
 
+When the subject is whether a product, feature, or idea is worth building, add the branches in [`references/PRODUCT.md`](references/PRODUCT.md).
+
 The **frontier** is every unresolved question whose prerequisites are already settled.
 
 **Complete when:** the tree is explicit enough to identify the current frontier and no frontier question merely asks the user to retrieve an accessible fact.
