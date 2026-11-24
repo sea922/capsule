@@ -174,6 +174,8 @@ capsule also ships read-only agents that its skills hand work to, indexed in [`d
 
 The hooks need Node.js. They stop an agent from casually skipping checks; they are not a security boundary. List several ids with commas to turn off more than one.
 
+Known false blocks: `block-destructive` also refuses a test-database reset such as `DROP SCHEMA public CASCADE; CREATE SCHEMA public;`, and `rm -rf *` or `rm -rf .` unless the same command first changes into a working directory. `block-secret-commit` refuses a commit that adds a test fixture holding a real-format token. Run those yourself, or turn the hook off for the session. Known gaps: commands inside scripts, aliases, or `eval`, and force pushes to protected branches other than `main` and `master`, are not caught.
+
 ## 📏 Rules (optional)
 
 Rules are always-loaded guidance that Claude Code reads from a project's
@@ -200,15 +202,15 @@ dark, light, or an image, with a ten-block context bar that fills along a
 teal-to-violet-to-pink gradient.
 
 ```text
-✦ Fable 5.2 · capsule · feat/x ●3 ↑2 · ▮▮▮▮▯▯▯▯▯▯ 43% of 1M · $12.50 · +920 −247 · 1h23m
+✦ Fable 5.2 · capsule · feat/x ●3 ↑2 · ▮▮▮▮▯▯▯▯▯▯ 43% of 1M · $12.50 · +920 −247 · session 1h23m
 ```
 
 | Part | Meaning |
 | --- | --- |
 | `✦ Fable 5.2 · capsule` | Model and directory |
 | `feat/x ●3 ↑2` | Branch, files changed and not committed, commits ahead (`↑`) or behind (`↓`) the remote |
-| `▮▮▮▮▯▯▯▯▯▯ 43% of 1M` | Context used and the window size. The percentage turns orange at 65% and red at 80% |
-| `$12.50 · +920 −247 · 1h23m` | Session cost, lines added and removed, duration |
+| `▮▮▮▮▯▯▯▯▯▯ 43% of 1M` | Context used and the window size. It turns orange about 20% before automatic compaction and red about 8% before it, so a larger window warns later |
+| `$12.50 · +920 −247 · session 1h23m` | Session cost, lines added and removed, and how long the session has been open, idle time included |
 | `5h 82%` | A rate-limit window, shown only once it passes 70% |
 
 A terminal too narrow for one line gets two, then loses the least important

@@ -84,6 +84,10 @@ export function parseGitStatus(output) {
 
 const windowSize = (tokens) => (tokens >= 1_000_000 ? `${+(tokens / 1_000_000).toFixed(1)}M` : `${Math.round(tokens / 1000)}k`);
 const heat = (percent, warmAt, hotAt) => (percent >= hotAt ? 'hot' : percent >= warmAt ? 'warm' : 'calm');
+// Claude Code compacts automatically before the window is full, keeping a buffer of about 33k tokens (the
+// /context breakdown shows it). Warnings are timed against that point, so a large window warns later.
+const COMPACT_BUFFER_TOKENS = 33_000;
+const compactAt = (size) => (1 - COMPACT_BUFFER_TOKENS / (size > COMPACT_BUFFER_TOKENS * 2 ? size : 200_000)) * 100;
 const shorten = (text, limit, more) => ([...text].length <= limit ? text : `${[...text].slice(0, Math.max(1, limit - 1)).join('')}${more}`);
 
 // Returns the lines to print. `options`: color (false, '256', 'truecolor'), ascii, usage (always show rate
@@ -129,13 +133,14 @@ export function render(input, options = {}) {
     if (percent !== null) {
       const cells = detail.barCells;
       const filled = Math.round((percent / 100) * cells);
-      const stops = percent >= 80 ? [...GRADIENT, COLORS.hot] : GRADIENT; // a nearly full bar runs on into red
+      const limit = compactAt(size);
+      const level = heat(percent, limit - 20, limit - 8);
+      const stops = level === 'hot' ? [...GRADIENT, COLORS.hot] : GRADIENT; // a nearly full bar runs on into red
       let bar = '';
       for (let cell = 0; cell < cells; cell += 1) {
         if (cell < filled) bar += paint(gradientAt(cells > 1 ? cell / (cells - 1) : 0, stops), glyphs.full);
         else bar += paint(COLORS.track, options.color ? glyphs.full : glyphs.empty);
       }
-      const level = heat(percent, 65, 80);
       let text = cells ? `${glyphs.open}${bar}${glyphs.close} ` : '';
       text += paint(COLORS[level], `${percent}%`, level === 'hot');
       if (size && detail.size) text += paint(COLORS.quiet, ` of ${windowSize(size)}`);
@@ -143,7 +148,7 @@ export function render(input, options = {}) {
     }
     if (number(cost.total_cost_usd) > 0 && detail.cost) parts.push(paint(COLORS.cost, `$${cost.total_cost_usd.toFixed(2)}`));
     if ((added > 0 || removed > 0) && detail.diff) parts.push(`${paint(COLORS.added, `+${added}`)} ${paint(COLORS.removed, `${glyphs.minus}${removed}`)}`);
-    if (duration && detail.time) parts.push(paint(COLORS.time, duration));
+    if (duration && detail.time) parts.push(paint(COLORS.time, `session ${duration}`)); // wall-clock time, idle included
     if (showLimits && detail.limits) {
       parts.push(limits.map(([label, value]) => `${paint(COLORS.time, label)} ${paint(COLORS[heat(value, 70, 90)], `${value}%`)}`).join(' '));
     }
@@ -170,17 +175,21 @@ export function render(input, options = {}) {
   return [top, bottom].filter(Boolean);
 }
 
-function gitState(directory) {
+const runGit = (args, timeout) => execFileSync('git', args, { encoding: 'utf8', timeout, stdio: ['ignore', 'pipe', 'ignore'] });
+
+// Counting untracked files can be slow in a very large repository, so a slow first call is retried without them.
+export function gitState(directory, run = runGit) {
   if (!directory) return null;
+  const base = ['-C', directory, '--no-optional-locks', 'status', '--porcelain=v2', '--branch'];
   try {
-    const output = execFileSync('git', ['-C', directory, '--no-optional-locks', 'status', '--porcelain=v2', '--branch'], {
-      encoding: 'utf8',
-      timeout: 1000,
-      stdio: ['ignore', 'pipe', 'ignore'],
-    });
-    return parseGitStatus(output);
+    return parseGitStatus(run(base, 600));
+  } catch (error) {
+    if (error?.code !== 'ETIMEDOUT' && error?.signal !== 'SIGTERM') return null; // not a repository, or git is missing
+  }
+  try {
+    return parseGitStatus(run([...base, '--untracked-files=no'], 400));
   } catch {
-    return null; // not a repository, git missing, or too slow: show the line without a branch
+    return null; // still too slow: show the line without a branch
   }
 }
 

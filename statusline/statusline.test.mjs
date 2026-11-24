@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { test } from 'node:test';
-import { PALETTE, formatDuration, nearest256 as painterCode, parseGitStatus, render } from './statusline.mjs';
+import { PALETTE, formatDuration, gitState, nearest256 as painterCode, parseGitStatus, render } from './statusline.mjs';
 import { installStatusline } from './install.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -19,7 +19,7 @@ const sample = {
 const git = { branch: 'feat/x', changed: 2, ahead: 1, behind: 0 };
 const strip = (text) => text.replace(/\x1b\[[0-9;]*m/g, '');
 const BAR68 = `${'▮'.repeat(7)}${'▯'.repeat(3)}`;
-const FULL = `✦ Opus · capsule · feat/x ●2 ↑1 · ${BAR68} 68% of 200k · $1.23 · +120 −34 · 15m`;
+const FULL = `✦ Opus · capsule · feat/x ●2 ↑1 · ${BAR68} 68% of 200k · $1.23 · +120 −34 · session 15m`;
 
 test('one line shows model, directory, git state, context, and session numbers', () => {
   assert.deepEqual(render(sample, { ...plain, git }), [FULL]);
@@ -91,6 +91,20 @@ test('the context bar is clamped, sized from the window, and turns warm as it fi
   assert.match(percent(90), /\x1b\[1m\x1b\[38;2;240;72;108m90%/);
 });
 
+test('warnings are timed against automatic compaction, which leaves a fixed buffer unused', () => {
+  const level = (used, size) => {
+    const [line] = render({ context_window: { used_percentage: used, context_window_size: size } }, { color: 'truecolor' });
+    const colour = line.match(/(\d+;\d+;\d+)m\d+%/)[1];
+    return { '109;140;255': 'calm', '230;126;0': 'warm', '240;72;108': 'hot' }[colour];
+  };
+  assert.equal(level(60, 200_000), 'calm');
+  assert.equal(level(66, 200_000), 'warm');
+  assert.equal(level(78, 200_000), 'hot');
+  assert.equal(level(75, 1_000_000), 'calm');
+  assert.equal(level(85, 1_000_000), 'warm');
+  assert.equal(level(90, 1_000_000), 'hot');
+});
+
 test('rate limits stay hidden until a window is nearly used up, unless asked for', () => {
   const limits = (five, seven) => ({ ...sample, rate_limits: { five_hour: { used_percentage: five }, seven_day: { used_percentage: seven } } });
   assert.ok(!render(limits(23.5, 41.2), plain)[0].includes('5h'));
@@ -101,7 +115,7 @@ test('rate limits stay hidden until a window is nearly used up, unless asked for
 
 test('a narrow terminal wraps to two lines, then drops the least important details', () => {
   assert.deepEqual(render(sample, { ...plain, git, columns: [...FULL].length }), [FULL]);
-  assert.deepEqual(render(sample, { ...plain, git, columns: 60 }), ['✦ Opus · capsule · feat/x ●2 ↑1', `${BAR68} 68% of 200k · $1.23 · +120 −34 · 15m`]);
+  assert.deepEqual(render(sample, { ...plain, git, columns: 60 }), ['✦ Opus · capsule · feat/x ●2 ↑1', `${BAR68} 68% of 200k · $1.23 · +120 −34 · session 15m`]);
   for (const columns of [50, 36, 24, 12]) {
     const lines = render(sample, { ...plain, git, columns });
     assert.equal(lines.length, 2, `${columns}: ${JSON.stringify(lines)}`);
@@ -115,7 +129,7 @@ test('a narrow terminal wraps to two lines, then drops the least important detai
 
 test('ASCII mode avoids every non-ASCII character', () => {
   const [line] = render(sample, { ...plain, ascii: true, git: { ...git, behind: 4 } });
-  assert.equal(line, '* Opus | capsule | feat/x +2 ^1 v4 | [#######...] 68% of 200k | $1.23 | +120 -34 | 15m');
+  assert.equal(line, '* Opus | capsule | feat/x +2 ^1 v4 | [#######...] 68% of 200k | $1.23 | +120 -34 | session 15m');
   assert.ok(/^[\x20-\x7e]+$/.test(strip(render(sample, { color: 'truecolor', ascii: true, git })[0])));
 });
 
@@ -133,6 +147,20 @@ test('durations are short and readable', () => {
   assert.equal(formatDuration(14520000), '4h02m');
 });
 
+test('a slow git status falls back to skipping untracked files, then to no branch', () => {
+  const calls = [];
+  const header = '# branch.oid abc\n# branch.head main\n1 .M N... 100644 100644 100644 a b f.txt\n';
+  const slowOnce = (args) => {
+    calls.push(args.includes('--untracked-files=no'));
+    if (calls.length === 1) throw Object.assign(new Error('timed out'), { code: 'ETIMEDOUT' });
+    return header;
+  };
+  assert.deepEqual(gitState('/repo', slowOnce), { branch: 'main', changed: 1, ahead: 0, behind: 0 });
+  assert.deepEqual(calls, [false, true]);
+  assert.equal(gitState('/repo', () => { throw new Error('not a git repository'); }), null);
+  assert.equal(gitState(null, slowOnce), null);
+});
+
 test('git status output is reduced to a branch, a change count, and ahead and behind', () => {
   assert.deepEqual(parseGitStatus('# branch.oid abc\n# branch.head feat/x\n# branch.ab +2 -1\n1 .M N... 100644 100644 100644 a b file.txt\n? new.txt\n'), { branch: 'feat/x', changed: 2, ahead: 2, behind: 1 });
   assert.deepEqual(parseGitStatus('# branch.oid abc\n# branch.head main\n'), { branch: 'main', changed: 0, ahead: 0, behind: 0 });
@@ -147,7 +175,7 @@ test('the script prints a line and exits 0 for real input, bad input, and no inp
   try {
     const good = run(JSON.stringify({ ...sample, workspace: { current_dir: outside } }));
     assert.equal(good.status, 0, good.stderr);
-    assert.match(good.stdout, /^✦ Opus · capsule-statusline-\S+ · ▮{7}▯{3} 68% of 200k · \$1\.23 · \+120 −34 · 15m$/);
+    assert.match(good.stdout, /^✦ Opus · capsule-statusline-\S+ · ▮{7}▯{3} 68% of 200k · \$1\.23 · \+120 −34 · session 15m$/);
     for (const input of ['', 'not json', 'null', '[]', '42']) {
       const result = run(input);
       assert.equal(result.status, 0, `${JSON.stringify(input)}: ${result.stderr}`);
