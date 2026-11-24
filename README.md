@@ -169,7 +169,7 @@ capsule also ships read-only agents that its skills hand work to, indexed in [`a
 | --- | --- | --- |
 | `block-no-verify` | `--no-verify`, `commit -n`, `core.hooksPath` overrides, and `HUSKY=0` on git commands | `CAPSULE_HOOKS_DISABLED=block-no-verify` |
 | `config-protection` | Edits to existing lint and format configs (ESLint, Prettier, Biome, Stylelint, Ruff, and others) | `CAPSULE_HOOKS_DISABLED=config-protection` |
-| `block-destructive` | `rm -rf` of `/`, the home directory, `..`, or (outside a directory the command just entered) `.` and `*`; force pushes to, or deletion of, `main` or `master`; `DROP DATABASE` and `dropdb`; `terraform destroy`; `kubectl delete namespace` or `--all`; Docker volume pruning. Dry runs and `--help` pass | `CAPSULE_HOOKS_DISABLED=block-destructive` |
+| `block-destructive` | `rm -rf` of `/`, the home directory, `..`, or (outside a directory the command just entered) `.` and `*`; force pushes to, or deletion of, `main` or `master`; `DROP DATABASE`, `DROP SCHEMA`, and `dropdb`; `terraform destroy`; `kubectl delete namespace` or `--all`; Docker volume pruning. Dry runs and `--help` pass | `CAPSULE_HOOKS_DISABLED=block-destructive` |
 | `block-secret-commit` | A `git commit` whose added lines hold a private key or a vendor-format token (AWS, GitHub, GitLab, Slack, Stripe live, Anthropic, npm) | `CAPSULE_HOOKS_DISABLED=block-secret-commit` |
 
 The hooks need Node.js. They stop an agent from casually skipping checks; they are not a security boundary. List several ids with commas to turn off more than one.

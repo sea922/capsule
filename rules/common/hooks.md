@@ -19,7 +19,7 @@ The capsule plugin ships four PreToolUse guards:
   configuration, so the code is fixed instead of the check
 - **block-destructive**: refuses a short list of commands that destroy more
   than a task needs, such as deleting the home directory, force-pushing to
-  `main`, dropping a database, or destroying infrastructure
+  `main`, dropping a database or schema, or destroying infrastructure
 - **block-secret-commit**: refuses a commit whose added lines hold a private
   key or a vendor-format token
 

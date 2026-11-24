@@ -12,7 +12,7 @@ const SHELLS = new Set(['sh', 'bash', 'zsh', 'dash', 'ksh']);
 const SQL_CLIENTS = new Set(['psql', 'mysql', 'mariadb', 'sqlite3', 'sqlcmd', 'cockroach', 'duckdb', 'clickhouse-client']);
 // Programs that run a command somewhere else, so a SQL client can appear among their arguments.
 const REMOTE_RUNNERS = new Set(['docker', 'podman', 'nerdctl', 'docker-compose', 'kubectl', 'ssh']);
-const DROP_DATABASE = /\bdrop\s+database\b/i;
+const DROP_DATABASE = /\bdrop\s+(database|schema)\b/i;
 const PUSH_VALUE_OPTIONS = new Set(['-o', '--push-option', '--receive-pack', '--exec', '--repo']);
 const KUBECTL_VALUE_OPTIONS = new Set(['-n', '--namespace', '--context', '--kubeconfig', '--cluster', '--user', '-s',
   '--server', '--as', '-l', '--selector', '-f', '--filename', '-k', '--kustomize', '-o', '--output', '--field-selector',
@@ -115,7 +115,7 @@ function containerReason(tool, args) {
   return area === 'system' && args.includes('--volumes') ? `${tool} system prune --volumes deletes data volumes` : null;
 }
 
-// A SQL client that is handed DROP DATABASE in its own arguments, its heredoc, or the pipeline feeding it.
+// A SQL client that is handed DROP DATABASE or DROP SCHEMA in its own arguments, its heredoc, or the pipeline feeding it.
 function databaseReason(parts, position) {
   const [tool, ...args] = program(tokens(parts[position].text));
   const isClient = (word) => SQL_CLIENTS.has(word) || word === 'dropdb';
@@ -126,7 +126,8 @@ function databaseReason(parts, position) {
   for (let index = position; index > 0 && parts[index].operator === '|'; index -= 1) {
     input += `\n${parts[index - 1].text}\n${parts[index - 1].heredoc ?? ''}`;
   }
-  return DROP_DATABASE.test(input) ? 'DROP DATABASE deletes a whole database' : null;
+  const dropped = DROP_DATABASE.exec(input);
+  return dropped ? `DROP ${dropped[1].toUpperCase()} deletes a whole ${dropped[1].toLowerCase()}` : null;
 }
 
 function segmentReason(part, state, currentBranch) {
