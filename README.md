@@ -59,7 +59,7 @@ release checks, and [security reporting](SECURITY.md) for vulnerability reports.
   and bodies from the final diff, with a visual summary, before/after evidence, and
   a merge-danger section.
 - [pr-images](docs/engineering/pr-images.md) — capture, privacy-check, and attach
-  before/after screenshots to PRs, issues, and comments with `gh --attach`, and
+  before/after screenshots to GitHub PRs, GitLab MRs, issues, and comments, and
   retake them when later commits change what they show.
 - [property-based-testing](docs/engineering/property-based-testing.md) — find strong
   properties and generators, avoid vacuous tests, and triage shrunk counterexamples.

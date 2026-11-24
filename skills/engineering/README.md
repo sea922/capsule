@@ -18,7 +18,7 @@ See the [workflow map](../../docs/workflow.md) for entry points and handoffs.
 - [orchestrate](../../docs/engineering/orchestrate.md) - select native agents and models, coordinate bounded assignments, and verify integrated results.
 - [planning-and-task-breakdown](../../docs/engineering/planning-and-task-breakdown.md) - plan verifiable slices, dependencies, and the ready frontier.
 - [pr-description](../../docs/engineering/pr-description.md) - write PR or MR titles and bodies from the final diff with a visual summary, before/after evidence, and a merge-danger section.
-- [pr-images](../../docs/engineering/pr-images.md) - capture, check, and attach screenshots to PRs, issues, and comments with `gh --attach`, and keep them current.
+- [pr-images](../../docs/engineering/pr-images.md) - capture, check, and attach screenshots to GitHub PRs, GitLab MRs, issues, and comments, and keep them current.
 - [property-based-testing](../../docs/engineering/property-based-testing.md) - find strong properties and generators, avoid vacuous tests, and triage shrunk counterexamples.
 - [prototype](../../docs/engineering/prototype.md) - answer one empirical design question through a reproducible experiment.
 - [research](../../docs/engineering/research.md) - investigate primary sources and preserve cited findings with explicit limitations.

@@ -1,13 +1,14 @@
 ---
 name: pr-images
-description: Screenshots, GIFs, and short videos on GitHub pull requests, issues, and their comments. Use whenever a PR or issue should show a visual change, when asked to add, attach, upload, retake, or embed screenshots, before/after images, or a demo on a PR, issue, or comment, or when pr-description's evidence calls for screenshots. PR title and body text belong to pr-description; CI and review follow-up to babysit-pr.
+description: Screenshots, GIFs, and short videos on GitHub pull requests, GitLab merge requests, issues, and their comments. Use whenever a PR, MR, or issue should show a visual change, when asked to add, attach, upload, retake, or embed screenshots, before/after images, or a demo on a PR, MR, issue, or comment, or when pr-description's evidence calls for screenshots. PR title and body text belong to pr-description; CI and review follow-up to babysit-pr.
 ---
 
 # PR images
 
-Put images on a PR, issue, or comment only when they prove something a reviewer
-judges by looking. An image that reaches GitHub cannot be deleted, so every one
-is checked before upload. The body text around the images belongs to
+Put images on a PR (GitLab: merge request, MR), issue, or comment only when they
+prove something a reviewer judges by looking. An uploaded image cannot be
+deleted on GitHub and only by a maintainer on GitLab, so every one is checked
+before upload. The body text around the images belongs to
 `pr-description`; this skill supplies the images, their table, and the upload.
 
 ## 1. Decide whether images belong
@@ -22,8 +23,11 @@ images or later commits change what they show (step 6).
 
 Project instructions decide whether running the app, opening a browser, or
 taking screenshots needs permission, and where PR images go. Follow them. A
-claim in them that GitHub cannot take uploads is not a reason to skip; step 2
+claim in them that the forge cannot take uploads is not a reason to skip; step 2
 decides that.
+
+Pick the forge without asking, as `pr-description` does: from the PR or MR URL,
+otherwise from the `origin` remote's host. Steps 2 and 5 have a path for each.
 
 **Complete when:** the change has a stated visual claim, or the decision is no
 images with no further work.
@@ -33,7 +37,10 @@ images with no further work.
 All three must hold. Check them first, because without a delivery path the
 images cannot reach the PR.
 
-- **A delivery path.** A destination the project names; otherwise `gh` with
+- **A delivery path.** A destination the project names; otherwise, on GitLab,
+  `glab` authenticated for the host (`glab auth status --hostname HOST`) with
+  permission to comment in the project that holds the MR or issue; read
+  [gitlab-uploads](references/gitlab-uploads.md). On GitHub, `gh` with
   attachment support: `gh pr create --help` (or the `edit` or `comment`
   command you will run) lists `--attach`, `gh auth status` succeeds, and the
   account can write to the repository the PR targets. For `gh pr create` that
@@ -116,9 +123,26 @@ row and side:
 | ![Settings before](./settings-before.png) | ![Settings after](./settings-after.png) |
 ```
 
-An after-only table uses a single `After` column. Use Markdown, not HTML
-`<img>` tags, because `gh` rewrites only Markdown references; read
+An after-only table uses a single `After` column. On GitHub, use Markdown, not
+HTML `<img>` tags, because `gh` rewrites only Markdown references; read
 [gh-attach](references/gh-attach.md) when cells must span rows.
+
+**GitLab.** Write the full body to a file in the temporary directory, beside
+the images, then upload and rewrite in one run:
+
+```sh
+python <skill>/scripts/upload_gitlab.py --host HOST --repo GROUP/PROJECT --body "$SHOTS_DIR/body.md"
+```
+
+It writes `body.uploaded.md` and posts nothing. Post that file with the
+`glab api` command for the MR, issue, or comment in
+[gitlab-uploads](references/gitlab-uploads.md); for a new MR, hand it to
+`pr-description` as the body so the MR is created once with its images. HTML
+`<img>` tags are rewritten too. Before posting over a body someone else may have
+changed, fetch it again and change only your section. After an exit of 1, post
+nothing until the failed rows are retried or removed.
+
+**GitHub.**
 
 Write the full body to a file in the temporary directory, run `gh` from that
 directory, and pass one `--attach` per image. Because `cd "$SHOTS_DIR"` leaves
@@ -138,7 +162,7 @@ only your section. After a non-zero exit, never run `gh pr create` or
 `gh issue view`, or the comment endpoint), repair or remove any reference still
 pointing at a local path, and report which images did not upload.
 
-**Complete when:** the saved body, read back from GitHub, shows every image as
+**Complete when:** the saved body, read back from the forge, shows every image as
 an uploaded URL and no local paths, or the images that failed are named.
 
 ## 6. Keep images current
@@ -156,7 +180,8 @@ When a precondition fails, do not use workarounds: no commits of images to the
 PR branch or an asset branch, no release assets, no browser session cookies,
 and no driving the web editor's upload box. Add one line where the screenshots
 would go saying they were not attached and why, for example "Screenshots not
-attached: gh 2.89 has no `--attach`." If images were captured, hand the files to
+attached: gh 2.89 has no `--attach`." or "Screenshots not attached: no upload
+access to the target project." If images were captured, hand the files to
 the user with the table already written so they can drag them into the web
 editor.
 

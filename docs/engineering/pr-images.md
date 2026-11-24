@@ -1,7 +1,7 @@
 # PR images
 
 `pr-images` puts screenshots, GIFs, and short videos on GitHub pull requests,
-issues, and their comments. It is model-invoked and can also be requested
+GitLab merge requests, issues, and their comments. It is model-invoked and can also be requested
 directly.
 
 Try: "Add before/after screenshots to PR 412," "Retake the screenshots on this
@@ -14,9 +14,10 @@ The skill works in seven steps:
   output stay text.
 - **Check before capturing.** A delivery path (a project-named destination, or
   `gh` 2.99+ with `--attach`, authenticated, with write access to the target
-  repository), a tool that saves image files, and the app running without new
-  setup. Fork PRs to repositories you cannot push to and GitHub Enterprise
-  Server have no upload path.
+  repository; on GitLab, an authenticated `glab` that can comment in the
+  project holding the MR or issue), a tool that saves image files, and the app
+  running without new setup. Fork PRs to GitHub repositories you cannot push to
+  and GitHub Enterprise Server have no upload path.
 - **Capture.** The real app, never a mock built for the PR. The before image
   comes from an existing capture or a deployed base, never faked; each pair
   keeps route, viewport, data, and size. Images go in a temporary directory
@@ -26,8 +27,10 @@ The skill works in seven steps:
   uploads cannot be deleted.
 - **Upload.** A Markdown Before/After table, written to a body file and
   uploaded with one `--attach` per image from the images directory, so paths
-  match on every `gh` version. After a partial failure the PR is read back and
-  repaired; `gh pr create` is never re-run.
+  match on every `gh` version. On GitLab, `scripts/upload_gitlab.py` uploads
+  each referenced file to the project and writes a rewritten body, which is
+  then posted through `glab api`. After a partial failure nothing is re-created:
+  the body is read back and repaired.
 - **Refresh.** Later commits that change what an image shows get those pairs
   retaken and replaced, keeping the rest of the body.
 - **Degrade.** Without a delivery path there are no workarounds (no image
