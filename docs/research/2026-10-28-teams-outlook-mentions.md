@@ -1,7 +1,7 @@
 # How Teams and Outlook encode @mentions
 
 Research for the `writing-for-humans` message layout, which asks the greeting
-to @mention the person who acts (upstream PR #71). The question: what
+to @mention the person who acts (PR J03Fr0st/skills#71). The question: what
 markup or metadata makes a real mention, one that notifies the person, in
 Microsoft Teams and Outlook email?
 
