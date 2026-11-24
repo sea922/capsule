@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { test } from 'node:test';
-import { formatDuration, parseGitStatus, render } from './statusline.mjs';
+import { formatDuration, nearest256 as painterCode, parseGitStatus, render } from './statusline.mjs';
 import { installStatusline } from './install.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -19,7 +19,7 @@ const sample = {
 const git = { branch: 'feat/x', changed: 2, ahead: 1, behind: 0 };
 const strip = (text) => text.replace(/\x1b\[[0-9;]*m/g, '');
 const BAR68 = `${'━'.repeat(15)}${'─'.repeat(7)}`;
-const FULL = `✦ Opus · capsule · ⎇ feat/x ●2 ↑1 · ${BAR68} 68% of 200k · $1.23 · +120 −34 · 15m`;
+const FULL = `✦ Opus · capsule · feat/x ●2 ↑1 · ${BAR68} 68% of 200k · $1.23 · +120 −34 · 15m`;
 
 test('one line shows model, directory, git state, context, and session numbers', () => {
   assert.deepEqual(render(sample, { ...plain, git }), [FULL]);
@@ -40,6 +40,12 @@ test('a terminal without 24-bit colour gets the nearest 256-colour codes', () =>
   assert.equal(strip(line), FULL.replace(BAR68, '━'.repeat(22)));
   assert.match(line, /\x1b\[38;5;\d+m/);
   assert.ok(!line.includes('38;2;'));
+  const code = (hex) => render({ model: { display_name: 'x' } }, { color: '256' })[0] && painterCode(hex);
+  assert.equal(code('#000000'), 16);
+  assert.equal(code('#ffffff'), 231);
+  assert.equal(code('#5fafff'), 75);
+  assert.equal(code('#808080'), 244);
+  assert.equal(code('#232840'), 236);
 });
 
 test('missing fields are left out instead of printed as blanks or zeros', () => {
@@ -50,9 +56,9 @@ test('missing fields are left out instead of printed as blanks or zeros', () => 
 
 test('git shows only what is true: clean, changed, ahead, behind, or a worktree branch', () => {
   const where = (state, data = sample) => render(data, { ...plain, git: state })[0].split(' · ')[2];
-  assert.equal(where({ branch: 'main', changed: 0, ahead: 0, behind: 0 }), '⎇ main');
-  assert.equal(where({ branch: 'main', changed: 12, ahead: 0, behind: 3 }), '⎇ main ●12 ↓3');
-  assert.equal(render({ ...sample, worktree: { branch: 'wt-1' } }, plain)[0].split(' · ')[2], '⎇ wt-1');
+  assert.equal(where({ branch: 'main', changed: 0, ahead: 0, behind: 0 }), 'main');
+  assert.equal(where({ branch: 'main', changed: 12, ahead: 0, behind: 3 }), 'main ●12 ↓3');
+  assert.equal(render({ ...sample, worktree: { branch: 'wt-1' } }, plain)[0].split(' · ')[2], 'wt-1');
 });
 
 test('the context bar is clamped, sized from the window, and turns warm as it fills', () => {
@@ -63,6 +69,9 @@ test('the context bar is clamped, sized from the window, and turns warm as it fi
   assert.equal(bar(140), `${'━'.repeat(22)} 100%`);
   assert.equal(bar(-5), `${'─'.repeat(22)} 0%`);
   const percent = (used) => render({ context_window: { used_percentage: used } }, { color: 'truecolor' })[0].match(/(\x1b\[[0-9;]*m)+\d+%/)[0];
+  const lastFilled = (used) => [...render({ context_window: { used_percentage: used } }, { color: 'truecolor' })[0].matchAll(/\x1b\[38;2;([\d;]+)m━/g)].map((match) => match[1]).filter((cell) => cell !== '35;40;64').at(-1);
+  assert.equal(lastFilled(100), '251;113;133', 'a full bar ends in the hot colour');
+  assert.equal(lastFilled(70), '178;129;220', 'below 80% the bar stays on the cool gradient');
   assert.match(percent(40), /38;2;165;180;252m40%/);
   assert.match(percent(70), /38;2;253;186;116m70%/);
   assert.match(percent(90), /\x1b\[1m\x1b\[38;2;251;113;133m90%/);
@@ -78,7 +87,7 @@ test('rate limits stay hidden until a window is nearly used up, unless asked for
 
 test('a narrow terminal wraps to two lines, then drops the least important details', () => {
   assert.deepEqual(render(sample, { ...plain, git, columns: [...FULL].length }), [FULL]);
-  assert.deepEqual(render(sample, { ...plain, git, columns: 70 }), ['✦ Opus · capsule · ⎇ feat/x ●2 ↑1', `${BAR68} 68% of 200k · $1.23 · +120 −34 · 15m`]);
+  assert.deepEqual(render(sample, { ...plain, git, columns: 70 }), ['✦ Opus · capsule · feat/x ●2 ↑1', `${BAR68} 68% of 200k · $1.23 · +120 −34 · 15m`]);
   for (const columns of [50, 36, 24, 12]) {
     const lines = render(sample, { ...plain, git, columns });
     assert.equal(lines.length, 2, `${columns}: ${JSON.stringify(lines)}`);
@@ -92,7 +101,7 @@ test('a narrow terminal wraps to two lines, then drops the least important detai
 
 test('ASCII mode avoids every non-ASCII character', () => {
   const [line] = render(sample, { ...plain, ascii: true, git: { ...git, behind: 4 } });
-  assert.equal(line, `* Opus | capsule | @ feat/x +2 ^1 v4 | [${'#'.repeat(15)}${'.'.repeat(7)}] 68% of 200k | $1.23 | +120 -34 | 15m`);
+  assert.equal(line, `* Opus | capsule | feat/x +2 ^1 v4 | [${'#'.repeat(15)}${'.'.repeat(7)}] 68% of 200k | $1.23 | +120 -34 | 15m`);
   assert.ok(/^[\x20-\x7e]+$/.test(strip(render(sample, { color: 'truecolor', ascii: true, git })[0])));
 });
 
@@ -107,6 +116,7 @@ test('durations are short and readable', () => {
   assert.equal(formatDuration(905000), '15m');
   assert.equal(formatDuration(3600000), '1h');
   assert.equal(formatDuration(5025000), '1h23m');
+  assert.equal(formatDuration(14520000), '4h02m');
 });
 
 test('git status output is reduced to a branch, a change count, and ahead and behind', () => {

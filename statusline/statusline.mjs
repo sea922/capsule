@@ -17,8 +17,8 @@ const COLORS = {
 };
 const GRADIENT = ['#2dd4bf', '#818cf8', '#f472b6'];
 const GLYPHS = {
-  unicode: { model: '✦ ', separator: ' · ', branch: '⎇ ', changed: '●', ahead: '↑', behind: '↓', full: '━', empty: '─', open: '', close: '', minus: '−', more: '…' },
-  ascii: { model: '* ', separator: ' | ', branch: '@ ', changed: '+', ahead: '^', behind: 'v', full: '#', empty: '.', open: '[', close: ']', minus: '-', more: '~' },
+  unicode: { model: '✦ ', separator: ' · ', branch: '', changed: '●', ahead: '↑', behind: '↓', full: '━', empty: '─', open: '', close: '', minus: '−', more: '…' },
+  ascii: { model: '* ', separator: ' | ', branch: '', changed: '+', ahead: '^', behind: 'v', full: '#', empty: '.', open: '[', close: ']', minus: '-', more: '~' },
 };
 
 // Session text reaches the terminal, so control characters are removed before anything is printed.
@@ -27,18 +27,30 @@ const number = (value) => (typeof value === 'number' && Number.isFinite(value) ?
 const width = (text) => [...text.replace(/\x1b\[[0-9;]*m/g, '')].length;
 const rgb = (hex) => [1, 3, 5].map((index) => parseInt(hex.slice(index, index + 2), 16));
 
-function gradientAt(position) {
-  const scaled = Math.max(0, Math.min(1, position)) * (GRADIENT.length - 1);
-  const index = Math.min(Math.floor(scaled), GRADIENT.length - 2);
-  const [from, to] = [rgb(GRADIENT[index]), rgb(GRADIENT[index + 1])];
+function gradientAt(position, stops) {
+  const scaled = Math.max(0, Math.min(1, position)) * (stops.length - 1);
+  const index = Math.min(Math.floor(scaled), stops.length - 2);
+  const [from, to] = [rgb(stops[index]), rgb(stops[index + 1])];
   return from.map((channel, at) => Math.round(channel + (to[at] - channel) * (scaled - index)));
+}
+
+// The closest xterm 256-colour index: the 6x6x6 cube or the grey ramp, whichever is nearer.
+const CUBE = [0, 95, 135, 175, 215, 255];
+export function nearest256(color) {
+  const [red, green, blue] = Array.isArray(color) ? color : rgb(color);
+  const level = (value) => CUBE.reduce((best, step, index) => (Math.abs(step - value) < Math.abs(CUBE[best] - value) ? index : best), 0);
+  const [r, g, b] = [level(red), level(green), level(blue)];
+  const grey = Math.max(0, Math.min(23, Math.round(((red + green + blue) / 3 - 8) / 10)));
+  const distance = (x, y, z) => (red - x) ** 2 + (green - y) ** 2 + (blue - z) ** 2;
+  const shade = 8 + 10 * grey;
+  return distance(shade, shade, shade) < distance(CUBE[r], CUBE[g], CUBE[b]) ? 232 + grey : 16 + 36 * r + 6 * g + b;
 }
 
 function painter(depth) {
   if (!depth) return (color, text) => text;
   const code = ([red, green, blue]) => (depth === 'truecolor'
     ? `\x1b[38;2;${red};${green};${blue}m`
-    : `\x1b[38;5;${16 + 36 * Math.round(red / 51) + 6 * Math.round(green / 51) + Math.round(blue / 51)}m`);
+    : `\x1b[38;5;${nearest256([red, green, blue])}m`);
   return (color, text, bold = false) => `${bold ? BOLD : ''}${code(Array.isArray(color) ? color : rgb(color))}${text}${RESET}`;
 }
 
@@ -49,7 +61,7 @@ export function formatDuration(milliseconds) {
   const minutes = Math.floor(seconds / 60);
   if (minutes < 60) return `${minutes}m`;
   const rest = minutes % 60;
-  return rest ? `${Math.floor(minutes / 60)}h${rest}m` : `${Math.floor(minutes / 60)}h`;
+  return rest ? `${Math.floor(minutes / 60)}h${String(rest).padStart(2, '0')}m` : `${Math.floor(minutes / 60)}h`;
 }
 
 // Reads `git status --porcelain=v2 --branch`.
@@ -114,9 +126,10 @@ export function render(input, options = {}) {
     if (percent !== null) {
       const cells = detail.barCells;
       const filled = Math.round((percent / 100) * cells);
+      const stops = percent >= 80 ? [...GRADIENT, COLORS.hot] : GRADIENT; // a nearly full bar runs on into red
       let bar = '';
       for (let cell = 0; cell < cells; cell += 1) {
-        if (cell < filled) bar += paint(gradientAt(cells > 1 ? cell / (cells - 1) : 0), glyphs.full);
+        if (cell < filled) bar += paint(gradientAt(cells > 1 ? cell / (cells - 1) : 0, stops), glyphs.full);
         else bar += paint(COLORS.track, options.color ? glyphs.full : glyphs.empty);
       }
       const level = heat(percent, 65, 80);
