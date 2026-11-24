@@ -76,7 +76,7 @@ Change one investigative variable at a time. Prefer checks that can disprove the
 - inspect ownership of retries, caching, concurrency, configuration, and error translation;
 - reduce to a minimal example;
 - bisect revisions or configuration when history supports it;
-- measure instead of inferring performance from code shape.
+- measure instead of inferring performance from code shape; once the cause is known, making it faster belongs to `performance`.
 
 When you force a failure by mutating code, a fixture, or configuration, run the mutation only in an isolated copy/worktree (or a separately authorized scratch edit restored cleanly without stashing or resetting user work), and diff against a pristine copy to prove the mutation landed before you trust the result.
 

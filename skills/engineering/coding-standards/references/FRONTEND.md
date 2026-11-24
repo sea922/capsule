@@ -12,7 +12,7 @@ contract. Follow the existing design system for presentation.
 Use semantic controls with accessible names, keyboard operation, visible
 focus, and WCAG 2.2 AA touch targets (at least 24×24 CSS px where applicable). Associate persistent visible `<label>` elements (not placeholder-only text) and validation feedback with form fields. Preserve
 focus through dialogs and dynamic updates using the framework or component
-library's established behavior. Check the changed interaction with a keyboard.
+library's established behavior. Check the changed interaction with a keyboard. A full audit against WCAG belongs to `accessibility`.
 
 For each async interaction, represent the relevant loading, empty, error, and
 success states. Keep user input recoverable after failure and make repeated

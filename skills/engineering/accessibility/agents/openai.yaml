@@ -1,0 +1,3 @@
+interface:
+  display_name: "Accessibility"
+  short_description: "Audit and fix UI against WCAG 2.2 AA with real keyboard and screen-reader evidence"
