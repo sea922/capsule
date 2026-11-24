@@ -105,6 +105,7 @@ An exception changes the evidence strategy; it never permits an unsupported succ
 | Slow suite | Run a focused test in each phase and the broader relevant suite at the final verification gate |
 | Flaky test | Demonstrate the flake separately; do not treat a rerun-to-green as evidence for the behavior change |
 | Irreproducible or environment-blocked defect | Return to `diagnosing-bugs`; do not write a guessed regression test |
+| Bug fix | The failing test that reproduced the bug stays in the suite as its regression test. Cover every path the fix must hold on, such as each feature-flag state, mock and live mode, and each caller, because a reviewer who shares the author's assumptions will miss the path the author forgot |
 
 If you accidentally wrote *agent-authored* production code before red during an explicit TDD slice, revert only that task-authored edit (preserving any pre-existing or user-authored code) and obtain valid red first. If strict test-first sequencing was not followed for a bounded exception, say so plainly; tests added after production code can be useful coverage, but they are not red-green-refactor evidence.
 

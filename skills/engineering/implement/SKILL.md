@@ -23,6 +23,8 @@ Read the repository instructions, relevant source, nearby tests, and supplied in
 
 When the user passes an issue or ticket reference, fetch it and state its title as the tracker gives it before starting. If the reference could name more than one item, ask which.
 
+Before building something new, look for what already exists: a function or module in this repository, a dependency already installed, or a maintained library or tool that fits. Reuse or extend it when it meets the need; build when nothing fits or the fit would cost more than the code. Adding a dependency needs the user's agreement.
+
 Inspect the current branch, HEAD, staged and unstaged changes, and untracked files before editing. Ask only when a missing decision would materially change behavior, architecture, external state, cost, or risk. Otherwise make the smallest reasonable assumption and record it.
 
 **Complete when:** the intended outcome, working-tree baseline, governing rules, and material decision gates are known.

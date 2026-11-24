@@ -93,6 +93,8 @@ Before assigning a verdict, ask:
 - Did the decisive test, file, fixture, environment, and branch actually participate?
 - Was the check run after all relevant edits?
 - Does the evidence prove the requested outcome or only a proxy such as compilation?
+- When the same model wrote and reviewed the change, did an executable check cover it? A second read with the same assumptions is not independent evidence.
+- When the change alters behavior other modules consume, did each downstream consumer's own check run, not only the changed module's?
 - Are skips, flakes, warnings, cached output, or unavailable dependencies masking the result?
 - Does a negative claim need an adversarial or boundary case?
 - Has a reported result been distinguished from an independently observed one?

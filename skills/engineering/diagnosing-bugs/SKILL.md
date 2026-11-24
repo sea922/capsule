@@ -63,6 +63,8 @@ Maintain a compact ledger while investigating, and include the current table in 
 
 Generate multiple plausible hypotheses when the evidence permits. Rank them by explanatory power and cheapness of the next discriminating check, not by familiarity. Search for the first boundary where a known-good input becomes a known-bad output.
 
+When a control in a user interface does nothing or ends in the wrong state although each function works alone, trace its handler call by call: what each call reads and writes, whether a later call resets what an earlier one set, whether asynchronous calls can finish in a different order, and whether a callback holds a stale value. Compare the final state with what the control's label promises.
+
 Do not conflate correlation, temporal proximity, a suspicious line, or a successful retry with cause.
 
 **Complete when:** the leading hypotheses and the next evidence that could distinguish them are visible.

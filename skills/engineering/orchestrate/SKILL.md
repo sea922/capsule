@@ -56,6 +56,8 @@ Retry bound, return condition, and escalation path:
 
 ## 4. Supervise ownership and recovery
 
+Give any repeating worker loop a goal a command can decide, a cap on rounds, and a rule for stopping when rounds stop improving the result. Watch for the three ways a loop fails: spinning without progress, satisfying the check without doing the work, and carrying a wrong answer to completion. When a worker reports it lacked context, send a focused follow-up with the missing files or terms and let it refine, instead of resending everything.
+
 Keep one active writer per file or subsystem and record each writer's **change set** (workspace/worktree, touched files, diff). An exception requires an explicit root decision proving disjoint ownership and a settled shared contract. Read [references/recovery.md](references/recovery.md) for timeouts, failed workers, stale results, and replacement.
 
 Before replacing a writer, obtain native evidence that it terminated or can no longer write (timeout or silence is not termination). Preserve its partial diff and the original dirty baseline, record the ownership transfer, and retry once with a narrower contract; escalate one supported native tier only when capability is the blocker, then reassess at the root.
