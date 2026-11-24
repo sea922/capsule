@@ -29,6 +29,7 @@ Start from the question or outcome you have. Most skills can be selected by the 
 | Design a schema, index, or query | [database-design](engineering/database-design.md) | A design tied to the workload and checked against the query plan |
 | Containerize a service or build its pipeline | [containers-and-deploys](engineering/containers-and-deploys.md) | Built and run definitions with a rehearsed rollback |
 | Build a feature on a language model | [llm-features](engineering/llm-features.md) | Eval results that justify each kept change |
+| Improve search visibility or audit SEO | [seo](engineering/seo.md) | Eligibility findings with observed values, fixes verified from the response |
 | Decide whether to launch | [production-readiness](engineering/production-readiness.md) | Ship, ship with caveats, or block, with blockers and unexamined areas |
 | Record why a decision was made | [decision-records](engineering/decision-records.md) | A numbered ADR linked from the index |
 | Understand an unfamiliar repository | [codebase-onboarding](engineering/codebase-onboarding.md) | A map with a traced path, conventions, and where to start |

@@ -6,7 +6,8 @@ the MIT License below. They were changed for capsule: references to ECC skills,
 agents, and tools now point to capsule's; fixed standards are stated as defaults
 that defer to the project; and `common/precedence.md`, `common/evidence.md`,
 `common/untrusted-content.md`, `common/scope.md`, and `common/skill-routing.md`
-are capsule additions.
+are capsule additions, as is `java/springboot.md`, written from ECC's Spring Boot
+skills.
 
 ```text
 MIT License

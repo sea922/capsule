@@ -14,7 +14,7 @@ Rules are optional. Installing the capsule plugin does not install them.
 | `react` | `.tsx`, `.jsx`, and component and hook files | `coding-style`, `patterns`, `hooks` (React hooks), `testing`, `security` |
 | `web` | HTML, CSS, and component template files | `coding-style`, `design-quality`, `patterns`, `performance`, `testing`, `security`, `hooks` |
 | `python` | Python files | `coding-style`, `patterns`, `testing`, `security`, `hooks`, `fastapi` |
-| `java` | Java files | `coding-style`, `patterns`, `testing`, `security`, `hooks` |
+| `java` | Java files | `coding-style`, `patterns`, `testing`, `security`, `hooks`, `springboot` |
 | `golang` | Go files | `coding-style`, `patterns`, `testing`, `security`, `hooks` |
 | `csharp` | C# files | `coding-style`, `patterns`, `testing`, `security`, `hooks` |
 

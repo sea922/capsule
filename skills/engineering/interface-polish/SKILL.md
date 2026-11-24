@@ -50,7 +50,7 @@ A value with no covering token is a gap in the system. Report it and use the nea
 
 ## 4. Check the details
 
-Walk the checks in [DETAILS.md](references/DETAILS.md) against the components in scope: nested radius, optical alignment, borders and shadows, text wrapping and numerals, image edges, motion, transition scope, interaction states, and hit areas. Each check states what to look for and what the fix looks like. Record only what fails.
+Walk the checks in [DETAILS.md](references/DETAILS.md) against the components in scope: nested radius, optical alignment, borders and shadows, text wrapping and numerals, image edges, motion, transition scope, interaction states, and hit areas. Each check states what to look for and what the fix looks like. Record only what fails. When the scope adds or audits animation beyond simple state transitions (entrances and exits, staggers, page transitions, scroll effects, layout animation, drag), also read [MOTION.md](references/MOTION.md).
 
 **Complete when:** each check has been applied to the scope or marked not applicable.
 

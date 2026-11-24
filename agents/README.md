@@ -10,6 +10,7 @@ also works without it by applying the same checks directly.
 | [code-review-type-design](../skills/engineering/code-review/assets/claude-agents/code-review-type-design.md) | `code-review` deep | Whether changed types still enforce their invariants |
 | [code-review-comments](../skills/engineering/code-review/assets/claude-agents/code-review-comments.md) | `code-review` deep | Comments and docs that no longer match the code |
 | [code-review-tests](../skills/engineering/code-review/assets/claude-agents/code-review-tests.md) | `code-review` deep | Whether the tests would catch the change breaking |
+| [java-reviewer](../skills/engineering/code-review/assets/claude-agents/java-reviewer.md) | `code-review` deep | Java changes in Spring Boot, Quarkus, or plain Java: security, errors, layering, persistence, concurrency |
 | [database-migrations-reviewer](../skills/engineering/database-migrations/assets/claude-agents/database-migrations-reviewer.md) | `database-migrations`, `code-review` deep | Migrations, schema, and queries that can lose data, lock tables, or break deploys |
 | [performance-reviewer](../skills/engineering/performance/assets/claude-agents/performance-reviewer.md) | `performance`, `code-review` deep | Hot paths, unbounded work, and bundle weight, as potential impact |
 | [benchmark-auditor](../skills/engineering/benchmark/assets/claude-agents/benchmark-auditor.md) | `benchmark`, `performance`, `code-review` deep | Whether a harness or a reported number supports its claim |

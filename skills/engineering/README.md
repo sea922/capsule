@@ -37,6 +37,7 @@ See the [workflow map](../../docs/workflow.md) for entry points and handoffs.
 - [prototype](../../docs/engineering/prototype.md) - answer one empirical design question through a reproducible experiment.
 - [research](../../docs/engineering/research.md) - investigate primary sources and preserve cited findings with explicit limitations.
 - [security-review](../../docs/engineering/security-review.md) - review concrete security and privacy abuse paths read-only.
+- [seo](../../docs/engineering/seo.md) - audit and fix how a site is crawled, indexed, and presented in search, working from what a crawler actually receives.
 - [ship-it](../../docs/engineering/ship-it.md) - coordinate finished work through publication and a verified delivery endpoint.
 - [simplify](../../docs/engineering/simplify.md) - reduce scoped code complexity while preserving behavior and useful boundaries.
 - [sprint-planning](../../docs/engineering/sprint-planning.md) - plan a team sprint with a goal, capacity, stories and spikes, and anchored Fibonacci points.

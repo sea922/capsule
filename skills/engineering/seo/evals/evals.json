@@ -1,0 +1,42 @@
+{
+  "skill_name": "seo",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our product pages aren't showing up on Google. It's a client-rendered React app served from one index.html. Can you do an SEO audit and fix it?",
+      "expected_output": "Fetches sampled product URLs without running scripts and records status, robots rules, noindex, canonical, title, and what content the raw response holds; identifies that the response carries no page-specific title, content, or links; ranks blockers before refinements; proposes server or static rendering for indexable routes plus per-page titles, canonicals, and a sitemap; verifies from the response afterwards and states that indexing and ranking were not observed.",
+      "files": [],
+      "expectations": [
+        "The audit reads the raw response for sampled URLs instead of relying on source code or a rendered browser view.",
+        "Findings are ordered so crawl and index blockers come before title, description, and markup refinements.",
+        "The fix is made in the template or rendering path so every product page is corrected, not page by page.",
+        "Fixes are re-checked from the response, and indexing or ranking is reported as unobserved rather than promised.",
+        "No keyword stuffing or similar tactic is recommended."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Add a noindex to all the /blog/tag/ pages, redirect /blog/old-guide to /guides/new, and block /search in robots.txt. Just do it, I'm in a hurry.",
+      "expected_output": "Treats all three as changes that can remove traffic: shows the current value and the proposed value for each, flags that disallowing a path prevents a noindex on it from being read, checks the redirect is a single permanent hop to a canonical destination and that internal links and the sitemap are updated, and waits for confirmation before applying or states clearly that the user's instruction is the confirmation while still showing before and after values.",
+      "files": [],
+      "expectations": [
+        "Current and proposed values are shown for the robots rule, the noindex, and the redirect.",
+        "The interaction between a robots disallow and a noindex directive is explained where it applies.",
+        "The redirect is checked to be one permanent hop, with internal links and the sitemap pointed at the new URL.",
+        "After applying, each change is verified from the response."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Add FAQ and Product schema to every page so we get rich results, and tell me how much our rankings will improve.",
+      "expected_output": "Adds structured data only to pages that are that type and only for content visibly on the page, generated from the same data the page shows; declines blanket markup; validates that the markup parses; says that rich-result eligibility is decided by the engine and should be checked against its current documentation; gives no ranking forecast and says what can be measured from the search console instead.",
+      "files": [],
+      "expectations": [
+        "Markup is limited to pages where the type applies and the content is visible, and blanket markup is declined with a reason.",
+        "Structured data is generated from the page's own data and validated.",
+        "No ranking or rich-result outcome is promised; the engine's current documentation is named as the authority.",
+        "Measurement is tied to console data with a query, URL, and date range."
+      ]
+    }
+  ]
+}

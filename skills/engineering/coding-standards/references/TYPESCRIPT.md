@@ -138,6 +138,34 @@ not apply.
 - Do not mock what can run. A typed fake that satisfies the real interface
   survives refactors; `as unknown as Service` in a test does not.
 
+## Bun
+
+Skip this section unless the project runs on Bun or is deciding whether to.
+Bun combines a runtime, package manager, bundler, and test runner; it moves
+quickly, so confirm commands and flags against the installed version's docs.
+
+- **Choosing:** Bun is reasonable for a new service, script, or tool where one
+  toolchain and fast installs matter and the deployment platform supports it.
+  Stay on Node when a dependency relies on native addons or Node internals,
+  when tooling assumes Node, or when the platform's Bun support is partial.
+  Check the platform before committing; do not infer it from local success.
+- **Compatibility:** Bun aims to run Node code but is not identical. Native
+  addons, less common `node:` modules, and packages that reach into Node
+  internals are where it breaks. Run the full test suite on Bun, not a smoke
+  test, before relying on it.
+- **Package manager:** it writes its own lockfile. Commit it, install with the
+  frozen-lockfile option in CI, and keep exactly one package manager's lockfile
+  in the repository so installs cannot diverge.
+- **Test runner:** the API resembles Jest's, but mocking, timers, isolation
+  between files, and coverage differ. Migrate a suite on evidence that it still
+  fails when it should.
+- **Bundler and built-ins:** Bun's bundler and its built-in file, server, and
+  database APIs can replace dependencies, and they tie the code to Bun. Keep
+  them behind a module boundary when the code may need to run on Node.
+- **Migration:** change the runtime, package manager, and test runner as
+  separate steps, each verified, so a failure points at one of them. Use the
+  same runtime locally, in CI, and in production.
+
 ## NestJS
 
 - **Thin controllers.** A controller parses HTTP input, calls one provider, and

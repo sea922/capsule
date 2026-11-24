@@ -19,6 +19,12 @@ and the instructions use original wording.
 | `database-design` | New skill with engine references | `postgres-patterns`, `mysql-patterns`, `redis-patterns`, `clickhouse-io` |
 | `containers-and-deploys` | New skill with references | `docker-patterns`, `deployment-patterns`, `kubernetes-patterns`, `terraform-patterns` |
 | `llm-features` | New skill with references | `eval-harness`, `cost-aware-llm-pipeline`, `prompt-caching-strategy`, `regex-vs-llm-structured-text`, `agent-architecture-audit`, `agent-eval` |
+| `seo` | New skill (second pass) | `seo` |
+| `interface-polish` `MOTION.md` | Reference (second pass) | `motion-foundations`, `motion-patterns`, `motion-advanced` |
+| `performance` `LATENCY.md`, `THROUGHPUT.md` | References (second pass) | `latency-critical-systems`, `data-throughput-accelerator` |
+| `coding-standards` `TYPESCRIPT.md` Bun section | Addition (second pass) | `bun-runtime` |
+| `rules/java/springboot.md` | Rule file | The four `springboot-*` skills |
+| `java-reviewer` | Read-only agent under `code-review` | ECC agent `java-reviewer` |
 | `performance` `REACT.md` | Reference | `react-performance` |
 | `performance` `CACHING.md` | Reference | `content-hash-cache-pattern` |
 | `coding-standards` `ERROR-HANDLING.md` | Reference | `error-handling` |
@@ -31,6 +37,13 @@ and the instructions use original wording.
 | `coding-standards` `CSHARP.md` | Reference | `dotnet-patterns`, `csharp-testing` |
 | `writing-for-agents` `MCP-SERVERS.md` | Reference | `mcp-server-patterns` |
 | `grilling` `PRODUCT.md` | Reference | `product-lens` |
+
+The rows marked second pass were first classified Out of scope from their
+names and descriptions, then reconsidered because they fit the web, React,
+TypeScript, and performance work capsule covers. `seo` draws its method mainly
+from agent-dispatcher `seo`; the motion reference from the three ECC motion
+skills; `java-reviewer` is read-only, unlike ECC's, and leaves builds and
+static analysis to the parent.
 
 ## Choices the decision table left open
 
