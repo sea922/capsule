@@ -1,6 +1,6 @@
 ---
 name: babysit-pr
-description: Carry an existing pull request through CI failures, review feedback, and merge. Use when asked to babysit a PR, fix CI and review comments on a PR, watch a PR until green/approved or merged, or resume an interrupted PR watch. Route standalone reviews to code-review, local Git operations to git-workflow, PR text authoring to pr-description, and initial delivery to ship-it.
+description: Carry an existing GitHub pull request or GitLab merge request through CI failures, review feedback, and merge. Use when asked to babysit a PR or MR, fix CI and review comments on a PR or MR, watch a PR or MR until green/approved or merged, or resume an interrupted PR watch. Route standalone reviews to code-review, local Git operations to git-workflow, PR text authoring to pr-description, and initial delivery to ship-it.
 ---
 
 # Babysit a PR
@@ -13,7 +13,7 @@ Resolve one PR from the supplied URL/number or current branch. Record host, repo
 
 - **Endpoint & authority:** default to **merged** for babysitting, or **ready** when asked to stop at merge-ready. A request to babysit, land, or merge supplies merge and branch-update authority; watch-only, stop-at-ready, or "I will merge" withholds merge authority. Approvals always come from reviewers. Reuse established permissions; finish independent authorized work when a specific action lacks authority.
 - **Run budget:** user's deadline/wave limit, else 5 repair waves and 8 hours active watch time (carried across resumes; only the user raises them).
-- **Observer:** read [WATCH.md](references/WATCH.md) before the first observation to start the GitHub helper, create a private run record, and arrange waits (for another forge, use native tools only if they expose equivalent state and pagination).
+- **Observer:** read [WATCH.md](references/WATCH.md) before the first observation to start the watch helper, create a private run record, and arrange waits. The helper supports GitHub and GitLab, including explicitly resolved Enterprise and self-managed hosts. For a GitLab MR, also read [GITLAB.md](references/GITLAB.md); it maps every GitHub surface named in this skill to its GitLab equivalent. For another forge, use native tools only if they expose equivalent state and pagination; otherwise report the capability gap.
 
 **Complete when:** target, checkout owner, endpoint, action scope, run budget, and live observation mechanism are recorded.
 

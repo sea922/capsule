@@ -15,7 +15,7 @@ For a dedicated security audit or threat model, use `security-review`. Security 
 
 Accept three inputs when present:
 
-- **Target:** working tree, staged changes, commit, branch, tag, pull request, or explicit diff.
+- **Target:** working tree, staged changes, commit, branch, tag, pull request or GitLab merge request, or explicit diff.
 - **Level:** `quick`, `standard`, or `deep`.
 - **Intent:** issue, acceptance criteria, design note, user statement, or focused risk to check.
 
