@@ -1,0 +1,126 @@
+name: Skill evals
+
+# Runs skills' evals with Claude Code's eval runner, with and without the plugin loaded. Manual only: each
+# run costs money and its scores vary between runs, so it reports and never gates a merge.
+on:
+  workflow_dispatch:
+    inputs:
+      skills:
+        description: Skill names separated by spaces. Leave empty for the skills changed on this branch compared with main.
+        required: false
+        default: ''
+      runs:
+        description: Runs per case, in each arm
+        required: false
+        default: '2'
+      max_cost_usd:
+        description: Stop when the estimated cost reaches this many US dollars
+        required: false
+        default: '10'
+      model:
+        description: Model for the agent runs
+        required: false
+        default: sonnet
+
+permissions:
+  contents: read
+
+concurrency:
+  group: skill-evals-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  evals:
+    name: Run skill evals
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci --ignore-scripts
+
+      - name: Check inputs and the API key
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SKILLS: ${{ inputs.skills }}
+          RUNS: ${{ inputs.runs }}
+          MAX_COST: ${{ inputs.max_cost_usd }}
+          MODEL: ${{ inputs.model }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "::error::Add an ANTHROPIC_API_KEY repository secret to run skill evals."
+            exit 1
+          fi
+          echo "$SKILLS" | grep -Eq '^[a-z0-9 -]*$' || { echo "::error::Skill names may use only lowercase letters, digits, hyphens, and spaces."; exit 1; }
+          echo "$RUNS" | grep -Eq '^[1-9][0-9]?$' || { echo "::error::runs must be a number from 1 to 99."; exit 1; }
+          echo "$MAX_COST" | grep -Eq '^[0-9]+(\.[0-9]+)?$' || { echo "::error::max_cost_usd must be a number."; exit 1; }
+          echo "$MODEL" | grep -Eq '^[a-z0-9.-]+$' || { echo "::error::model may use only lowercase letters, digits, dots, and hyphens."; exit 1; }
+
+      - name: Choose skills
+        id: skills
+        env:
+          SKILLS: ${{ inputs.skills }}
+        run: |
+          if [ -z "$SKILLS" ]; then
+            SKILLS=$(git diff --name-only origin/main...HEAD -- skills | node -e '
+              const { existsSync } = require("node:fs");
+              const { dirname, basename } = require("node:path");
+              const found = new Set();
+              for (const file of require("node:fs").readFileSync(0, "utf8").split("\n").filter(Boolean)) {
+                for (let dir = dirname(file); dir.startsWith("skills/"); dir = dirname(dir)) {
+                  if (existsSync(`${dir}/SKILL.md`) && existsSync(`${dir}/evals/evals.json`)) { found.add(basename(dir)); break; }
+                }
+              }
+              console.log([...found].sort().join(" "));')
+          fi
+          if [ -z "$SKILLS" ]; then
+            echo "::error::No skills to evaluate: name them, or run on a branch that changes a skill with evals."
+            exit 1
+          fi
+          echo "Evaluating: $SKILLS"
+          echo "list=$SKILLS" >> "$GITHUB_OUTPUT"
+
+      - name: Generate cases
+        env:
+          SKILLS: ${{ steps.skills.outputs.list }}
+        # SKILLS is unquoted on purpose: one argument per skill. The input check allows no other characters.
+        run: node scripts/build-plugin-evals.mjs $SKILLS
+
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code@2.1.331
+
+      - name: Run evals
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RUNS: ${{ inputs.runs }}
+          MAX_COST: ${{ inputs.max_cost_usd }}
+          MODEL: ${{ inputs.model }}
+        run: |
+          mkdir -p eval-results
+          claude plugin eval . --eval-dir evals-generated --runs "$RUNS" --model "$MODEL" \
+            --trust-plugin --no-publish --threshold 0 -j 4 --max-cost-usd "$MAX_COST" \
+            --json eval-results/aggregate-result.json --report eval-results/report.html
+
+      - name: Summarize
+        if: always()
+        run: |
+          if [ -f eval-results/aggregate-result.json ]; then
+            node scripts/summarize-evals.mjs eval-results/aggregate-result.json >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No results were written." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: skill-evals
+          path: eval-results/
+          if-no-files-found: warn
+          retention-days: 30

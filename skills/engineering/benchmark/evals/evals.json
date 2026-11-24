@@ -1,0 +1,41 @@
+{
+  "skill_name": "benchmark",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I memoized the row component and the table feels faster. Benchmark: before 240ms, after 235ms, one run each. Can I ship it as a performance win?",
+      "expected_output": "Calls the comparison inconclusive: one run per side cannot separate a 5 ms change from noise. Asks for repeated alternating runs with a range, error counts, and evidence the rows were the limiter, and treats a difference inside the range as no measurable change.",
+      "files": [],
+      "expectations": [
+        "The single-run comparison is called inconclusive rather than a win.",
+        "Repeated, alternating runs with a reported range are required before deciding.",
+        "A difference inside the run-to-run range is reported as no measurable difference."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Compare our current JSON parser with the new streaming one and tell me which to use for the nightly import. The import has to stay correct on malformed rows.",
+      "expected_output": "Fixes the claim, metric, and hard constraints first, freezes representative inputs and independently sourced expected results, runs both sides repeatedly and interleaved under production-like settings, counts errors, and reports a verdict with numbers, range, and limiter.",
+      "files": [],
+      "expectations": [
+        "The primary metric and the correctness constraint on malformed rows are stated before any run.",
+        "Inputs and expected results are fixed before running, with expected results not taken from either candidate.",
+        "Each side is run several times, interleaved, and reported as a median with a range.",
+        "A faster parser that mishandles malformed rows is rejected regardless of its speed.",
+        "The report leads with a verdict and gives run counts and conditions."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Make the report job 20x faster. Try whatever it takes.",
+      "expected_output": "Keeps the ambition but bounds the search: agrees a budget of variants, time, and spend, fixes the metric, threshold, and constraints, then tests one hypothesis per variant in a ledger and stops at the threshold, the budget, or a plateau.",
+      "files": [],
+      "expectations": [
+        "A search budget is stated or requested before variants run.",
+        "Each variant tests one hypothesis and is recorded with its result and decision.",
+        "Variants that break correctness are rejected even when faster.",
+        "The search stops at the threshold, the budget, or when gains fall inside noise, and reports the remaining gap."
+      ]
+    }
+  ]
+}

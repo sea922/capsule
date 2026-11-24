@@ -6,8 +6,9 @@
   "license": "MIT",
   "scripts": {
     "check": "npm run test && npm run validate",
-    "test": "node --test scripts/*.test.mjs",
+    "test": "node --test scripts/*.test.mjs hooks/*.test.mjs rules/*.test.mjs statusline/*.test.mjs",
     "validate": "node scripts/validate-repo.mjs",
+    "evals:build": "node scripts/build-plugin-evals.mjs",
     "changeset": "changeset",
     "version:skills": "changeset version && node scripts/sync-version.mjs && npm run validate",
     "package:agensi": "node scripts/package-agensi.mjs"

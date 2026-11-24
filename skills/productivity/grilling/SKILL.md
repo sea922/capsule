@@ -1,6 +1,6 @@
 ---
 name: grilling
-description: Stress-test a consequential or ambiguous plan, decision, or idea through a live interview. Use when the user asks to be grilled, wants you to poke holes in an idea or interview them, wants their thinking challenged, or material choices remain silently assumed. Do not use for clear mechanical work (implement), information retrieval (research), review of a completed artifact (code-review), or sequencing already-clear requirements (planning-and-task-breakdown).
+description: Stress-test a consequential or ambiguous plan, decision, or idea through a live interview. Use when the user asks to be grilled, wants you to poke holes in an idea or interview them, wants their thinking challenged, wants independent dissenting views on a decision, or material choices remain silently assumed. Do not use for clear mechanical work (implement), information retrieval (research), review of a completed artifact (code-review), or sequencing already-clear requirements (planning-and-task-breakdown).
 ---
 
 # Grilling
@@ -22,6 +22,8 @@ Map the root choice and the consequential choices that depend on it. Keep facts 
 - investigate discoverable facts with available tools;
 - ask the user for judgement, preference, authority, intent, or information only they possess;
 - return external evidence gaps to the caller's `research` workflow and empirical uncertainty to its `prototype` workflow; the caller owns any artifact creation and then returns the observation to the interview.
+
+When the subject is whether a product, feature, or idea is worth building, add the branches in [`references/PRODUCT.md`](references/PRODUCT.md).
 
 The **frontier** is every unresolved question whose prerequisites are already settled.
 
@@ -49,6 +51,8 @@ Wait for the user's answers. Do not choose on their behalf or bury the recommend
 Fold the answers into the tree. Reopen, prune, or add branches as needed. Challenge contradictions, vague outcomes, unsupported urgency, hidden assumptions, accidental scope, and answers that avoid the actual trade-off. Then ask the new frontier.
 
 Repeat until every consequential reachable branch is settled or explicitly owned as an unknown.
+
+When a branch has several credible paths and the conversation already leans one way, or the user asks for opposing views, gather independent voices with [`references/DISSENT.md`](references/DISSENT.md) before settling it.
 
 **Complete when:** no unresolved choice can silently change the proposed outcome, boundary, or trade-offs.
 

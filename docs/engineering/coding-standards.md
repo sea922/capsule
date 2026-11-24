@@ -15,6 +15,9 @@ changes load guidance on components, accessibility, state, async interactions,
 and rendering. Full-stack changes use both; a pure library or CLI uses the
 shared baseline when neither domain applies.
 
+Stack references for TypeScript, React, Python, Java, Go, and C#, and one for
+error handling, load only when the change turns on that stack's idioms.
+
 Existing repository rules and tools come first. The skill does not impose React,
 Node, a formatter, or a new architecture. Framework-specific guidance applies
 only to projects using that framework.

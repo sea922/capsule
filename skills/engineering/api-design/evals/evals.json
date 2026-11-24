@@ -1,0 +1,46 @@
+{
+  "skill_name": "api-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add an endpoint to list a customer's invoices. There are customers with several hundred thousand invoices and the mobile app will scroll through them.",
+      "expected_output": "Reads the existing endpoints' conventions first, then designs a bounded collection endpoint with cursor pagination, a stable sort with a unique tiebreaker, allowlisted filters, and the project's error shape, and records it in the API description.",
+      "files": [],
+      "expectations": [
+        "Existing endpoints are read for URL style, casing, error shape, and pagination before the design is proposed, and the design follows them.",
+        "Cursor pagination is chosen for the large, growing set, with the reason given, an opaque cursor, a default and a server-enforced maximum page size.",
+        "The sort order is stable and has a unique tiebreaker.",
+        "Filter and sort fields are an explicit allowlist.",
+        "Success and error statuses are listed for the endpoint and errors use the API's single error shape.",
+        "Authorization states that a caller can only list invoices for a customer they may access."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "We want to rename the `name` field on GET /users/{id} to `full_name` and make `status` return `suspended` as a new value. Just update the serializer.",
+      "expected_output": "Classifies the rename as breaking and the new enum value as breaking unless consumers tolerate unknown values, identifies consumers, and proposes adding the new field alongside the old one with a deprecation path instead of an in-place rename.",
+      "files": [],
+      "expectations": [
+        "The rename is identified as a breaking change and not applied in place.",
+        "The new enum value is flagged as breaking unless consumers were told to tolerate unknown values.",
+        "Known consumers are listed, or the reach is stated as unknown rather than assumed to be none.",
+        "The proposed path adds `full_name` alongside `name`, deprecates `name` with a date, measures remaining use, and removes it later.",
+        "Confirmation is requested before a breaking change to an endpoint other callers use is shipped."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Design POST /payments for our checkout service. Clients are flaky mobile networks, so requests will be retried.",
+      "expected_output": "Designs the write to be safely retryable with a client-supplied idempotency key whose server behaviour is fully specified, with correct statuses, validation errors in one shape, and limits.",
+      "files": [],
+      "expectations": [
+        "An idempotency key supplied by the client is required or supported, generated once per intent and reused on retries.",
+        "The server behaviour is specified: atomic claim of the key, the original result returned on replay, and the same key with a different body rejected.",
+        "Behaviour for a replay that arrives while the first attempt is in progress is defined.",
+        "The success status and each error status are listed, with validation failures reported in the API's error shape and no internal detail leaked.",
+        "Authentication, authorization, and a rate limit with its 429 response are stated.",
+        "One consumer sequence including a retry is written out with concrete requests and responses."
+      ]
+    }
+  ]
+}

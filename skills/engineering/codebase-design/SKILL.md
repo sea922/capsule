@@ -1,6 +1,6 @@
 ---
 name: codebase-design
-description: Design or improve software architecture through cohesive modules, intentional dependency direction, explicit inter-module contracts, and evidence-gated abstraction. Use for module or service boundaries, coupling/cohesion, abstraction timing (KISS/YAGNI/DRY), SOLID trade-offs, ports and adapters, dependency cycles, sync vs async communication, boundary reliability semantics, test seams, architecture refactoring, or agent-navigable structure. Route scoped behavior-preserving cleanup to simplify, coding conventions to coding-standards, and UI-only visual design or pure infrastructure topology to their dedicated skills.
+description: Design or improve software architecture through cohesive modules, intentional dependency direction, explicit inter-module contracts, and evidence-gated abstraction. Use for module or service boundaries, coupling/cohesion, abstraction timing (KISS/YAGNI/DRY), SOLID trade-offs, ports and adapters, dependency cycles, sync vs async communication, boundary reliability semantics, test seams, architecture refactoring, or agent-navigable structure. Route scoped behavior-preserving cleanup to simplify, coding conventions to coding-standards, UI-only visual design to interface-polish, and pure infrastructure topology to containers-and-deploys.
 ---
 
 # Codebase Design
@@ -71,7 +71,7 @@ Keep static dependency direction separate from runtime flow. Policy may call an 
 
 ## 3. Design it twice
 
-For a meaningful module, seam, or interaction change, produce at least two materially different designs. For a small local change, compare the proposed shape with keeping the current shape. Vary the interface or ownership model, not merely names and folders.
+For a meaningful module, seam, or interaction change, produce at least two materially different designs. Where an existing module, installed dependency, or maintained library could do the job, make adopting or extending it one of the designs and compare it on the same terms. For a small local change, compare the proposed shape with keeping the current shape. Vary the interface or ownership model, not merely names and folders.
 
 Use **KISS -> YAGNI -> DRY** as an evidence sequence: choose the lowest total complexity that meets present constraints, defer structure justified only by hypothetical needs, then consolidate knowledge whose shared owner and change pattern are real. Score each design on:
 

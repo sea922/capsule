@@ -1,0 +1,3 @@
+interface:
+  display_name: "LLM Features"
+  short_description: "Build, evaluate, and tune features that call a language model, on evidence from the project's own evals"

@@ -1,0 +1,46 @@
+{
+  "skill_name": "observability",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We're adding a payment retry worker that pulls from a queue and calls the payment provider. Add observability to it before it goes live.",
+      "expected_output": "Writes the operator's questions first, reads the project's existing logging, metrics, and tracing setup, maps each question to a signal, emits structured events with a correlation id carried through the queue message, records rate, errors, a duration histogram, retries, and queue age with bounded labels, times the provider call separately, keeps secrets and payment data out of telemetry, and verifies by forcing a failure and finding it in the output, or labels the signals unverified.",
+      "files": [],
+      "expectations": [
+        "Operator questions are written before any instrumentation is added, and each signal is tied to one of them.",
+        "The correlation id is propagated through the queue message to the worker, not regenerated there.",
+        "Durations are recorded as a distribution, and queue age and retry count are measured as well as depth and errors.",
+        "No metric label uses an unbounded value such as a payment id, user id, or error message.",
+        "Tokens, card data, and whole request bodies are excluded from logs and spans.",
+        "A forced failure is found in the telemetry by its correlation id, or the signals are labelled unverified with the reason."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our on-call keeps getting paged for high CPU and pod restarts and nothing is ever wrong. Meanwhile last week checkout was failing for 20 minutes and nobody was paged. Fix our alerting and just create the new rules in production.",
+      "expected_output": "Identifies that the alerts page on causes while the user-facing symptom is unmonitored; proposes symptom alerts on error ratio, latency against an objective, and queue age, each with a threshold and duration based on measured history and a runbook; moves cause signals to a dashboard or ticket; shows each rule and its query and expected firing frequency, and, because the user asked for creation, creates in production only the rules whose thresholds rest on history it could read, after showing them; the rest stay proposed, as do all of them when the monitoring account or history cannot be read.",
+      "files": [],
+      "expectations": [
+        "Processor and restart alerts are demoted from pages to a dashboard or ticket, with the reason.",
+        "New alerts are defined on user-facing symptoms, each with a threshold, a duration, and a runbook link.",
+        "Thresholds are based on an objective or on measured history, or are labelled as proposals to be checked against history that could not be read.",
+        "Each rule and its query is shown before anything is created in the production account, and proposed rules are reported apart from created ones.",
+        "Severities are limited to act-now and act-this-week."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Build a Grafana dashboard for our API service. We have a ton of Prometheus metrics, just put them all on there so we can see everything.",
+      "expected_output": "Declines to show every metric; asks or infers the operator's questions, reads an existing dashboard for structure and conventions, and builds a board ordered by health, latency, throughput, saturation, and service-specific risk, with titled panels, units, thresholds, and filter variables; uses percentiles for latency; removes panels that answer no question; and checks the queries return data, or labels the dashboard unverified when the metrics backend cannot be reached.",
+      "files": [],
+      "expectations": [
+        "The dashboard is organised around written operator questions, not around the list of available metrics.",
+        "Panels that answer no question are left out, and the response says so.",
+        "Latency panels show percentiles from a histogram, not an average.",
+        "Every panel has a title and a unit, and common filters are variables.",
+        "An existing dashboard or the platform's format is read before the definition is written.",
+        "Queries are confirmed to return data, or the dashboard is labelled unverified with the reason."
+      ]
+    }
+  ]
+}

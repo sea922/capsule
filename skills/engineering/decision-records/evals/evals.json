@@ -1,0 +1,40 @@
+{
+  "skill_name": "decision-records",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We decided to use Postgres instead of MongoDB for the orders service because we need transactions across orders and payments. Record that. The repo already has docs/decisions/0001-use-typescript.md and 0002-monorepo.md.",
+      "expected_output": "Follows the existing convention: writes docs/decisions/0003-… in the same format with context, decision, options considered, and consequences, updates any index, and marks the status according to what the user confirmed.",
+      "files": [],
+      "expectations": [
+        "The record is created in docs/decisions/ as number 0003, matching the existing naming pattern.",
+        "MongoDB appears under options considered with the stated reason it was not chosen.",
+        "Consequences include downsides of the chosen option, not only benefits.",
+        "No alternatives are invented beyond those the user considered, or any added one is flagged as a question.",
+        "Nothing is committed without being asked."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Why did we choose REST over GraphQL for the public API?",
+      "expected_output": "Searches the existing decision records and answers from the one that covers it, quoting it; if none exists, says there is no record instead of constructing a rationale.",
+      "files": [],
+      "expectations": [
+        "Existing decision records are searched before answering.",
+        "An answer cites the record it comes from, or the reply states that no record covers the decision.",
+        "No rationale is presented as recorded when it is only inferred."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We're moving from our accepted ADR 0004 (session cookies) to JWTs. Update ADR 0004 to say JWT.",
+      "expected_output": "Does not rewrite the accepted record's decision; writes a new record for the JWT decision, marks 0004 as superseded by it with links both ways, and updates the index.",
+      "files": [],
+      "expectations": [
+        "A new record is written for the JWT decision.",
+        "ADR 0004 keeps its original decision text and is marked superseded with a link to the new record.",
+        "The new record links back to 0004 and the index is updated."
+      ]
+    }
+  ]
+}

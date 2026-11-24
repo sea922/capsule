@@ -1,0 +1,3 @@
+interface:
+  display_name: "Issue Triage"
+  short_description: "Classify, verify, and de-duplicate an incoming issue, then draft labels and a reply for approval"

@@ -1,0 +1,26 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { basename, dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { test } from 'node:test';
+import * as yaml from 'js-yaml';
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const manifest = JSON.parse(readFileSync(join(ROOT, '.claude-plugin', 'plugin.json'), 'utf8'));
+// Every agent except the orchestrate roles, which may edit and run commands.
+const READ_ONLY = manifest.agents
+  .map((path) => basename(path, '.md'))
+  .filter((name) => !name.startsWith('orchestrate-'));
+
+test('read-only review and spec agents are registered and cannot edit, run commands, or delegate', () => {
+  assert.ok(READ_ONLY.length >= 14, 'expected the read-only agents to be listed in plugin.json');
+  const registered = new Map(manifest.agents.map((path) => [basename(path, '.md'), path]));
+  for (const name of READ_ONLY) {
+    assert.ok(registered.has(name), `${name} is not in plugin.json`);
+    const text = readFileSync(join(ROOT, registered.get(name)), 'utf8');
+    const frontmatter = yaml.load(text.match(/^---\r?\n([\s\S]*?)\r?\n---/)[1]);
+    assert.equal(frontmatter.name, name);
+    assert.ok(frontmatter.description, `${name} has no description`);
+    assert.deepEqual([...frontmatter.tools].sort(), ['Glob', 'Grep', 'Read', 'Skill'], `${name} tools changed`);
+  }
+});

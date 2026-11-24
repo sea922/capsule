@@ -1,6 +1,6 @@
 ---
 name: diagnosing-bugs
-description: Investigate an unexplained bug or performance regression when its cause requires evidence from code, runtime behavior, logs, or reproduction. Use for explicit diagnosis or root-cause requests, intermittent or environment-specific failures, and fix requests with an unknown cause, including when the stack trace or failing code is pasted inline. Answer quick questions from available evidence directly; send known-cause fixes to implement and review-only findings to code-review. Diagnose-only work remains read-only.
+description: Investigate an unexplained bug or performance regression when its cause requires evidence from code, runtime behavior, logs, or reproduction. Use for diagnosis or root-cause requests, intermittent or environment-specific failures, a failing build or type check, and fix requests with an unknown cause, including when the stack trace or failing code is pasted inline. Answer quick questions directly; send known-cause fixes to implement, review-only findings to code-review, and triage of an incoming issue report to issue-triage. Diagnose-only work remains read-only.
 ---
 
 # Diagnosing Bugs
@@ -13,6 +13,7 @@ Match the depth to the unresolved question before starting the diagnostic steps:
 
 - If the user asks for a quick explanation and the available error or code already supports one, answer it directly. State what the evidence shows and what remains uncertain. A hypothetical reproduction adds no evidence.
 - If the cause is already established and the user wants a change, use `implement`. A known-cause fix does not need a new diagnosis.
+- If the build, compiler, or type checker is failing and the messages name the locations: for a diagnose-only request, read the errors as section 1 of [references/BUILD-ERRORS.md](references/BUILD-ERRORS.md) describes and report; when a fix was requested, hand the repair to `implement`, which follows the rest of that reference.
 - If the cause remains uncertain or the user asks for an investigation, follow the workflow below. Use the smallest faithful check that can distinguish causes; increase depth only when that check leaves uncertainty.
 
 **Complete when:** the request has a direct answer, a known-cause implementation route, or a specific unresolved causal question for diagnosis.
@@ -63,6 +64,8 @@ Maintain a compact ledger while investigating, and include the current table in 
 
 Generate multiple plausible hypotheses when the evidence permits. Rank them by explanatory power and cheapness of the next discriminating check, not by familiarity. Search for the first boundary where a known-good input becomes a known-bad output.
 
+When a control in a user interface does nothing or ends in the wrong state although each function works alone, trace its handler call by call: what each call reads and writes, whether a later call resets what an earlier one set, whether asynchronous calls can finish in a different order, and whether a callback holds a stale value. Compare the final state with what the control's label promises.
+
 Do not conflate correlation, temporal proximity, a suspicious line, or a successful retry with cause.
 
 **Complete when:** the leading hypotheses and the next evidence that could distinguish them are visible.
@@ -76,7 +79,7 @@ Change one investigative variable at a time. Prefer checks that can disprove the
 - inspect ownership of retries, caching, concurrency, configuration, and error translation;
 - reduce to a minimal example;
 - bisect revisions or configuration when history supports it;
-- measure instead of inferring performance from code shape.
+- measure instead of inferring performance from code shape; once the cause is known, making it faster belongs to `performance`.
 
 When you force a failure by mutating code, a fixture, or configuration, run the mutation only in an isolated copy/worktree (or a separately authorized scratch edit restored cleanly without stashing or resetting user work), and diff against a pristine copy to prove the mutation landed before you trust the result.
 
@@ -100,7 +103,7 @@ A proposed patch that suppresses the symptom is not confirmation by itself. When
 
 Ask whether the state that triggered the symptom is legitimate. If the system may be in that state, the code that broke on it is the root cause, and handling the state there is the fix. If the state should never exist, a check where it broke hides the bug; trace back to what produced the state. Guards, retries, swallowed errors, clamped values, and discarded state are the usual ways a symptom fix hides a cause.
 
-If the deciding fact took a deep dig because the existing logs, metrics, and errors did not show it, propose the cheap always-on signal that would have shown it at first look: a log field, a metric, or an assertion. Report it as a proposal; adding it is a change for `implement`.
+If the deciding fact took a deep dig because the existing logs, metrics, and errors did not show it, propose the cheap always-on signal that would have shown it at first look: a log field, a metric, or an assertion. Report it as a proposal; adding it is a change for `implement`. Use `observability` when the gap is wider than one signal.
 
 If no fix within the current design corrects the mechanism that produced the bug, only this occurrence of it, say so. That holds when the cause is a wrong responsibility or interface, the requirement itself is wrong, or every candidate fix works around an assumption that no longer holds. Route that finding to `codebase-design` or back to the user instead of handing `implement` a workaround. Size alone is not a design problem.
 

@@ -1,0 +1,48 @@
+{
+  "skill_name": "e2e-testing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our checkout Playwright test fails about one run in five in CI and always passes locally. Fix it.",
+      "expected_output": "Reproduces the failure and reads a failing trace before changing anything, places the cause in one of the four categories, fixes that cause without adding a sleep or raising retries, and proves stability with repeated runs.",
+      "files": [],
+      "expectations": [
+        "The flaky test is reproduced with repeated runs, alone and alongside other tests, before it is changed, or the run is specified and labelled unverified when no repository is available.",
+        "A trace or other artifact from a failing run is read to locate the failure, or requested when none is available.",
+        "The cause is classified as a race in the test, a race in the application, shared state, or an unstable dependency, and the fix matches that cause.",
+        "No fixed sleep is added and retries are not raised to make the test pass.",
+        "If the cause is a race in the application, it is reported as a real defect and fixed in the application.",
+        "Stability is shown with multiple consecutive passes, including a parallel or CI run, before the test is called fixed, or the fix is labelled unverified."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Add end-to-end tests for the new sign-up form. It has eight fields with validation rules for each.",
+      "expected_output": "Keeps per-field validation at unit or integration level and adds a small number of end-to-end tests for the sign-up journey itself, with isolated data, user-facing selectors, and state-based waits.",
+      "files": [],
+      "expectations": [
+        "Per-field validation rules are directed to unit or integration tests rather than end-to-end tests, with the reason.",
+        "The end-to-end coverage is the journey: sign up through reaching the first signed-in screen, plus at most a small number of critical failure paths.",
+        "Each test creates unique data for its run and does not depend on another test.",
+        "Elements are selected by role, label, or a dedicated test identifier, not CSS classes or position.",
+        "Waits are for states or specific responses, with no fixed sleeps.",
+        "Assertions are on outcomes a user can see."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The e2e suite takes 50 minutes and people just hit rerun when it goes red. Sort it out.",
+      "expected_output": "Measures the suite before changing it, then proposes moving lower-level checks down, isolating state so it can run in parallel, triaging flakes by cause, a short owned quarantine list, and failure artifacts, and asks before deleting tests.",
+      "files": [],
+      "expectations": [
+        "Runtime per test, failure and retry history, and skipped tests are gathered before changes are proposed, or requested and the proposals labelled provisional when they cannot be read.",
+        "Tests that a unit or integration test could replace are identified and proposed for moving down.",
+        "Setup through the interface and repeated sign-in are replaced with API or fixture setup and a reused session.",
+        "Parallel workers or sharding are used after data isolation is addressed.",
+        "Flaky tests are triaged to a cause; any quarantine has an issue, an owner, and a date.",
+        "Deleting tests is proposed with evidence and agreed before being done, not done unilaterally.",
+        "The suite is not pointed at production or shared real data."
+      ]
+    }
+  ]
+}

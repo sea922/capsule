@@ -1,0 +1,44 @@
+{
+  "skill_name": "database-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Design the Postgres tables for a multi-tenant invoicing app: customers, invoices with line items, and payments. The main screens list a tenant's unpaid invoices newest first and show one invoice with its lines.",
+      "expected_output": "Lists the access patterns before the schema, then gives normalised tables with bigint identity or time-ordered keys, timestamptz and numeric types, NOT NULL, unique, foreign-key, and check constraints, and indexes each tied to a named query, including indexes on foreign-key columns and a composite led by tenant for the unpaid list, with stated volume assumptions.",
+      "files": [],
+      "expectations": [
+        "The access patterns are listed before the schema and each index is tied to the query it serves.",
+        "Money uses numeric and instants use timestamptz, not float or timestamp without time zone.",
+        "Invariants are enforced with NOT NULL, unique, foreign-key, and check constraints, with a stated delete rule on foreign keys.",
+        "Referencing columns of foreign keys are indexed, and the unpaid-invoice list has a composite or partial index with tenant and equality columns before the sort column.",
+        "Assumptions about row counts or patterns that were not given are stated as assumptions."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "This endpoint is the slow one, we already profiled it: SELECT * FROM orders WHERE account_id = ? AND status = 'pending' ORDER BY created_at DESC LIMIT 50 OFFSET 20000. MySQL 8, orders has 40M rows and an index on (created_at). What should the query and indexes look like?",
+      "expected_output": "Proposes a composite index on (account_id, status, created_at) with equality columns first, replaces the deep offset with keyset pagination on a unique order, selects named columns, and asks for or describes checking EXPLAIN on realistic data before and after, without re-running a profiling exercise already done.",
+      "files": [],
+      "expectations": [
+        "A composite index places account_id and status before created_at.",
+        "The deep OFFSET is replaced by keyset pagination with a tie-breaking unique column.",
+        "SELECT * is replaced by the needed columns, or the cost of keeping it is stated.",
+        "The answer says to confirm with EXPLAIN on production-sized data and names what to look for, such as type, key, rows, or filesort.",
+        "Adding the index to the live 40M-row table is handed to database-migrations or flagged as needing an online build."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Two workers sometimes both process the same job. I want to add a Redis lock around job processing so only one runs it. Write it.",
+      "expected_output": "Implements acquire with SET NX PX and a random token and release through a compare-and-delete script, states that the lock is advisory and can have two holders after a pause or failover, and makes the job safe anyway through idempotency, a fencing token, or a database-level claim, with a TTL chosen against job duration.",
+      "files": [],
+      "expectations": [
+        "Acquire uses a single SET with NX and an expiry, with a per-holder random token.",
+        "Release deletes only when the stored token matches, done atomically in a script, not with a bare DEL.",
+        "The answer states that the lock does not guarantee mutual exclusion and explains a case where two holders occur.",
+        "It adds a correctness backstop such as idempotent processing, a fencing token, or a database claim with a unique constraint or SKIP LOCKED.",
+        "The TTL is related to job duration, with what happens when the job outlives it."
+      ]
+    }
+  ]
+}

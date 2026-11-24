@@ -27,6 +27,16 @@ Select required data, bound result sizes, and inspect access patterns for repeat
 per-row queries. Use the existing data-access owner. Add a layer only when it
 protects a concrete boundary or removes demonstrated duplication.
 
+## Layering
+
+Keep transport handlers thin: parse and validate, authorize, call the owner of
+the behavior, map the result. Business rules live where they can be tested
+without the transport, and queries live with the data-access owner. Shared
+concerns such as authentication, request identifiers, and error mapping belong
+in the framework's middleware, applied once, rather than repeated per handler.
+Follow the layers the project already has; do not introduce a service or
+repository tier for a single pass-through call.
+
 ## Retries and jobs
 
 Define which failures are transient before retrying. Bound attempts, elapsed
@@ -42,6 +52,10 @@ duplicate delivery cannot silently lose or repeat a required effect. Never wrap 
 
 When caching is justified, define freshness, invalidation, failure behavior, and
 tenant/user isolation in keys. Keep the authoritative source identifiable.
+Decide what a miss costs: when many requests can miss the same hot key at once,
+bound the recomputation with a lock, early refresh, or jittered expiry. A cache
+outage should degrade to the source within its capacity, not fail the request
+or flood the store.
 
 Check deployment topology before using process-local counters, locks, or caches
 for a correctness guarantee. A limit intended to hold across replicas needs an
@@ -51,6 +65,19 @@ Bound outbound calls and response consumption. Use the existing client and
 connection lifecycle. Preserve cancellation and distinguish a dependency outage
 from a valid empty result.
 
+## Logging and operations
+
+Log structured events through the established logger with a request or
+correlation identifier that follows the work across services and jobs. Record
+the operation, outcome, duration, and relevant identifiers; never secrets,
+tokens, or personal data. Log a failure once, where it is handled. Emit the
+metrics the project already tracks for a new endpoint or job, so that its error
+rate and latency are visible from the first deploy.
+
+A service stops cleanly: it stops accepting work, finishes or hands back
+in-flight requests and jobs within a bound, and closes pools. Health endpoints
+separate "process is running" from "dependencies are reachable".
+
 ## Evidence
 
 Choose checks for the changed boundary: invalid input, unauthorized access,
@@ -58,3 +85,10 @@ partial failure, duplicate execution, concurrent updates, or dependency timeout.
 Use real local infrastructure where practical and the project's established
 test doubles for unavailable dependencies. State which guarantees remain
 unexercised; a happy-path response alone does not demonstrate failure handling.
+
+## Deeper references
+
+Error classification, retries, and client-safe messages are in
+[ERROR-HANDLING.md](ERROR-HANDLING.md). Stack-specific guidance is in
+[TYPESCRIPT.md](TYPESCRIPT.md), [PYTHON.md](PYTHON.md), [JAVA.md](JAVA.md),
+[GO.md](GO.md), and [CSHARP.md](CSHARP.md).

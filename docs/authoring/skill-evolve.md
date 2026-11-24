@@ -72,6 +72,9 @@ three candidates and returns any further findings as a ranked list.
   over for its own repository.
 - Commits, version bumps, and changesets stay with the repository's own
   workflow.
+- Auditing a whole catalogue is a separate pass with its own reference. It
+  gives each skill a keep, improve, merge, or retire verdict with evidence,
+  and changes nothing without approval of each item.
 
 ## Evaluation
 

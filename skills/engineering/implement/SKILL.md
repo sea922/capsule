@@ -23,6 +23,8 @@ Read the repository instructions, relevant source, nearby tests, and supplied in
 
 When the user passes an issue or ticket reference, fetch it and state its title as the tracker gives it before starting. If the reference could name more than one item, ask which.
 
+Before building something new, look for what already exists: a function or module in this repository, a dependency already installed, or a maintained library or tool that fits. Reuse or extend it when it meets the need; build when nothing fits or the fit would cost more than the code. Adding a dependency needs the user's agreement.
+
 Inspect the current branch, HEAD, staged and unstaged changes, and untracked files before editing. Ask only when a missing decision would materially change behavior, architecture, external state, cost, or risk. Otherwise make the smallest reasonable assumption and record it.
 
 **Complete when:** the intended outcome, working-tree baseline, governing rules, and material decision gates are known.
@@ -94,7 +96,9 @@ Run `verification-before-completion` against the acceptance conditions after the
 
 If verification fails, return to the smallest responsible slice. If verification is unavailable, partial, destructive, costly, or needs new authority, preserve that boundary and report the corresponding honest terminal state instead of saying the work is done.
 
-When verification or review finds a defect within the authorized scope, fix it and rerun the affected checks. If the same concern survives two correction attempts, name the assumption both attempts relied on and switch to `diagnosing-bugs` with that assumption and the failed attempts as evidence. Continue when new evidence changes the approach; report the concrete blocker when the remaining step needs unavailable input or authority. Do not rerun an unchanged loop or end authorized work merely because the retry bound was reached.
+When verification or review finds a defect within the authorized scope, fix it and rerun the affected checks. If the same concern survives two correction attempts, name the assumption both attempts relied on and switch to `diagnosing-bugs` with that assumption and the failed attempts as evidence. Continue when new evidence changes the approach; report the concrete blocker when the remaining step needs unavailable input or authority. Do not rerun an unchanged loop or end authorized work merely because the retry bound was reached. To repair a broken build or failing type check, follow the build-errors reference of the `diagnosing-bugs` skill: one error at a time, smallest diff, rerun after each fix.
+
+When you notice yourself repeating a command, an edit, or a line of reasoning without a new result, stop and treat it as a loop. Write down what was tried and what was actually observed each time, then name the assumption every attempt shared: the cause, the file or branch being edited, the environment, or the goal itself. Check the real state instead of memory (working directory, branch, file contents, running process), shrink the problem to one failing command or test, and change one thing. After two attempts with no new evidence, stop and report the attempts, the observations, and the blocker instead of trying variations.
 
 For long or resumable work, update the existing issue, plan, cycle record, or repository artifact with the base commit, pre-existing dirty paths, completed slices, evidence, and material decisions. Use a task-scoped scratch ledger only when no canonical artifact exists, and do not publish it without authorization.
 

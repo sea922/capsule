@@ -1,6 +1,6 @@
 ---
 name: coding-standards
-description: Supplies coding conventions for shared code, backend services, and frontend interfaces. Use when applying project coding standards during implementation, assessing convention violations in review, or defining standards for a project. Implementation stays with implement; review orchestration stays with code-review; consequential architecture decisions belong to codebase-design.
+description: Supplies coding conventions for shared code, backend services, and frontend interfaces, with per-stack references for TypeScript, React, Python, Java, Go, and C#. Use when applying project coding standards during implementation, assessing convention violations in review, or defining standards for a project. Implementation stays with implement; review orchestration stays with code-review; consequential architecture decisions belong to codebase-design.
 ---
 
 # Coding standards
@@ -39,11 +39,18 @@ are identified, with assumptions distinguished from documented rules.
 | --- | --- |
 | Server handlers, persistence, jobs, or external service calls | [Backend standards](references/BACKEND.md) |
 | UI components, forms, client state, or browser interactions | [Frontend standards](references/FRONTEND.md) |
-| A change crossing both domains | Both references, including their shared interface |
+| Error paths, retries, or failure reporting in any stack | [Error handling](references/ERROR-HANDLING.md) |
+| TypeScript, including NestJS and Prisma | [TypeScript](references/TYPESCRIPT.md) |
+| React, including Next.js and Vite | [React](references/REACT.md) |
+| Python, including FastAPI, Django, and Celery | [Python](references/PYTHON.md) |
+| Java, including Spring Boot, Quarkus, JPA, and MyBatis | [Java](references/JAVA.md) |
+| Go | [Go](references/GO.md) |
+| C# and .NET | [C#](references/CSHARP.md) |
+| A change crossing backend and frontend | Both domain references, including their shared interface |
 | A CLI, pure library, or other code outside these domains | The shared baseline only |
 
 Classify by responsibility: a server endpoint written inside a UI framework is
-backend code. Load only relevant references. Apply stack-specific guidance only
+backend code. Load only relevant references: a domain reference for the responsibility, and a stack reference only when the change turns on that stack's idioms. Apply stack-specific guidance only
 when the project uses that stack.
 
 **Complete when:** each affected responsibility has an applicable reference or

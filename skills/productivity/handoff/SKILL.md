@@ -34,6 +34,8 @@ When the recipient is a person, open with what is waiting on them, or say nothin
 
 Use pointers for lengthy investigation and keep active errors and constraints directly visible. Include commands needed to reproduce evidence, but exclude credentials, tokens, personal data, and environment dumps. Name the authorized credential source when needed, never its value.
 
+When the reason is a session running low on context, read [references/COMPACTION.md](references/COMPACTION.md) for when to compact and what to write down first.
+
 **Complete when:** another agent can identify the next action and its prerequisites without guessing task state or rereading the conversation — and, when the recipient is a person, every pending decision is self-contained and what waits on them leads the handoff.
 
 ## 3. Verify and transfer

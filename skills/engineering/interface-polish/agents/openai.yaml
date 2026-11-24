@@ -1,0 +1,3 @@
+interface:
+  display_name: "Interface Polish"
+  short_description: "Audit design tokens, find visual drift, and apply concrete polish details to an existing interface"

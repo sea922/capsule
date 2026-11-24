@@ -86,3 +86,18 @@ test('accepts backtick README labels and rejects unsafe workflow defaults', (t) 
   assert.match(errors, /timeout/);
   assert.match(errors, /commit SHA/);
 });
+
+test('rejects frontmatter keys and shell variables that only Claude Code understands', (t) => {
+  const { root, put } = fixture(t);
+  put('skills/engineering/sample/SKILL.md', '---\nname: sample\ndescription: Applies example conventions.\nmodel: opus\n---\n# Sample\n\n```sh\nnode "${CLAUDE_PLUGIN_ROOT}/x.mjs" $ARGUMENTS\n```\n');
+  const errors = validateRepository(root).join('\n');
+  assert.match(errors, /frontmatter key not portable.*model/);
+  assert.match(errors, /Claude-only variable.*CLAUDE_PLUGIN_ROOT/);
+  assert.match(errors, /Claude-only variable.*ARGUMENTS/);
+});
+
+test('accepts portable frontmatter and Claude variables mentioned outside shell fences', (t) => {
+  const { root, put } = fixture(t);
+  put('skills/engineering/sample/SKILL.md', '---\nname: sample\ndescription: Applies example conventions.\ndisable-model-invocation: true\nlicense: MIT\nmetadata:\n  origin: sample\n---\n# Sample\n\nHooks use `${CLAUDE_PLUGIN_ROOT}` in their commands.\n\n```json\n{"command": "${CLAUDE_PLUGIN_ROOT}/x"}\n```\n');
+  assert.deepEqual(validateRepository(root), []);
+});

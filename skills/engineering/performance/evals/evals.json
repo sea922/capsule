@@ -1,0 +1,42 @@
+{
+  "skill_name": "performance",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Our /api/orders endpoint is slow, make it faster. It's a Node service with Postgres; staging has a copy of production data.",
+      "expected_output": "Fixes a concrete metric and workload, measures a repeated baseline with its range, profiles to find and confirm the limiter, changes one thing at a time, re-measures under the same conditions, and reports before and after numbers with keep or revert decisions.",
+      "files": [],
+      "expectations": [
+        "A single metric (such as p95 latency at a stated load) and the workload are stated before any change.",
+        "The baseline is run several times and reported as a median with a range, and errors are counted.",
+        "The suspected limiter is confirmed, for example with a query plan or by removing its work, before it is optimized.",
+        "Each change is measured on its own, and changes inside the run-to-run range are reverted.",
+        "The final report gives before and after numbers with run counts and ranges, not adjectives."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Review this PR for performance problems before we merge. It adds a dashboard that lists every customer's invoices.",
+      "expected_output": "Reviews read-only, reports findings as potential impact tied to data size or call frequency, and names the measurement that would confirm each, without inventing timings.",
+      "files": [],
+      "expectations": [
+        "No millisecond, throughput, or percentage figures appear that no tool produced.",
+        "An unpaginated list or per-row query is reported with the data size that makes it costly.",
+        "Each finding names a concrete measurement that would confirm it.",
+        "No code is edited and no command that changes state is run."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our dashboard takes 6 seconds to become usable on a mid-range phone. Get it under 3.",
+      "expected_output": "States the metric and device class, measures a repeated baseline, uses a browser performance trace to find and confirm the limiter, changes one thing at a time, and keeps only changes that move the number outside the run-to-run range.",
+      "files": [],
+      "expectations": [
+        "The metric, device class, and 3 second threshold are stated before changes.",
+        "A trace or profile identifies the limiter before any optimization.",
+        "Changes are measured one at a time and neutral ones are reverted.",
+        "The report gives before and after numbers with their range and names the next limiter."
+      ]
+    }
+  ]
+}

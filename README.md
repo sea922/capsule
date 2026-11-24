@@ -8,7 +8,7 @@ Plan, build, review, ship, and write with skills that keep agents on evidence,
 not guesses. Works with GitHub and GitLab.
 
 [![Version](https://img.shields.io/github/package-json/v/sea922/capsule?label=version&color=blueviolet)](CHANGELOG.md)
-[![Skills](https://img.shields.io/badge/skills-36-orange)](#-skills)
+[![Skills](https://img.shields.io/badge/skills-50-orange)](#-skills)
 [![CI](https://github.com/sea922/capsule/actions/workflows/ci.yml/badge.svg)](https://github.com/sea922/capsule/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 [![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757)](#-install)
@@ -63,12 +63,41 @@ compose.
 | [prototype](docs/engineering/prototype.md) | Answer one design or feasibility question with a small, reproducible experiment. |
 | [simplify](docs/engineering/simplify.md) | Reduce complexity in a scoped pass while preserving observable behavior. |
 | [codebase-design](docs/engineering/codebase-design.md) | Design cohesive modules, evidence-gated abstractions, dependency direction, and explicit contracts. |
-| [coding-standards](docs/engineering/coding-standards.md) | Apply project conventions with shared rules and backend and frontend guidance. |
+| [coding-standards](docs/engineering/coding-standards.md) | Apply project conventions with shared rules, backend and frontend guidance, and per-stack references. |
+| [llm-features](docs/engineering/llm-features.md) | Build, evaluate, and tune product features that call a language model, keeping or reverting each change on the project's own evals. |
+
+### 🗄️ Design and data
+
+| Skill | What it does |
+| --- | --- |
+| [api-design](docs/engineering/api-design.md) | Design or change an HTTP API contract without breaking the callers that depend on it. |
+| [database-design](docs/engineering/database-design.md) | Design schemas, indexes, and queries that fit the workload, with PostgreSQL, MySQL, Redis, and ClickHouse references. |
+| [database-migrations](docs/engineering/database-migrations.md) | Plan, write, and verify schema and data changes that survive a live deploy. |
+
+### 🎨 Frontend
+
+| Skill | What it does |
+| --- | --- |
+| [interface-polish](docs/engineering/interface-polish.md) | Audit design tokens, find visual drift, apply concrete polish details, and set the direction for a new screen. |
+| [i18n-sync](docs/engineering/i18n-sync.md) | Keep locale files in step with source strings: missing, unused, and stale keys, translated in context and verified. |
+| [seo](docs/engineering/seo.md) | Audit and fix how a site is crawled, indexed, and presented in search, working from what a crawler actually receives. |
+
+### ⚙️ Operations and performance
+
+| Skill | What it does |
+| --- | --- |
+| [containers-and-deploys](docs/engineering/containers-and-deploys.md) | Build a service's container image, pipeline, rollout strategy, and infrastructure definitions, and prove them by running them. |
+| [observability](docs/engineering/observability.md) | Instrument a service with logs, metrics, traces, alerts, and dashboards that answer an operator's questions, verified with a real event. |
+| [performance](docs/engineering/performance.md) | Make software measurably faster or lighter, or review code for performance risk, with numbers that hold up. |
+| [benchmark](docs/engineering/benchmark.md) | Produce or vet a measurement a decision can rest on, and search variants within a budget. |
 
 ### 🔍 Investigate and plan
 
 | Skill | What it does |
 | --- | --- |
+| [codebase-onboarding](docs/engineering/codebase-onboarding.md) | Map an unfamiliar repository: stack, architecture, a traced request, conventions, and where to start. |
+| [decision-records](docs/engineering/decision-records.md) | Record significant technical decisions as ADRs and answer why past ones were made. |
+| [issue-triage](docs/engineering/issue-triage.md) | Classify, verify, and de-duplicate an incoming GitHub or GitLab issue, then draft labels and a reply for approval. |
 | [diagnosing-bugs](docs/engineering/diagnosing-bugs.md) | Prove a root cause through reproduction, competing hypotheses, and discriminating evidence. |
 | [research](docs/engineering/research.md) | Investigate questions with primary sources, revision-aware citations, and explicit gaps. |
 | [planning-and-task-breakdown](docs/engineering/planning-and-task-breakdown.md) | Turn clear requirements into verifiable slices, dependencies, and a ready frontier. |
@@ -80,6 +109,9 @@ compose.
 | Skill | What it does |
 | --- | --- |
 | [code-review](docs/engineering/code-review.md) | Review changes at quick, standard, or deep depth with evidence-backed findings. |
+| [production-readiness](docs/engineering/production-readiness.md) | Judge whether a release is ready for real users, with a ship, ship-with-caveats, or block verdict. |
+| [e2e-testing](docs/engineering/e2e-testing.md) | Build and repair end-to-end suites that cover real journeys and stay trustworthy. |
+| [accessibility](docs/engineering/accessibility.md) | Audit and fix UI against WCAG 2.2 AA with real keyboard, screen-reader, zoom, and contrast evidence. |
 | [security-review](docs/engineering/security-review.md) | Assess trust boundaries and concrete abuse paths in a scoped, read-only review. |
 | [verification-before-completion](docs/engineering/verification-before-completion.md) | Prove completion claims with fresh, scope-matched evidence and honest verdicts. |
 | [compound-learnings](docs/engineering/compound-learnings.md) | Capture durable engineering lessons and refresh them against current code. |
@@ -111,6 +143,106 @@ compose.
 | [html-writeup](docs/authoring/html-writeup.md) | Build a self-contained HTML document with diagrams, tables, and code, verified in a real browser. |
 | [skill-evolve](docs/authoring/skill-evolve.md) | Turn real-session evidence into skill edits, keeping only those that beat the current version. |
 
+## 🧩 Agents and hooks
+
+capsule also ships read-only agents that its skills hand work to, indexed in [`docs/agents.md`](docs/agents.md), and four hooks.
+
+| Agent | Used by | What it checks |
+| --- | --- | --- |
+| `code-review-silent-failures` | `code-review` deep | Errors a change swallows, hides behind fallbacks, or loses |
+| `code-review-type-design` | `code-review` deep | Whether changed types still enforce their invariants |
+| `code-review-comments` | `code-review` deep | Comments and docs that no longer match the code |
+| `code-review-tests` | `code-review` deep | Whether the tests would catch the change breaking |
+| `java-reviewer` | `code-review` deep | Java changes in Spring Boot, Quarkus, or plain Java: security, errors, layering, persistence, concurrency |
+| `code-review-stack` | `code-review` deep | Python, Go, TypeScript, React, and C# changes: the defects each stack's idioms make easy |
+| `code-review-security` | `code-review` deep | Reachable security weaknesses in a change that touches input, authentication, authorization, secrets, files, network, or dependencies |
+| `database-migrations-reviewer` | `database-migrations`, `code-review` deep | Migrations, schema, and queries that can lose data, lock tables, or break deploys |
+| `benchmark-auditor` | `benchmark`, `performance`, `code-review` deep | Whether a harness or a reported number supports its claim |
+| `production-readiness-auditor` | `production-readiness` | The evidence a launch review needs: what exists, what is missing, what looks risky |
+| `performance-reviewer` | `performance`, `code-review` deep | Hot paths, unbounded work, and bundle weight, as potential impact |
+| `accessibility-reviewer` | `accessibility`, `code-review` deep | Likely WCAG barriers in UI code, for manual checks to confirm |
+| `security-review-sanitizer` | `security-review` | Secrets, personal data, and internal references before publishing |
+| `adlc-spec-miner` | `adlc-spec` | Current behavior of existing code, as evidence-backed requirements and invariants |
+| `orchestrate-*` | `orchestrate` | Bounded explorer, researcher, worker, tester, and reviewer roles |
+
+| Hook | Blocks | Turn off |
+| --- | --- | --- |
+| `block-no-verify` | `--no-verify`, `commit -n`, `core.hooksPath` overrides, and `HUSKY=0` on git commands | `CAPSULE_HOOKS_DISABLED=block-no-verify` |
+| `config-protection` | Edits to existing lint and format configs (ESLint, Prettier, Biome, Stylelint, Ruff, and others) | `CAPSULE_HOOKS_DISABLED=config-protection` |
+| `block-destructive` | `rm -rf` of `/`, the home directory, `..`, or (outside a directory the command just entered) `.` and `*`; force pushes to, or deletion of, `main` or `master`; `DROP DATABASE`, `DROP SCHEMA`, and `dropdb`; `terraform destroy`; `kubectl delete namespace` or `--all`; Docker volume pruning. Dry runs and `--help` pass | `CAPSULE_HOOKS_DISABLED=block-destructive` |
+| `block-secret-commit` | A `git commit` whose added lines hold a private key or a vendor-format token (AWS, GitHub, GitLab, Slack, Stripe live, Anthropic, npm) | `CAPSULE_HOOKS_DISABLED=block-secret-commit` |
+
+The hooks need Node.js. They stop an agent from casually skipping checks; they are not a security boundary. List several ids with commas to turn off more than one.
+
+Known false blocks: `block-destructive` also refuses a test-database reset such as `DROP SCHEMA public CASCADE; CREATE SCHEMA public;`, and `rm -rf *` or `rm -rf .` unless the same command first changes into a working directory. `block-secret-commit` refuses a commit that adds a test fixture holding a real-format token. Run those yourself, or turn the hook off for the session. Known gaps: commands inside scripts, aliases, or `eval`, and force pushes to protected branches other than `main` and `master`, are not caught.
+
+## 📏 Rules (optional)
+
+Rules are always-loaded guidance that Claude Code reads from a project's
+`.claude/rules/`. The plugin does not install them; copy the sets you want:
+
+```sh
+node rules/install.mjs --target /path/to/your-project --sets common,typescript,react --apply
+```
+
+| Set | Loads for |
+| --- | --- |
+| `common` | Every session: precedence, evidence before claims, Git safety, untrusted content, scope, skill routing |
+| `typescript`, `react`, `web` | TypeScript and JavaScript, `.tsx`/`.jsx`, and HTML and CSS files |
+| `python`, `java`, `golang`, `csharp` | Files of that language |
+
+Every rule defers to the project's own conventions and tooling. The rules are
+adapted from [affaan-m/ECC](https://github.com/affaan-m/ECC) under the MIT
+License. See [`rules/README.md`](rules/README.md).
+
+## 📟 Status line (optional)
+
+A status bar for Claude Code whose colours stay readable on any background,
+dark, light, or an image, with a ten-block context bar that fills along a
+teal-to-violet-to-pink gradient.
+
+```text
+✦ Fable 5.2 · capsule · feat/x ●3 ↑2 · ▮▮▮▮▯▯▯▯▯▯ 43% of 1M · $12.50 · +920 −247 · session 1h23m
+```
+
+| Part | Meaning |
+| --- | --- |
+| `✦ Fable 5.2 · capsule` | Model and directory |
+| `feat/x ●3 ↑2` | Branch, files changed and not committed, commits ahead (`↑`) or behind (`↓`) the remote |
+| `▮▮▮▮▯▯▯▯▯▯ 43% of 1M` | Context used and the window size. It turns orange about 20% before automatic compaction and red about 8% before it, so a larger window warns later |
+| `$12.50 · +920 −247 · session 1h23m` | Session cost, lines added and removed, and how long the session has been open, idle time included |
+| `5h 82%` | A rate-limit window, shown only once it passes 70% |
+
+A terminal too narrow for one line gets two, then loses the least important
+details first. See it in your own terminal and font before installing:
+
+```sh
+node statusline/statusline.mjs --demo
+```
+
+A plugin cannot register a status line, so install it into a project yourself:
+
+```sh
+node statusline/install.mjs --target /path/to/your-project --apply
+```
+
+This copies the script to the project's `.claude/` folder and sets `statusLine`
+in `.claude/settings.local.json`. Without `--apply` it only shows what it would
+write, and it never replaces a status line you already have. Run it again after
+updating capsule to refresh the copy. To use it everywhere, copy
+`statusline/statusline.mjs` somewhere stable and point `statusLine.command` in
+`~/.claude/settings.json` at it.
+
+| Setting | Effect |
+| --- | --- |
+| `CAPSULE_STATUSLINE_USAGE=1` | Always shows the 5-hour and 7-day rate-limit windows, when Claude Code reports them |
+| `CAPSULE_STATUSLINE_COLOR` | `truecolor`, `256`, or `none`. By default it uses 24-bit colour when the terminal sets `COLORTERM`, and 256 colours otherwise |
+| `CAPSULE_STATUSLINE_ASCII=1` | Plain ASCII instead of symbols and line characters |
+| `NO_COLOR=1` | Turns colour off |
+
+The script needs Node.js, makes no network request, and reads only what Claude
+Code passes it plus `git status` for the branch.
+
 ## 📁 Repository structure
 
 | Path | Contents |
@@ -118,6 +250,10 @@ compose.
 | `skills/` | The skills, grouped into bucket folders |
 | `docs/` | Human-facing skill pages under `adlc/`, `engineering/`, `productivity/`, and `authoring/`, with source research under `research/` |
 | `scripts/` | Maintainer helpers: validation, versioning, audit, packaging, traffic |
+| `docs/agents.md` | Index of the agents, which live with the skills that own them |
+| `hooks/` | The plugin's hooks and their tests |
+| `rules/` | Optional rule sets and their installer |
+| `statusline/` | Optional status line script, its installer, and tests |
 | `.claude-plugin/` | Claude Code plugin and marketplace metadata |
 | `.changeset/` | Versioning metadata |
 | `.github/workflows/` | CI, release, and traffic automation |
@@ -204,5 +340,60 @@ with per-work-item folders informed by the Conductor plugin in
 `grilling` and `planning-and-task-breakdown` skills; the
 [ADLC research](docs/research/2026-09-26-adlc.md) records every preferred source
 consulted. No upstream skill file is vendored.
+
+The skills, agents, hooks, and references added from the
+[ECC review](docs/research/2026-11-24-ecc-review.md) are adaptations of ideas
+in [`affaan-m/ECC`](https://github.com/affaan-m/ECC) (MIT) and the other
+preferred repositories. The
+[decision for every ECC skill](docs/research/2026-11-24-ecc-skills-decisions.md)
+says what was taken and why, and three notes record each source's influence:
+the [adoption research](docs/research/2026-11-24-ecc-adoption-research.md), the
+[performance and accessibility research](docs/research/2026-11-24-performance-accessibility-research.md),
+and the [decisions build research](docs/research/2026-11-24-ecc-decisions-build.md).
+
+- **From ECC:** the topics and much of the coverage of `database-migrations`,
+  `production-readiness`, `decision-records`, `codebase-onboarding`,
+  `api-design`, `e2e-testing`, `interface-polish`, `i18n-sync`,
+  `database-design`, `containers-and-deploys`, `llm-features`, `seo`, and
+  `issue-triage`; the per-stack references under `coding-standards`; the
+  references added under `performance`, `security-review`, `ship-it`,
+  `grilling`, `skill-evolve`, `codebase-onboarding`, `diagnosing-bugs`, and
+  `writing-for-agents`; the read-only review, audit, and spec-mining agents;
+  and the four guard hooks. The rule sets under `rules/` are ECC's files,
+  copied and adapted; see the
+  [third-party notice](rules/THIRD-PARTY-NOTICE.md).
+- **[`nahid-sparktales/agent-dispatcher`](https://github.com/nahid-sparktales/agent-dispatcher):**
+  method for `performance`, `benchmark`, `accessibility`,
+  `database-migrations`, `api-design`, `e2e-testing`, `interface-polish`,
+  `seo`, and `observability`.
+- **[`addyosmani/agent-skills`](https://github.com/addyosmani/agent-skills):**
+  the main source for `observability`, and parts of `performance`,
+  `production-readiness`, `decision-records`, `api-design`, and
+  `containers-and-deploys`.
+- **[`wshobson/agents`](https://github.com/wshobson/agents):** parts of
+  `database-design`, `containers-and-deploys`, `observability`,
+  `llm-features`, `decision-records`, and the Python, Go, and error-handling
+  references.
+- **[`anthropics/skills`](https://github.com/anthropics/skills):** `mcp-builder`
+  is the main source for the MCP server reference under `writing-for-agents`.
+- **[`cursor/plugins`](https://github.com/cursor/plugins) (pstack):**
+  `benchmark` and the TypeScript reference.
+- **[`garrytan/gstack`](https://github.com/garrytan/gstack):** `benchmark`,
+  post-deploy checks in `ship-it`, and the product questions under `grilling`.
+- **[`testdouble/han`](https://github.com/testdouble/han),
+  [`mattpocock/skills`](https://github.com/mattpocock/skills), and
+  [`trailofbits/skills`](https://github.com/trailofbits/skills):**
+  `issue-triage`; han also informed `decision-records` and
+  `codebase-onboarding`, and Trail of Bits the container and Python
+  verification guidance.
+- **[`EveryInc/compound-engineering-plugin`](https://github.com/EveryInc/compound-engineering-plugin):**
+  `benchmark` and the release reference under `ship-it`.
+- **[`humanlayer/skills`](https://github.com/humanlayer/skills):** one point in
+  the React reference.
+- **Vercel Labs `react-best-practices` (MIT):** the React reference under
+  `performance` descends from it by way of ECC's `react-performance`.
+
+Apart from the rule sets, no upstream file is vendored; the instructions are
+maintained here.
 
 </details>

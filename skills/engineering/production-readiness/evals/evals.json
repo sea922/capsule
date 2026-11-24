@@ -1,0 +1,42 @@
+{
+  "skill_name": "production-readiness",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We want to launch our SaaS app to paying customers on Monday. Is it ready? The repo is here; you can read anything but don't change it.",
+      "expected_output": "States the scope and revision, gathers evidence across security, data, payments, operations, rollout, and user experience, marks missing evidence as missing, and gives a single verdict with blockers, risks, and what was not examined.",
+      "files": [],
+      "expectations": [
+        "The review stays read-only and changes no files.",
+        "Each risk area lists evidence found and evidence missing.",
+        "One verdict is given: block, ship with caveats, or ship.",
+        "The verdict is limited to the evidence reviewed and does not call the system safe.",
+        "Areas that could not be examined are listed."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Go/no-go for today's release: CI is green, but the Stripe webhook handler processes each event without checking whether it was already handled, and we have no rollback script.",
+      "expected_output": "Blocks the release: a non-idempotent payment callback and no rollback path are hard stops regardless of green CI. Names the fix for each and what would change the verdict.",
+      "files": [],
+      "expectations": [
+        "The verdict is block.",
+        "The non-idempotent webhook and the missing rollback path are each named as a hard stop.",
+        "Green CI is not treated as overriding the hard stops.",
+        "The reply says what must change for the verdict to change."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Plan the rollout for our new checkout flow. We have feature flags and error dashboards.",
+      "expected_output": "Proposes a staged rollout from internal users to a small share to everyone, with thresholds for advancing, holding, and rolling back, a rollback procedure with its expected time and effect on data, and an owner for the monitoring window.",
+      "files": [],
+      "expectations": [
+        "The rollout is staged rather than all at once.",
+        "Thresholds for hold and roll back are stated against a baseline.",
+        "The rollback procedure names how long it takes and what happens to data written since.",
+        "Someone is named or requested to watch the first hours."
+      ]
+    }
+  ]
+}

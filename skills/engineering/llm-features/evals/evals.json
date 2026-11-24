@@ -1,0 +1,44 @@
+{
+  "skill_name": "llm-features",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We get about 40,000 supplier invoices a month as text extracted from PDFs. I want to send each one to an LLM to pull out invoice number, date, total, and line items. Set that up.",
+      "expected_output": "Does not send every invoice to a model by default; samples real invoices, parses the regular ones with code, scores confidence from concrete signals, routes only low-confidence items to a model that returns the same typed shape, and defines evals with thresholds before building.",
+      "files": [],
+      "expectations": [
+        "Real invoice samples are examined to measure how much ordinary parsing code handles before a model is chosen.",
+        "A confidence check based on concrete signals decides which items go to the model, rather than sending all of them.",
+        "The model path returns the same validated, typed structure as the code path.",
+        "Capability and regression eval cases with graders and pass thresholds are defined before the pipeline is built.",
+        "Cost is estimated for the batch volume, and no specific model name or price is asserted from memory."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our support-reply drafting feature costs too much. Every request sends a 6,000-token system prompt and the full ticket history to our most capable model. Cut the bill.",
+      "expected_output": "Instruments calls first, then applies and measures routing by difficulty, a stable cacheable prefix confirmed by usage counters, budgets, and narrow retries, rerunning the same evals to confirm quality held, and directs the reader to current provider documentation for caching rules and prices.",
+      "files": [],
+      "expectations": [
+        "Per-call tokens, cached tokens, latency, and model are measured before changes are made.",
+        "Routing sends easier requests to a cheaper model, justified by eval results for that class of request.",
+        "The prompt is reordered so stable content comes first and changing content last, and cache use is confirmed from the provider's usage counters.",
+        "Provider-specific caching rules and prices are to be checked in current documentation, not stated as fixed facts.",
+        "The same evals are rerun after each change, and a saving that lowers quality below threshold is treated as a regression."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our internal assistant was fine last month. Now it ignores the search tool half the time and sometimes brings up things from unrelated old conversations. The model works great when I paste the same question into the provider's playground. Fix the prompt.",
+      "expected_output": "Declines to start with prompt rewording; captures a failing case end to end, compares it with a direct model call, walks the app's layers to locate the tool-requirement and memory faults with evidence, proposes code-level fixes first, and adds the failing cases to regression evals.",
+      "files": [],
+      "expectations": [
+        "A failing case is captured end to end, including the assembled request, raw response, and tool calls, before any change.",
+        "The difference between the direct model call and the app is used to place the fault in a wrapper layer.",
+        "Tool selection and memory layers are examined, with findings recorded as symptom, mechanism, layer, and evidence.",
+        "Code-level fixes, such as enforcing the required tool call and tightening memory admission, come before prompt rewording.",
+        "The failing cases are added to regression evals, and the suite is rerun after each change."
+      ]
+    }
+  ]
+}

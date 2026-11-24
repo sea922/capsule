@@ -1,0 +1,3 @@
+interface:
+  display_name: "Database Design"
+  short_description: "Design schemas, indexes, and queries that fit the workload, with engine-specific references"

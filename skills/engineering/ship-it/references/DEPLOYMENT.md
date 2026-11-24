@@ -25,6 +25,13 @@ Run the authorized release procedure and observe its actual outcome. Use
 the required instances moved, and the changed behavior and critical smoke paths
 work in the target environment. Compare health to the baseline when captured.
 
+For a web release, check what a job status cannot show: the critical pages load
+without new console or network errors, static assets and streaming or socket
+endpoints respond, key forms and sign-in complete with a safe test account, and
+load-time measures have not regressed against the baseline. Use a browser tool
+only against the released URL the user named, and keep watching through the
+window the runbook sets, since some failures appear only under real traffic.
+
 A green deployment job proves the job finished. If the old revision is serving
 or rollout health is unresolved, continue investigating and withhold a healthy
 release claim. Perform rollback only within established authority and the runbook;

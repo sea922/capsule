@@ -1,0 +1,3 @@
+interface:
+  display_name: "Codebase Onboarding"
+  short_description: "Map an unfamiliar repository so someone can start working in it"

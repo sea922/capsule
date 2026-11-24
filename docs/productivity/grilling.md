@@ -20,6 +20,8 @@ The caller can use [research](../engineering/research.md) for external evidence 
 
 When the tree is resolved, the skill summarizes the outcome, decisions, assumptions, constraints, non-goals, rejected alternatives, and owned unknowns. The user must explicitly confirm that summary. Without a live decision-maker, the skill stops with unresolved branches and owners; it never self-answers and calls the result confirmed.
 
+Two references load on demand. One holds the questions that test why a product idea should be built at all. The other gathers independent dissent on a decision with several credible paths: separate voices that each see only the question, with disagreements kept visible and the decision returned to the user.
+
 ## Composition and boundaries
 
 `grilling` does not write documents, update trackers, create plans, implement, commit, or publish. The calling workflow owns the durable artifact and all execution. For example, [`adlc-intent`](../adlc/adlc-intent.md) invokes grilling when value, premise, or scope is contested, then resumes its own intent drafting only after confirmation.

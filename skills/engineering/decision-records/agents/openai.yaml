@@ -1,0 +1,3 @@
+interface:
+  display_name: "Decision Records"
+  short_description: "Record significant technical decisions as ADRs and answer why past ones were made"

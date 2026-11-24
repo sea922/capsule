@@ -1,0 +1,3 @@
+interface:
+  display_name: "SEO"
+  short_description: "Audit and fix how a site is crawled, indexed, and presented in search, from what a crawler receives"

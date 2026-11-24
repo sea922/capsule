@@ -12,7 +12,7 @@ contract. Follow the existing design system for presentation.
 Use semantic controls with accessible names, keyboard operation, visible
 focus, and WCAG 2.2 AA touch targets (at least 24×24 CSS px where applicable). Associate persistent visible `<label>` elements (not placeholder-only text) and validation feedback with form fields. Preserve
 focus through dialogs and dynamic updates using the framework or component
-library's established behavior. Check the changed interaction with a keyboard.
+library's established behavior. Check the changed interaction with a keyboard. A full audit against WCAG belongs to `accessibility`.
 
 For each async interaction, represent the relevant loading, empty, error, and
 success states. Keep user input recoverable after failure and make repeated
@@ -45,6 +45,29 @@ not as a requirement on every component or callback.
 When browser and server rendering coexist, keep secrets and privileged access
 on the server, and follow the framework's serialization and hydration rules.
 Client-side checks improve interaction but cannot establish authorization.
+
+React idioms, testing setup, and Next.js and Vite traps are in the
+[React standards](REACT.md).
+
+## Failure, load, and motion
+
+Contain failures. Put an error boundary, or the framework's equivalent, around
+each independently useful region so one broken widget does not blank the page.
+Give it a way to retry and report what it caught. Boundaries catch rendering
+errors; handle event-handler and asynchronous failures where they occur.
+
+Load heavy, rarely used UI on demand, such as charts, editors, and admin
+screens, with a fallback sized like the content. Render long lists
+incrementally, with pagination or the project's virtualization library, once
+profiling shows the list is the cost, and re-check keyboard and screen-reader
+behavior afterwards.
+
+Rate-limit work driven by typing, scrolling, or resizing: debounce or throttle
+the value that triggers the request or the computation, not the input itself.
+
+Use the project's animation library and tokens. Animate transform and opacity,
+keep exit animations from blocking the next interaction, and honor
+`prefers-reduced-motion`.
 
 ## Evidence
 

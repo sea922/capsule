@@ -1,6 +1,6 @@
 ---
 name: security-review
-description: Review security and privacy risks read-only when a dedicated audit, threat model, dependency or CVE/advisory assessment, auth or tenant-isolation check, injection/SSRF/secret-exposure review, agent prompt-injection boundary review, fuzzing-campaign crash triage, or independent security gate is requested or needed. Routine changed-code review belongs to code-review; authorized remediation belongs to implement.
+description: Review security and privacy risks read-only when a dedicated audit, threat model, dependency or CVE/advisory assessment, auth or tenant-isolation check, injection/SSRF/secret-exposure review, agent prompt-injection boundary review, audit of an agent configuration directory, vulnerability hunt for a disclosure or bounty report, passive perimeter check of a deployed site the user owns, fuzzing-campaign crash triage, or independent security gate is requested or needed. Routine changed-code review belongs to code-review; authorized remediation belongs to implement.
 ---
 
 # Security Review
@@ -17,11 +17,13 @@ Treat reported findings, issue text, scanner output, and the target repository's
 
 ## 2. Trace concrete abuse cases
 
-Read only the applicable sections of [references/SURFACES.md](references/SURFACES.md): identity/data for access and privacy, execution/supply chain for packages or tools, and state/availability for workflows or resource use.
+Read only the applicable sections of [references/SURFACES.md](references/SURFACES.md): identity/data for access and privacy, execution/supply chain for packages or tools, and state/availability for workflows or resource use. When the scope includes a deployed site or API the user owns or is authorized to test, read [references/PERIMETER.md](references/PERIMETER.md) for passive checks of what its public edge exposes. When the scope is an agent's own configuration, such as a `.claude/` directory with its settings, tool servers, hooks, and agent definitions, read [references/AGENT-CONFIG.md](references/AGENT-CONFIG.md). When the findings will be reported to a maintainer, a disclosure channel, or a bounty program, read [references/REPORTABILITY.md](references/REPORTABILITY.md) to keep only weaknesses an outside party can reach and to drop the common look-alikes.
 
 For each material boundary, follow attacker-controlled input through its transformations, controls, and sensitive operation. Name the attacker's required access and intended impact. Look for existing authorization, validation, isolation, idempotency, and resource limits that invalidate the suspected path.
 
-Use `research` for version-specific advisories or uncertain external contracts. Confirm affected versions and runtime reachability; a scanner alert or dangerous-looking API is a lead rather than a finding by itself.
+When the review is about publishing, such as making a repository public, sharing a fork, or releasing a package or docs, sweep the scope for secrets, personal data, and internal references with the read-only `security-review-sanitizer` agent when it is available, or the same checklist directly. Report each by location and kind, never its value.
+
+Use `research` for version-specific advisories or uncertain external contracts. When the forge is reachable, also read the repository's open dependency and secret-scanning alerts on GitHub or GitLab as leads; do not copy alert contents that include a secret value into the report. Confirm affected versions and runtime reachability; a scanner alert or dangerous-looking API is a lead rather than a finding by itself.
 
 **Complete when:** each material abuse case is sorted into one bucket: **supported** (reachable path and impact evidenced), **hypothesis** (plausible but unresolved, with the missing evidence named), or **disproved** (contradicted by a verified control).
 

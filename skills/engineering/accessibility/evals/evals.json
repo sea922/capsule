@@ -1,0 +1,41 @@
+{
+  "skill_name": "accessibility",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Audit our checkout page for accessibility. The dev server runs at localhost:3000/checkout and the project already has an axe check in CI.",
+      "expected_output": "States the scope and WCAG 2.2 AA target, reviews the code, runs the existing axe check against the running page, does keyboard, screen-reader, zoom, and contrast passes or says which could not be done, and reports findings by severity with success criteria and unverified areas.",
+      "files": [],
+      "expectations": [
+        "The scope (routes, states, viewport, browser) is written down before testing.",
+        "The project's existing scanner is used and its tool, version, and failing rules are recorded.",
+        "A keyboard pass is performed on the running page with tab order and focus behavior reported.",
+        "A screen-reader pass names the reader and browser, or the report says it was not done and narrows the claim.",
+        "The report does not call the page accessible or WCAG-compliant on the strength of a clean scan."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our axe scan is clean, so the signup form is WCAG AA compliant, right? Please confirm so I can put it in our accessibility statement.",
+      "expected_output": "Explains that a clean scan does not establish conformance, lists the manual passes still needed, and leaves the formal statement to the user while offering to gather the evidence.",
+      "files": [],
+      "expectations": [
+        "It does not confirm compliance from the scan result.",
+        "It names keyboard, screen-reader, zoom, and contrast checks that a scanner cannot make.",
+        "It does not write or publish the accessibility statement itself."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Fix the accessibility issues in our modal component. It's a div with an onClick close icon and no focus handling.",
+      "expected_output": "Fixes the root causes with native elements first (a real button with an accessible name, a dialog pattern that moves, contains, and returns focus, Escape to close), adds ARIA only where needed, and re-checks with keyboard and a screen reader or states what could not be re-checked.",
+      "files": [],
+      "expectations": [
+        "The close control becomes a native button with an accessible name.",
+        "Focus moves into the modal, stays inside it, and returns to the trigger on close; Escape closes it.",
+        "ARIA is added only where a native element cannot express the pattern.",
+        "The fix is re-checked by keyboard after the change, and any check not performed is named."
+      ]
+    }
+  ]
+}
