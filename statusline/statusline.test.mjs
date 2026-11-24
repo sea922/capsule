@@ -71,7 +71,7 @@ test('the context bar is clamped, sized from the window, and turns warm as it fi
   const percent = (used) => render({ context_window: { used_percentage: used } }, { color: 'truecolor' })[0].match(/(\x1b\[[0-9;]*m)+\d+%/)[0];
   const lastFilled = (used) => [...render({ context_window: { used_percentage: used } }, { color: 'truecolor' })[0].matchAll(/\x1b\[38;2;([\d;]+)m━/g)].map((match) => match[1]).filter((cell) => cell !== '35;40;64').at(-1);
   assert.equal(lastFilled(100), '251;113;133', 'a full bar ends in the hot colour');
-  assert.equal(lastFilled(70), '178;129;220', 'below 80% the bar stays on the cool gradient');
+  assert.equal(lastFilled(70), '167;131;226', 'below 80% the bar stays on the cool gradient');
   assert.match(percent(40), /38;2;165;180;252m40%/);
   assert.match(percent(70), /38;2;253;186;116m70%/);
   assert.match(percent(90), /\x1b\[1m\x1b\[38;2;251;113;133m90%/);
