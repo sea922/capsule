@@ -32,4 +32,4 @@ for this revision's evidence and tests.
 
 The [2026-11 source sweep](../research/2026-11-16-source-repos-sweep.md) records ideas the work will not deliver under **Out of scope** with what would bring them back, and has a change to delivered behavior cite the earlier spec instead of reopening it. Both come from Addy Osmani's `spec-driven-development` V1 scoping and delta specs.
 
-When a change touches existing behavior no delivered spec covers, the skill first records that behavior from the code as requirements and invariants with file and line evidence, using the read-only `adlc-spec-miner` agent when available. The [ECC sweep](../research/2026-11-24-ecc-full-sweep.md) records where this and the specialist review passes came from.
+When a change touches existing behavior no delivered spec covers, the skill first records that behavior from the code as requirements and invariants with file and line evidence, using the read-only `adlc-spec-miner` agent when available. The [ECC review](../research/2026-11-24-ecc-review.md) records where this and the specialist review passes came from.

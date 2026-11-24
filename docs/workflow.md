@@ -20,6 +20,11 @@ Start from the question or outcome you have. Most skills can be selected by the 
 | Design a module or responsibility boundary | [codebase-design](engineering/codebase-design.md) | An explicit interface and ownership decision |
 | Simplify working code | [simplify](engineering/simplify.md) | Lower complexity with behavior-preservation evidence |
 | Make software faster or lighter | [performance](engineering/performance.md) | Before and after numbers with their range, and the limiter named |
+| Compare options or check a speed claim | [benchmark](engineering/benchmark.md) | A reproducible verdict with runs, range, and limiter |
+| Change a database schema or data | [database-migrations](engineering/database-migrations.md) | A sequenced, rehearsed plan with honest rollback, and verified results |
+| Decide whether to launch | [production-readiness](engineering/production-readiness.md) | Ship, ship with caveats, or block, with blockers and unexamined areas |
+| Record why a decision was made | [decision-records](engineering/decision-records.md) | A numbered ADR linked from the index |
+| Understand an unfamiliar repository | [codebase-onboarding](engineering/codebase-onboarding.md) | A map with a traced path, conventions, and where to start |
 | Review changes | [code-review](engineering/code-review.md) | Evidence-backed findings at the requested depth |
 | Commit, branch, rebase, stack, or recover Git state | [git-workflow](engineering/git-workflow.md) | Clean history, verified freshness, and safe recovery |
 | Create, prepare, or retire an isolated checkout | [git-worktrees](engineering/git-worktrees.md) | Isolated worktree without displacing another task's work |

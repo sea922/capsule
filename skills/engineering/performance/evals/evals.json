@@ -28,13 +28,14 @@
     },
     {
       "id": 3,
-      "prompt": "I memoized the row component and the table feels faster. Benchmark: before 240ms, after 235ms, one run each. Can I ship it as a performance win?",
-      "expected_output": "Declines to call it a win: one run per side cannot separate a 5 ms change from noise; asks for repeated alternating runs with a range and a profile showing the rows were the limiter, and recommends reverting if the gain stays inside the range.",
+      "prompt": "Our dashboard takes 6 seconds to become usable on a mid-range phone. Get it under 3.",
+      "expected_output": "States the metric and device class, measures a repeated baseline, uses a browser performance trace to find and confirm the limiter, changes one thing at a time, and keeps only changes that move the number outside the run-to-run range.",
       "files": [],
       "expectations": [
-        "The single-run comparison is called inconclusive rather than a win.",
-        "Repeated runs with a reported range are required before deciding.",
-        "A change that stays inside the run-to-run range is treated as a revert, not a keep."
+        "The metric, device class, and 3 second threshold are stated before changes.",
+        "A trace or profile identifies the limiter before any optimization.",
+        "Changes are measured one at a time and neutral ones are reverted.",
+        "The report gives before and after numbers with their range and names the next limiter."
       ]
     }
   ]

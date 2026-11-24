@@ -1,0 +1,40 @@
+{
+  "skill_name": "codebase-onboarding",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just joined this team and need to fix a bug in the billing module next week. Give me an overview of this repo.",
+      "expected_output": "Scopes the map to a newcomer heading into billing: stack, architecture, one traced request path with file references, conventions with example files, run and test commands, and where to start in billing, with unconfirmed points marked.",
+      "files": [],
+      "expectations": [
+        "The map states who it is for and focuses the starting point on the billing area.",
+        "One real request, job, or command is traced end to end with file and line references.",
+        "Conventions are reported with an example file each.",
+        "Commands are marked as run or untested.",
+        "No code is edited and nothing is installed."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "How does this repo work? The README says it's a microservices system but I only see one deployable.",
+      "expected_output": "Checks the documentation against the code, reports that the README and the repository disagree with the evidence for what is actually there, and describes the system as the code shows it.",
+      "files": [],
+      "expectations": [
+        "The conflict between the README and the code is stated explicitly.",
+        "The architecture described is the one the files show, with paths as evidence.",
+        "Uncertain points are marked as unconfirmed rather than guessed."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Write an onboarding guide for this project and save it. We already have a docs/ARCHITECTURE.md.",
+      "expected_output": "Reads the existing architecture document and verifies it against the code, saves the guide to a new file without overwriting existing docs, and proposes corrections to the existing document instead of rewriting it.",
+      "files": [],
+      "expectations": [
+        "docs/ARCHITECTURE.md is read and checked against the code.",
+        "The guide is saved as a new file and existing docs are not overwritten.",
+        "Corrections to the existing document are proposed rather than applied silently."
+      ]
+    }
+  ]
+}

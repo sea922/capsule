@@ -1,6 +1,6 @@
 ---
 name: performance
-description: Make working software measurably faster or lighter, or review code for performance risk, with numbers that hold up. Use when asked to speed up, optimize, profile, or reduce memory, latency, load time, bundle size, or cost, to set or check a performance budget, or to review a change for performance. Explaining why something got slower belongs to diagnosing-bugs; benchmark results that need vetting stay here.
+description: Make working software measurably faster or lighter, or review code for performance risk, with numbers that hold up. Use when asked to speed up, optimize, profile, or reduce memory, latency, load time, bundle size, or cost, to set or check a performance budget, or to review a change for performance. Explaining why something got slower belongs to diagnosing-bugs; comparing options, vetting a reported number, or setting up a benchmark belongs to benchmark.
 ---
 
 # Performance
@@ -21,7 +21,7 @@ When the request is a cause ("why did this get slower after the deploy?"), use `
 
 Build a harness that reproduces the workload with representative data, because toy data profiles a different program. Run it at least five times, keep every run, and report the median and the range. When the range is wider than the gain you are chasing, fix the harness before measuring anything else.
 
-Before trusting any number, check that the work really happened inside the timed region and that every run succeeded: count errors and confirm outputs are correct. Fast failures and skipped work produce flattering numbers.
+Before trusting any number, check that the work really happened inside the timed region and that every run succeeded: count errors and confirm outputs are correct. Fast failures and skipped work produce flattering numbers. `benchmark` holds the full rules for a measurement a decision rests on; use it when the comparison itself is in doubt or several variants must be searched.
 
 **Complete when:** the baseline has a median, a range, an error count of zero or an explained one, and the exact command to reproduce it.
 

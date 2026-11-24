@@ -4,8 +4,8 @@ Research for two new skills, `performance` and `accessibility`, each owning one
 read-only reviewer agent that `code-review` deep mode reuses. Capsule had no
 owner for either job: `diagnosing-bugs` explains regressions and
 `coding-standards` holds frontend accessibility rules, but nothing made software
-faster on purpose or audited an interface. The 2026-11-24 ECC sweep surfaced
-both gaps. Every preferred repository in `docs/source-repos.md` was read at the
+faster on purpose or audited an interface. The
+[2026-11-24 ECC review](2026-11-24-ecc-review.md) surfaced both gaps. Every preferred repository in `docs/source-repos.md` was read at the
 commit below; no file is vendored, and the instructions use original wording.
 
 ## Sources

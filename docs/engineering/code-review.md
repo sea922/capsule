@@ -49,7 +49,7 @@ Deep mode builds one fixed review packet, then runs independent passes for defec
 
 This separation gives high-risk work broader attention while keeping the default review responsive.
 
-Deep mode can also add capsule's specialist read-only passes where the change touches their area: silent failures, type invariants, comment accuracy, whether the tests would catch the change breaking, and migration, schema, and query safety. Their candidates go through the same validation. When a reviewer on a different model or harness is available and permitted, deep mode can add it as one more read-only pass. It never blocks the review, and its candidates face the same validation. Dedicated threat modeling belongs to [security-review](security-review.md).
+Deep mode can also add capsule's specialist read-only passes where the change touches their area: silent failures, type invariants, comment accuracy, whether the tests would catch the change breaking, migration, schema, and query safety, and whether a claimed speedup is supported by its measurement. Their candidates go through the same validation. When a reviewer on a different model or harness is available and permitted, deep mode can add it as one more read-only pass. It never blocks the review, and its candidates face the same validation. Dedicated threat modeling belongs to [security-review](security-review.md).
 
 ## Blast radius
 

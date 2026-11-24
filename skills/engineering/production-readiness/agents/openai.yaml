@@ -1,0 +1,3 @@
+interface:
+  display_name: "Production Readiness"
+  short_description: "Review whether a release is ready for real users, with a ship or block verdict"

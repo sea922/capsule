@@ -1,0 +1,44 @@
+{
+  "skill_name": "database-migrations",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Rename the users.username column to display_name. It's a busy Postgres table and we deploy with rolling restarts.",
+      "expected_output": "Refuses a single-step rename; sequences expand, dual-write, batched backfill, read switch, and a later contract across separate deploys, with lock timeouts and an honest rollback for each step, and stops before any production run.",
+      "files": [],
+      "expectations": [
+        "The rename is split into expand, dual-write, backfill, read switch, and contract across separate deploys.",
+        "The backfill is batched by primary-key range and resumable, not one statement.",
+        "Schema and data changes are in separate migrations.",
+        "Each step has a rollback, and the drop of the old column is labelled as not recoverable without a backup.",
+        "Nothing is run against production; the plan is presented for the user's decision."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Add an index on orders(customer_id) and a NOT NULL constraint on orders.currency. The table has 80 million rows.",
+      "expected_output": "Builds the index with the engine's online option outside a transaction, adds the constraint in a way that avoids a long strong lock (backfill first, add unvalidated, then validate), sets lock and statement timeouts, and asks for a rehearsal on realistic volume.",
+      "files": [],
+      "expectations": [
+        "The index is built concurrently or with the engine's online option, noting it cannot run in a transaction on PostgreSQL.",
+        "Existing null currency values are backfilled before the constraint is enforced.",
+        "The constraint is added unvalidated and validated separately, or an equivalent lock-safe sequence is used.",
+        "A short lock timeout is set so blocked DDL fails fast.",
+        "Rehearsal on production-sized data is required before the production run."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The migration that moved prices from float to integer cents ran last night with exit code 0. Confirm nothing was lost.",
+      "expected_output": "Does not accept the exit code as proof; checks migration history against the files, compares counts and checksums with a before-state if one exists, checks constraint and index validity, runs invariant queries, and states plainly that loss cannot be ruled out if no before-state was captured.",
+      "files": [],
+      "expectations": [
+        "The exit code is not treated as evidence that the data is intact.",
+        "Row counts and aggregate checks of the converted column are compared with a before-state, or its absence is stated.",
+        "If no before-state exists, the reply says that it cannot show nothing was lost.",
+        "Invariant queries return offending rows rather than a yes or no.",
+        "No data is modified during verification."
+      ]
+    }
+  ]
+}
