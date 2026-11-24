@@ -144,7 +144,8 @@ gh pr edit NUMBER --repo OWNER/REPO --title "REVIEWED_TITLE" --body-file "PATH_T
 
 When `pr-images` is attaching screenshots to a new PR, hand it the reviewed
 title and body file so it runs `gh pr create --attach` once with the final body
-and images together rather than creating the PR twice.
+and images together rather than creating the PR twice. On GitLab, `pr-images`
+uploads first and returns a rewritten body; create the MR once with that body.
 
 On GitLab, `glab mr` takes the body as an argument, so pass it through a
 structured API field read from the file instead:

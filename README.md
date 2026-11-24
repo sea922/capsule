@@ -1,112 +1,134 @@
-# capsule
+<div align="center">
 
+# 💊 capsule
 
-capsule: an agent skills library.
+**Agent skills for engineering work, packaged as a Claude Code plugin.**
 
-Start with the [workflow map](docs/workflow.md) to choose an entry point and see how the skills compose.
+Plan, build, review, ship, and write with skills that keep agents on evidence,
+not guesses. Works with GitHub and GitLab.
 
-See [contribution and validation guidance](CONTRIBUTING.md) for local setup and
-release checks, and [security reporting](SECURITY.md) for vulnerability reports.
+[![Version](https://img.shields.io/github/package-json/v/sea922/capsule?label=version&color=blueviolet)](CHANGELOG.md)
+[![Skills](https://img.shields.io/badge/skills-36-orange)](#-skills)
+[![CI](https://github.com/sea922/capsule/actions/workflows/ci.yml/badge.svg)](https://github.com/sea922/capsule/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
+[![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-d97757)](#-install)
+[![GitHub + GitLab](https://img.shields.io/badge/forges-GitHub%20%7C%20GitLab-181717)](#-skills)
 
-## Skills
+[![Stars](https://img.shields.io/github/stars/sea922/capsule?style=social)](https://github.com/sea922/capsule/stargazers)
+[![Forks](https://img.shields.io/github/forks/sea922/capsule?style=social)](https://github.com/sea922/capsule/forks)
+[![Last commit](https://img.shields.io/github/last-commit/sea922/capsule)](https://github.com/sea922/capsule/commits/main)
+[![Visitors](https://hits.sh/github.com/sea922/capsule.svg?label=visitors&color=2ea44f)](https://hits.sh/github.com/sea922/capsule/)
+[![Clones](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fsea922%2Fcapsule%2Ftraffic%2Fclones.json)](.github/workflows/traffic.yml)
+[![Views](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fsea922%2Fcapsule%2Ftraffic%2Fviews.json)](.github/workflows/traffic.yml)
 
-### User-invoked
+[Install](#-install) · [Skills](#-skills) · [Workflow map](docs/workflow.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
 
-- [adlc-flow](docs/adlc/adlc-flow.md) — verify the approval chain and route work
-  from its evidenced stage to the next command or declared delivery endpoint.
-- [adlc-intent](docs/adlc/adlc-intent.md) — interview the human and record the problem,
-  outcome, and success signal before agents build.
-- [adlc-spec](docs/adlc/adlc-spec.md) — turn approved intent into observable behavior
-  and numbered, verifiable acceptance criteria.
-- [adlc-plan](docs/adlc/adlc-plan.md) — plan covered, assigned slices with separate
-  verifiers and rollback from an approved spec.
-- [adlc-gate](docs/adlc/adlc-gate.md) — record revision-bound human sign-off with
-  portable content hashes, explicit conditions, and freshness checks.
+</div>
 
-### Model-invoked
+---
 
-- [babysit-pr](docs/engineering/babysit-pr.md) — carry an existing GitHub PR or GitLab MR through review
-  feedback, CI repairs, and verified completion with resumable monitoring.
-- [codebase-design](docs/engineering/codebase-design.md) — design cohesive modules,
-  evidence-gated abstractions, intentional dependency direction, and explicit
-  inter-module contracts.
-- [code-review](docs/engineering/code-review.md) — review changes at quick, standard, or
-  deep depth with a bounded default and evidence-backed findings.
-- [coding-standards](docs/engineering/coding-standards.md) — apply project conventions
-  with shared rules and conditional backend and frontend guidance.
-- [compound-learnings](docs/engineering/compound-learnings.md) — capture durable
-  engineering lessons past a counterfactual bar and refresh the store against current code.
-- [diagnosing-bugs](docs/engineering/diagnosing-bugs.md) — prove a root cause through
-  reproduction, competing hypotheses, and discriminating evidence before a fix.
-- [git-workflow](docs/engineering/git-workflow.md) — make focused commits, manage
-  branches, rebases, stacks and backports, check whether a branch already
-  landed, and recover interrupted Git state.
-- [git-worktrees](docs/engineering/git-worktrees.md) — select, prepare, retire, and
-  recover isolated checkouts without displacing another task's work.
-- [grilling](docs/productivity/grilling.md) — stress-test a consequential or ambiguous
-  plan, decision, or idea through a live, dependency-aware interview.
-- [handoff](docs/productivity/handoff.md) — preserve verified task state across a pause,
-  pickup, or transfer between sessions, harnesses, directories, or people.
-- [html-writeup](docs/authoring/html-writeup.md) — build and verify a self-contained HTML document
-  with diagrams, tables, and code, verified in a real browser.
-- [implement](docs/engineering/implement.md) — execute authorized changes in coherent,
-  repository-safe slices and hand off fresh completion evidence.
-- [orchestrate](docs/engineering/orchestrate.md) — route bounded work to native
-  Claude Code or Codex agents with task-appropriate models and verified integration.
-- [planning-and-task-breakdown](docs/engineering/planning-and-task-breakdown.md) — turn clear
-  requirements into verifiable slices, dependencies, and a ready frontier.
-- [pr-description](docs/engineering/pr-description.md) — write outcome-led PR or MR titles
-  and bodies from the final diff, with a visual summary, before/after evidence, and
-  a merge-danger section.
-- [pr-images](docs/engineering/pr-images.md) — capture, privacy-check, and attach
-  before/after screenshots to PRs, issues, and comments with `gh --attach`, and
-  retake them when later commits change what they show.
-- [property-based-testing](docs/engineering/property-based-testing.md) — find strong
-  properties and generators, avoid vacuous tests, and triage shrunk counterexamples.
-- [prototype](docs/engineering/prototype.md) — answer one design or feasibility question
-  with a small, reproducible experiment.
-- [research](docs/engineering/research.md) — investigate questions with primary sources,
-  revision-aware citations, and explicit evidence gaps.
-- [security-review](docs/engineering/security-review.md) — assess trust boundaries and
-  concrete abuse paths through a scoped, read-only security review.
-- [ship-it](docs/engineering/ship-it.md) — carry finished changes through delivery
-  to an explicit, verified PR, merge, or deployment endpoint.
-- [simplify](docs/engineering/simplify.md) — reduce code complexity in a scoped pass
-  while preserving observable behavior and useful boundaries.
-- [skill-evolve](docs/authoring/skill-evolve.md) — turn evidence from real sessions
-  into candidate skill edits, keep only those that beat the current version, and
-  apply them after approval.
-- [sprint-planning](docs/engineering/sprint-planning.md) — plan a team sprint with a goal,
-  capacity, stories and spikes, and Fibonacci points anchored to reference stories.
-- [tdd](docs/engineering/tdd.md) — drive behavior changes through observable red, green,
-  and refactor evidence, with example or property tests and bounded practical exceptions.
-- [verification-before-completion](docs/engineering/verification-before-completion.md) —
-  prove completion claims with fresh, scope-matched evidence and honest verdicts.
-- [writing-for-agents](docs/authoring/writing-for-agents.md) — write skills, `AGENTS.md`,
-  and `CLAUDE.md` so an agent reaches the right material and takes the same path
-  through it every run.
-- [writing-for-humans](docs/authoring/writing-for-humans.md) — write and revise clear,
-  specific, genre-aware prose while preserving meaning and the author's voice.
+## ⚡ Install
 
-## Install
+In Claude Code:
 
 ```text
 /plugin marketplace add sea922/capsule
 /plugin install capsule@capsule
 ```
 
-## Repository structure
+Model-invoked skills load on their own when a request matches them. The ADLC
+skills run only when you call them, for example `/adlc-intent`. Start with the
+[workflow map](docs/workflow.md) to pick an entry point and see how the skills
+compose.
 
-- `skills/` — original skills, added when ready
-- `.changeset/` — versioning metadata
-- `docs/` — human-facing skill documentation grouped under `adlc/`,
-  `engineering/`, `productivity/`, and `authoring/`, with source research under
-  `research/`
-- `scripts/` — maintainer helpers
-- `.claude-plugin/` — Claude Code plugin metadata
-- `.github/workflows/` — release automation
+## 🧰 Skills
 
-## Attribution
+### 🧭 ADLC — agentic development lifecycle (user-invoked)
+
+| Skill | What it does |
+| --- | --- |
+| [adlc-flow](docs/adlc/adlc-flow.md) | Verify the approval chain and route work from its evidenced stage to the next command or delivery endpoint. |
+| [adlc-intent](docs/adlc/adlc-intent.md) | Interview the human and record the problem, outcome, and success signal before agents build. |
+| [adlc-spec](docs/adlc/adlc-spec.md) | Turn approved intent into observable behavior and numbered, verifiable acceptance criteria. |
+| [adlc-plan](docs/adlc/adlc-plan.md) | Plan covered, assigned slices with separate verifiers and rollback from an approved spec. |
+| [adlc-gate](docs/adlc/adlc-gate.md) | Record revision-bound human sign-off with portable content hashes, conditions, and freshness checks. |
+
+### 🛠️ Build
+
+| Skill | What it does |
+| --- | --- |
+| [implement](docs/engineering/implement.md) | Execute authorized changes in coherent, repository-safe slices with fresh completion evidence. |
+| [tdd](docs/engineering/tdd.md) | Drive behavior changes through observable red, green, and refactor evidence. |
+| [property-based-testing](docs/engineering/property-based-testing.md) | Find strong properties and generators, avoid vacuous tests, and triage shrunk counterexamples. |
+| [prototype](docs/engineering/prototype.md) | Answer one design or feasibility question with a small, reproducible experiment. |
+| [simplify](docs/engineering/simplify.md) | Reduce complexity in a scoped pass while preserving observable behavior. |
+| [codebase-design](docs/engineering/codebase-design.md) | Design cohesive modules, evidence-gated abstractions, dependency direction, and explicit contracts. |
+| [coding-standards](docs/engineering/coding-standards.md) | Apply project conventions with shared rules and backend and frontend guidance. |
+
+### 🔍 Investigate and plan
+
+| Skill | What it does |
+| --- | --- |
+| [diagnosing-bugs](docs/engineering/diagnosing-bugs.md) | Prove a root cause through reproduction, competing hypotheses, and discriminating evidence. |
+| [research](docs/engineering/research.md) | Investigate questions with primary sources, revision-aware citations, and explicit gaps. |
+| [planning-and-task-breakdown](docs/engineering/planning-and-task-breakdown.md) | Turn clear requirements into verifiable slices, dependencies, and a ready frontier. |
+| [sprint-planning](docs/engineering/sprint-planning.md) | Plan a team sprint with a goal, capacity, spikes, and Fibonacci points anchored to reference stories. |
+| [orchestrate](docs/engineering/orchestrate.md) | Route bounded work to Claude Code or Codex agents with fitting models and verified integration. |
+
+### ✅ Review and quality
+
+| Skill | What it does |
+| --- | --- |
+| [code-review](docs/engineering/code-review.md) | Review changes at quick, standard, or deep depth with evidence-backed findings. |
+| [security-review](docs/engineering/security-review.md) | Assess trust boundaries and concrete abuse paths in a scoped, read-only review. |
+| [verification-before-completion](docs/engineering/verification-before-completion.md) | Prove completion claims with fresh, scope-matched evidence and honest verdicts. |
+| [compound-learnings](docs/engineering/compound-learnings.md) | Capture durable engineering lessons and refresh them against current code. |
+
+### 🚀 Git and delivery — GitHub and GitLab
+
+| Skill | What it does |
+| --- | --- |
+| [git-workflow](docs/engineering/git-workflow.md) | Focused commits, branches, rebases, stacks, backports, freshness checks, and Git recovery. |
+| [git-worktrees](docs/engineering/git-worktrees.md) | Select, prepare, retire, and recover isolated checkouts without displacing other work. |
+| [pr-description](docs/engineering/pr-description.md) | Outcome-led PR or MR titles and bodies from the final diff, with evidence and a merge-danger section. |
+| [pr-images](docs/engineering/pr-images.md) | Capture, privacy-check, and attach before/after screenshots to GitHub PRs, GitLab MRs, issues, and comments. |
+| [babysit-pr](docs/engineering/babysit-pr.md) | Carry a GitHub PR or GitLab MR through review feedback, CI repairs, and verified merge. |
+| [ship-it](docs/engineering/ship-it.md) | Carry finished changes to an explicit, verified PR, merge, or deployment endpoint. |
+
+### 🤝 Productivity
+
+| Skill | What it does |
+| --- | --- |
+| [grilling](docs/productivity/grilling.md) | Stress-test a consequential or ambiguous plan, decision, or idea through a live interview. |
+| [handoff](docs/productivity/handoff.md) | Preserve verified task state across sessions, harnesses, directories, or people. |
+
+### ✍️ Writing and skills
+
+| Skill | What it does |
+| --- | --- |
+| [writing-for-humans](docs/authoring/writing-for-humans.md) | Write and revise clear, specific, genre-aware prose while keeping the author's voice. |
+| [writing-for-agents](docs/authoring/writing-for-agents.md) | Write skills, `AGENTS.md`, and `CLAUDE.md` so agents take the same path every run. |
+| [html-writeup](docs/authoring/html-writeup.md) | Build a self-contained HTML document with diagrams, tables, and code, verified in a real browser. |
+| [skill-evolve](docs/authoring/skill-evolve.md) | Turn real-session evidence into skill edits, keeping only those that beat the current version. |
+
+## 📁 Repository structure
+
+| Path | Contents |
+| --- | --- |
+| `skills/` | The skills, grouped into bucket folders |
+| `docs/` | Human-facing skill pages under `adlc/`, `engineering/`, `productivity/`, and `authoring/`, with source research under `research/` |
+| `scripts/` | Maintainer helpers: validation, versioning, audit, packaging, traffic |
+| `.claude-plugin/` | Claude Code plugin and marketplace metadata |
+| `.changeset/` | Versioning metadata |
+| `.github/workflows/` | CI, release, and traffic automation |
+
+## 🙏 Attribution
+
+capsule started as a fork of [`J03Fr0st/skills`](https://github.com/J03Fr0st/skills)
+and follows its upstream releases; see the [license](LICENSE).
+
+<details>
+<summary>Sources and influences for each skill</summary>
 
 The repository shell is based on
 [`mattpocock/skills`](https://github.com/mattpocock/skills). `grilling`
@@ -183,3 +205,5 @@ with per-work-item folders informed by the Conductor plugin in
 `grilling` and `planning-and-task-breakdown` skills; the
 [ADLC research](docs/research/2026-09-26-adlc.md) records every preferred source
 consulted. No upstream skill file is vendored.
+
+</details>

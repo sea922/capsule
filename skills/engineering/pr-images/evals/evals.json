@@ -89,6 +89,31 @@
         "Views the image for private data before upload and runs `gh issue comment` from the temp directory with explicit `--repo acme/analytics`.",
         "Reads back the saved issue comment to verify the image resolved to an uploaded URL with no local path remaining."
       ]
+    },
+    {
+      "id": 9,
+      "prompt": "Add before/after screenshots of the new pricing cards to https://gitlab.example.com/web/shop/storefront/-/merge_requests/57. The dev server is running at localhost:3000, a screenshot tool that saves PNG files is available, and glab is authenticated for gitlab.example.com.",
+      "expected_output": "Treats it as GitLab, captures and checks the pairs into a temporary directory, writes the body there, runs upload_gitlab.py with the self-managed host and nested project path, then posts body.uploaded.md through glab api and reads it back.",
+      "files": [],
+      "expectations": [
+        "The forge is taken from the MR URL without asking.",
+        "upload_gitlab.py runs with --host gitlab.example.com, --repo web/shop/storefront and the body file in the images directory.",
+        "The rewritten body is posted with glab api -F description=@body.uploaded.md, not typed into a shell command.",
+        "The description is read back and contains /uploads/ URLs and no ./ paths.",
+        "No gh command and no --attach flag is used."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "upload_gitlab.py exited 1 for MR 12 in group/app: {\"uploaded\": [\"before.png\"], \"failed\": [{\"file\": \"after.png\", \"error\": \"413 Request Entity Too Large\"}], \"not_attempted\": [\"mobile-after.png\"]}. What next?",
+      "expected_output": "Posts nothing yet; shrinks or retakes after.png within the instance limit, retries the failed and remaining files, and only then posts and reads back the body, or removes those rows and says which images are missing.",
+      "files": [],
+      "expectations": [
+        "The partial body is not posted with local ./ paths in it.",
+        "The oversize file is reduced or retaken rather than uploaded elsewhere.",
+        "before.png is not uploaded a second time.",
+        "The final reply names any image that is still missing."
+      ]
     }
   ]
 }
