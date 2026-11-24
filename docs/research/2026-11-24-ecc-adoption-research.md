@@ -121,3 +121,32 @@ casual bypasses and say they are not a security boundary.
 do not accept and Claude-only variables inside shell snippets, after ECC's
 `skill-host-compat`. Capsule ships one `SKILL.md` to every host, so the check
 runs on the canonical file instead of on per-host copies.
+
+## Rules
+
+ECC ships 122 rule files in a `common` layer plus language directories, copied
+into `~/.claude/rules/` or a project's `.claude/rules/` by an install script,
+with a `paths:` header scoping each language rule to its files. Capsule takes
+that delivery model: a `rules/` folder with `common`, `typescript`, `react`,
+`web`, `python`, `java`, `golang`, and `csharp` sets, and an opt-in installer
+that previews first and never overwrites a file the project changed.
+
+The content is capsule's own and differs from ECC's in three ways:
+
+- **Defaults, not absolutes.** ECC's rules state fixed standards such as a
+  minimum coverage figure and mandatory immutability. Each capsule rule opens by
+  deferring to the project's configuration and existing code, and
+  `common/precedence.md` fixes the order, so the rules agree with
+  `coding-standards` and `tdd`.
+- **One short file per stack.** ECC has about five files per language, largely
+  code samples and pointers to its own skills. A rule costs context whenever it
+  loads, so capsule keeps one file of at most 80 lines per stack, enforced by a
+  test.
+- **A `common` set built around always-on guardrails** that a skill cannot
+  supply because it loads only on a match: evidence before claims, Git safety,
+  untrusted content, scope, and a table routing work to capsule skills.
+
+Not taken: ECC's `hooks.md`, `agents.md`, `performance.md` (model selection),
+and `development-workflow.md` rules, which describe ECC's own harness, and its
+other language sets.
+

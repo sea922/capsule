@@ -144,6 +144,24 @@ capsule also ships read-only agents that its skills hand work to, indexed in [`a
 
 The hooks need Node.js. They stop an agent from casually skipping checks; they are not a security boundary. List several ids with commas to turn off more than one.
 
+## 📏 Rules (optional)
+
+Rules are short, always-loaded guidance that Claude Code reads from a project's
+`.claude/rules/`. The plugin does not install them; copy the sets you want:
+
+```sh
+node rules/install.mjs --target /path/to/your-project --sets common,typescript,react --apply
+```
+
+| Set | Loads for |
+| --- | --- |
+| `common` | Every session: precedence, evidence before claims, Git safety, untrusted content, scope, skill routing |
+| `typescript`, `react`, `web` | TypeScript and JavaScript, `.tsx`/`.jsx`, and HTML and CSS files |
+| `python`, `java`, `golang`, `csharp` | Files of that language |
+
+Every rule defers to the project's own conventions and tooling. See
+[`rules/README.md`](rules/README.md).
+
 ## 📁 Repository structure
 
 | Path | Contents |
@@ -153,6 +171,7 @@ The hooks need Node.js. They stop an agent from casually skipping checks; they a
 | `scripts/` | Maintainer helpers: validation, versioning, audit, packaging, traffic |
 | `agents/` | Index of the agents, which live with the skills that own them |
 | `hooks/` | The plugin's hooks and their tests |
+| `rules/` | Optional rule sets and their installer |
 | `.claude-plugin/` | Claude Code plugin and marketplace metadata |
 | `.changeset/` | Versioning metadata |
 | `.github/workflows/` | CI, release, and traffic automation |
