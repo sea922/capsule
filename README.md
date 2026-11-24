@@ -124,8 +124,7 @@ compose.
 
 ## 🙏 Attribution
 
-capsule started as a fork of [`J03Fr0st/skills`](https://github.com/J03Fr0st/skills)
-and follows its upstream releases; see the [license](LICENSE).
+See the [license](LICENSE).
 
 <details>
 <summary>Sources and influences for each skill</summary>
